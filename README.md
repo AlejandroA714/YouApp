@@ -1,9 +1,7 @@
 # YouApp
 Proyecto para la materia DPS
 
-
 Grupo Teorico: 03
-
 
 Integrantes:
 
