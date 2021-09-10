@@ -16,7 +16,6 @@
         <java.version>15</java.version>
         <lombok.version>1.18.20</lombok.version>
         <logbook.version>2.4.2</logbook.version>
-       <!-- <undertow.version>2.2.8.RELEASE</undertow.version> -->
         <spring-boot.version>2.5.4</spring-boot.version>
         <jackson.version>2.12.0</jackson.version>
         <javax.version>1</javax.version>
@@ -61,11 +60,6 @@
                 <artifactId>logbook-netty</artifactId>
                 <version>${logbook.version}</version>
             </dependency>
-            <!--<dependency>
-                <groupId>io.undertow</groupId>
-                <artifactId>undertow-servlet</artifactId>
-                <version>2.2.8.Final</version>
-            </dependency>-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
