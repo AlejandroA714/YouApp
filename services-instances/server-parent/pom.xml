@@ -16,8 +16,8 @@
     <packaging>pom</packaging>
     <properties>
         <java.suffix>jdk-limits</java.suffix>
-        <docker.image.prefix>172.16.24.100:6666/bi-images</docker.image.prefix>
-        <docker.image.base>172.16.24.100:6666/bi-images/bi-server-base-zulu-openjdk-alpine:${java.version}-${java.suffix}</docker.image.base>
+        <docker.image.prefix>target</docker.image.prefix>
+        <docker.image.base>alejandro1407/server-base</docker.image.base>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -41,12 +41,55 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!--JIB Plugin-->
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>3.1.4</version>
+                    <configuration>
+                        <container>
+                            <environment>
+                                <SPRING_CLOUD_CONFIG_URI>http://configuration-server:8080</SPRING_CLOUD_CONFIG_URI>
+                                <!-- Enviroment Properties -->
+                            </environment>
+                            <volumes>
+                                <volume>/tmp</volume>
+                            </volumes>
+                            <user>appuser:youapp</user>
+                            <workingDirectory>/app</workingDirectory>
+                            <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                        </container>
+                    <from>
+                        <image>${docker.image.base}</image>
+                    </from>
+                        <to>
+                            <image>${project.artifactId}</image>
+                            <tags>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <tag>${project.version}-${current.time}</tag>
+                            </tags>
+                        </to>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>timestamp-property</id>
+                            <goals>
+                                <goal>timestamp-property</goal>
+                            </goals>
+                            <configuration>
+                                <name>current.time</name>
+                                <pattern>yyyyMMdd.HHmmss</pattern>
+                                <timeZone>GMT-6</timeZone>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
             </plugins>
         </pluginManagement>
-        <plugins>
-            <!-- JIB Plugin-->
-        </plugins>
     </build>
 
 </project>

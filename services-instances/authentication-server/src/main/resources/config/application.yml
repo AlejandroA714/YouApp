@@ -1,0 +1,12 @@
+server:
+  port: 8083
+
+logbook:
+  format:
+    style: http
+
+logging:
+  level:
+    org.springframework: info
+    sv.com: DEBUG
+    org.zalando.logbook: TRACE
