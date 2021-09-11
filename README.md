@@ -21,3 +21,5 @@ Enlaces
 Trello: https://trello.com/b/wAnwlLiF/youapp
 
 MockUps: https://shared-assets.adobe.com/link/e3ee4cc8-24a2-439d-5e1b-d19b286cfc1d
+ 
+# Lineamientos puede encontrarse en documentos
