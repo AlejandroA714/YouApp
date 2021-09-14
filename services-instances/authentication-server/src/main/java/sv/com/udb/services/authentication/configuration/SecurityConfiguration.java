@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import sv.com.udb.services.authentication.services.AuthService;
+import sv.com.udb.services.authentication.services.EncryptionPasswordService;
 
 @Configuration
 @EnableWebSecurity
@@ -17,19 +18,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @NonNull
   private final AuthService authService;
+  @NonNull
+  private final EncryptionPasswordService encryptionPasswordService;
   private static final String AUTH_URI = "/v1/auth/*";
   private static final String RESET_PASSWORD_URI = "/v1/auth/reset-password/*";
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-    auth.userDetailsService(authService);
+    auth.userDetailsService(authService)
+      .passwordEncoder(encryptionPasswordService);
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
+    http.cors().disable().authorizeRequests()
       .antMatchers(AUTH_URI, RESET_PASSWORD_URI).permitAll()
-      .antMatchers("/**").authenticated();
+      .antMatchers("/**").authenticated()
+      .and().oauth2ResourceServer()
+      .jwt();
 
   }
 
