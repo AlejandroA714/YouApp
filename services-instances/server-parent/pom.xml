@@ -38,7 +38,6 @@
         <artifactId>spring-boot-starter-data-jpa</artifactId>
         <version>${spring-boot.version}</version>
       </dependency>
-
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -55,7 +54,6 @@
             <container>
               <environment>
                 <SPRING_CLOUD_CONFIG_URI>http://configuration-server:8080</SPRING_CLOUD_CONFIG_URI>
-                <!-- Enviroment Properties -->
               </environment>
               <volumes>
                 <volume>/tmp</volume>
@@ -93,7 +91,6 @@
             </execution>
           </executions>
         </plugin>
-
       </plugins>
     </pluginManagement>
   </build>

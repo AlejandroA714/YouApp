@@ -3,10 +3,12 @@ package sv.com.udb.services.authentication.services;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
 
-import javax.crypto.*;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -27,12 +29,21 @@ public class DefaultEncryptionPasswordService implements EncryptionPasswordServi
 
   @Override
   public String encode(CharSequence charSequence) {
-    return null;
+    try{
+     return encryptPassword(charSequence.toString());
+    }catch (Exception e) {
+      return "";
+    }
   }
 
   @Override
   public boolean matches(CharSequence charSequence, String s) {
-    return false;
+    try{
+      decryptPassword(charSequence.toString()).equals(s);
+      return true;
+    }catch (Exception e){
+      return false;
+    }
   }
 
   @Override

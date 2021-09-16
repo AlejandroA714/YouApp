@@ -4,10 +4,11 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import sv.com.udb.services.authentication.entities.User;
 import sv.com.udb.services.authentication.repository.UserRepository;
+
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,7 +19,9 @@ public class DefaultAuthService implements AuthService {
 
   @Override
   public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    return new User(s);
+    Optional<User> u = userRepository.findByUsername(s);
+    if(!u.isPresent()) throw new UsernameNotFoundException(s + " could not be found");
+    return u.get();
   }
 
 }

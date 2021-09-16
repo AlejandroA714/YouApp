@@ -82,4 +82,35 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <build>
+  <pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build-info</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>net.revelc.code.formatter</groupId>
+        <artifactId>formatter-maven-plugin</artifactId>
+        <version>2.11.0</version>
+        <configuration>
+          <skipXmlFormatting>true</skipXmlFormatting>
+          <skipHtmlFormatting>true</skipHtmlFormatting>
+          <skipCssFormatting>true</skipCssFormatting>
+          <skipJsFormatting>true</skipJsFormatting>
+          <skipJsonFormatting>true</skipJsonFormatting>
+          <configFile>src/format-code-1.0.0-RELEASE.xml</configFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </pluginManagement>
+  </build>
+
 </project>

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.Duration;
 
 @Data
 @Valid
@@ -13,6 +14,8 @@ import javax.validation.constraints.NotNull;
 public class AuthenticationProperties {
 
   private AuthKeys keys;
+
+  private JWTConfiguration jwt;
 
   @Data
   @Valid
@@ -23,7 +26,17 @@ public class AuthenticationProperties {
     private String privateKey;
     @NotNull
     private String publicKey;
-
   }
+
+  @Data
+  @Valid
+  @NoArgsConstructor
+  public static class JWTConfiguration{
+    @NotNull
+    private String key;
+    @NotNull
+    private long duration;
+  }
+
 
 }
