@@ -39,9 +39,10 @@ public class DefaultEncryptionPasswordService implements EncryptionPasswordServi
   @Override
   public boolean matches(CharSequence charSequence, String s) {
     try{
-      decryptPassword(charSequence.toString()).equals(s);
+      decryptPassword(s).equals(charSequence.toString());
       return true;
     }catch (Exception e){
+      LOGGER.error("Failed to decrypt due",e);
       return false;
     }
   }
@@ -63,14 +64,15 @@ public class DefaultEncryptionPasswordService implements EncryptionPasswordServi
   @Override
   public String decryptPassword(String payload) throws NoSuchPaddingException, NoSuchAlgorithmException,
     InvalidKeySpecException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-    Cipher cipherEncrypt = Cipher.getInstance(RSA_ECB_PKCS1_PADDING);
-    cipherEncrypt.init(Cipher.DECRYPT_MODE,getPublicKey(authProperties
-      .getKeys().getPrivateKey()));
+    var cipherDecrypt = Cipher.getInstance(RSA_ECB_PKCS1_PADDING);
+    cipherDecrypt.init(Cipher.DECRYPT_MODE,
+      getPrivateKey(authProperties.getKeys().getPrivateKey()));
     try {
-      return Base64.getEncoder()
-        .encodeToString(cipherEncrypt.doFinal(payload.getBytes()));
-    } finally {
-      cipherEncrypt = null;
+      return new String(
+        cipherDecrypt.doFinal(Base64.getDecoder().decode(payload)));
+    }
+    finally {
+      cipherDecrypt = null;
     }
   }
 

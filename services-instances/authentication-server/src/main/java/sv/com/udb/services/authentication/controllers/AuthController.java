@@ -10,8 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sv.com.udb.services.authentication.entities.User;
 import sv.com.udb.services.authentication.repository.UserRepository;
-import sv.com.udb.services.authentication.services.JWTTokenProvider;
+import sv.com.udb.services.authentication.services.EncryptionPasswordService;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 import java.util.List;
 
 @Slf4j
@@ -23,9 +30,10 @@ public class AuthController {
   @NonNull
   private final UserRepository userRepository;
   @NonNull
-  private final AuthenticationManager authenticationManager;
-  @NonNull
-  private final JWTTokenProvider jwtTokenProvider;
+  private final EncryptionPasswordService encryptionPasswordService;
+  //@NonNull
+  //private final AuthenticationManager authenticationManager;
+
 
   @GetMapping("/list")
   public List<User> test(){
@@ -33,15 +41,12 @@ public class AuthController {
     return users;
   }
 
-  @GetMapping("/")
-  public String auth(String username,String password){
-    try {
-      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("", ""));
-    }catch (Exception e){
-      LOGGER.error("Bad username or password");
-    }
-      return jwtTokenProvider.generateToken(username);
+  @GetMapping("/test")
+  public String asd() throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+    return encryptionPasswordService.encryptPassword("pass");
   }
+
+
 
 
 

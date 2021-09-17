@@ -1,31 +1,31 @@
+/*
 package sv.com.udb.services.authentication.configuration;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.auth.AUTH;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import sv.com.udb.services.authentication.filter.JWTFilter;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import sv.com.udb.services.authentication.services.AuthService;
 import sv.com.udb.services.authentication.services.EncryptionPasswordService;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Order(-2)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @NonNull
   private final AuthService authService;
   @NonNull
   private final EncryptionPasswordService encryptionPasswordService;
-  @NonNull
-  private final JWTFilter jwtFilter;
 
   private static final String AUTH_URI = "/v1/auth/*";
   private static final String RESET_PASSWORD_URI = "/v1/auth/reset-password/*";
@@ -47,10 +47,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.cors().and().csrf().disable().authorizeRequests()
       .antMatchers(AUTH_URI, RESET_PASSWORD_URI).permitAll()
       .antMatchers("/**").authenticated()
-      .and().oauth2ResourceServer(x -> x.opaqueToken(token -> token.introspectionUri("")
-        .introspectionClientCredentials("","")));
-    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+      .and().oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+      .formLogin();
+    //http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
   }
 
 
 }
+*/
