@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sv.com.udb.services.authentication.entities.User;
@@ -29,11 +31,8 @@ public class AuthController {
 
   @NonNull
   private final UserRepository userRepository;
-  @NonNull
-  private final EncryptionPasswordService encryptionPasswordService;
   //@NonNull
-  //private final AuthenticationManager authenticationManager;
-
+  //private final EncryptionPasswordService encryptionPasswordService;
 
   @GetMapping("/list")
   public List<User> test(){
@@ -41,10 +40,10 @@ public class AuthController {
     return users;
   }
 
-  @GetMapping("/test")
-  public String asd() throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
-    return encryptionPasswordService.encryptPassword("pass");
-  }
+  //@GetMapping("/test")
+  //public String asd() throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+  //  return encryptionPasswordService.encryptPassword("pass");
+  //}
 
 
 

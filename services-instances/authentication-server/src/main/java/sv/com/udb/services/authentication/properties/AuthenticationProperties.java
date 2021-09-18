@@ -33,7 +33,7 @@ public class AuthenticationProperties {
     @NotNull
     private String ClienSecret;
     private ClientAuthenticationMethod AuthenticationMethod = ClientAuthenticationMethod.CLIENT_SECRET_POST;
-    private AuthorizationGrantType GrantType = AuthorizationGrantType.AUTHORIZATION_CODE;
+    private AuthorizationGrantType GrantType = AuthorizationGrantType.PASSWORD;
   }
 
 

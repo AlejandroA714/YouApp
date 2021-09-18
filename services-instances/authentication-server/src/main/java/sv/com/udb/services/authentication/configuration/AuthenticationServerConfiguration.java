@@ -40,44 +40,19 @@ import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
-//@Import(OAuth2AuthorizationServerConfiguration.class)
+@Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthenticationServerConfiguration {
 
   private static final String RSA = "RSA";
   private static final int KEY_SIZE = 2048;
 
-  @Bean
-  SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-    http
-      .authorizeRequests(authorizeRequests ->
-        authorizeRequests.anyRequest().authenticated()
-      )
-      .formLogin(Customizer.withDefaults());
+  //@Bean
+  //@Order(Ordered.HIGHEST_PRECEDENCE)
+  //public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+   // applyDefaultSecurity(http);
+   // return http.formLogin(Customizer.withDefaults()).build();
+  //}
 
-    return http.build();
-  }
-
-  @Bean
-  @Order(Ordered.HIGHEST_PRECEDENCE)
-  public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-    applyDefaultSecurity(http);
-    return http.formLogin(Customizer.withDefaults()).build();
-  }
-
-  public static void applyDefaultSecurity(HttpSecurity http) throws Exception {
-    OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
-      new OAuth2AuthorizationServerConfigurer<>();
-    RequestMatcher endpointsMatcher = authorizationServerConfigurer
-      .getEndpointsMatcher();
-    http
-      .requestMatcher(endpointsMatcher)
-      .authorizeRequests(authorizeRequests ->
-        authorizeRequests.anyRequest().authenticated()
-      )
-      .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-      .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-      .apply(authorizationServerConfigurer);
-  }
   @Bean
   @ConfigurationProperties("auth")
   public AuthenticationProperties authProperties(){
@@ -117,7 +92,6 @@ public class AuthenticationServerConfiguration {
       .redirectUri("https://oidcdebugger.com/debug")
       .scope(OidcScopes.OPENID)
       .build();
-
     return new InMemoryRegisteredClientRepository(registeredClient);
   }
 
@@ -137,5 +111,20 @@ public class AuthenticationServerConfiguration {
     return keyPairGenerator.generateKeyPair();
   }
 
+
+  public static void applyDefaultSecurity(HttpSecurity http) throws Exception {
+    OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
+      new OAuth2AuthorizationServerConfigurer<>();
+    RequestMatcher endpointsMatcher = authorizationServerConfigurer
+      .getEndpointsMatcher();
+    http
+      .requestMatcher(endpointsMatcher)
+      .authorizeRequests(authorizeRequests ->
+        authorizeRequests.anyRequest().authenticated()
+      )
+      .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+      .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+      .apply(authorizationServerConfigurer);
+  }
 
 }

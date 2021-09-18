@@ -11,6 +11,7 @@ auth:
   client:
     client-id: youapp
     client-secret: 9d[?hr%[Y>w~nV3_
+    grant-type: PASSWORD
 
 spring:
   security:
