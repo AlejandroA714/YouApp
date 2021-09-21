@@ -7,29 +7,25 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
+import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
 import sv.com.udb.services.authentication.repository.UserRepository;
-import sv.com.udb.services.authentication.services.*;
+import sv.com.udb.services.authentication.services.AuthService;
+import sv.com.udb.services.authentication.services.DefaultAuthService;
+import sv.com.udb.services.authentication.services.DefaultEncryptionPasswordService;
+import sv.com.udb.services.authentication.services.EncryptionPasswordService;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -39,19 +35,17 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
 @Configuration
-@EnableWebSecurity
-@Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthenticationServerConfiguration {
 
   private static final String RSA = "RSA";
   private static final int KEY_SIZE = 2048;
 
-  //@Bean
-  //@Order(Ordered.HIGHEST_PRECEDENCE)
-  //public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-   // applyDefaultSecurity(http);
-   // return http.formLogin(Customizer.withDefaults()).build();
-  //}
+  @Bean
+  @Order(Ordered.HIGHEST_PRECEDENCE)
+  public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+   OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+   return http.formLogin(Customizer.withDefaults()).build();
+  }
 
   @Bean
   @ConfigurationProperties("auth")
@@ -83,16 +77,39 @@ public class AuthenticationServerConfiguration {
   }
 
   @Bean
-  public RegisteredClientRepository registeredClientRepository(AuthenticationProperties authProperties) {
+  public TokenSettings tokenSettings(
+    AuthenticationProperties authProperties) {
+    return TokenSettings.builder()
+      .accessTokenTimeToLive(
+        authProperties.getJwt().getAccess_token())
+      .refreshTokenTimeToLive(
+        authProperties.getJwt().getRefresh_token())
+      .build();
+  }
+
+  @Bean
+  public RegisteredClientRepository registeredClientRepository(
+    AuthenticationProperties authProperties,
+    TokenSettings tokenSettings) {
     RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
       .clientId(authProperties.getClient().getClientId())
-      .clientSecret(authProperties.getClient().getClienSecret())
-      .clientAuthenticationMethod(authProperties.getClient().getAuthenticationMethod())
-      .authorizationGrantType(authProperties.getClient().getGrantType())
-      .redirectUri("https://oidcdebugger.com/debug")
+      .clientSecret(authProperties.getClient().getClientSecret())
+      .clientAuthenticationMethods(ca ->
+        ca.addAll(authProperties.getClient().getAuthenticationMethods()))
+      .authorizationGrantTypes(gt ->
+        gt.addAll(authProperties.getClient().getGrantTypes()))
+      .redirectUri(authProperties.getRedirectUri())
       .scope(OidcScopes.OPENID)
+      .tokenSettings(tokenSettings)
       .build();
     return new InMemoryRegisteredClientRepository(registeredClient);
+  }
+
+  @Bean
+  public ProviderSettings providerSettings() {
+    return ProviderSettings.builder()
+      .issuer("http://auth-server:8083")
+      .build();
   }
 
   private static RSAKey generateRsa() throws NoSuchAlgorithmException {
@@ -110,21 +127,4 @@ public class AuthenticationServerConfiguration {
     keyPairGenerator.initialize(KEY_SIZE);
     return keyPairGenerator.generateKeyPair();
   }
-
-
-  public static void applyDefaultSecurity(HttpSecurity http) throws Exception {
-    OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
-      new OAuth2AuthorizationServerConfigurer<>();
-    RequestMatcher endpointsMatcher = authorizationServerConfigurer
-      .getEndpointsMatcher();
-    http
-      .requestMatcher(endpointsMatcher)
-      .authorizeRequests(authorizeRequests ->
-        authorizeRequests.anyRequest().authenticated()
-      )
-      .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-      .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-      .apply(authorizationServerConfigurer);
-  }
-
 }

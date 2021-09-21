@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
+import java.util.List;
 
 @Data
 @Valid
@@ -22,20 +23,23 @@ public class AuthenticationProperties {
   private JWTConfiguration jwt;
   @NotNull
   private ClientConfiguration client;
+  @NotNull
+  private String redirectUri = "https://oidcdebugger.com/debug";
 
   @Data
   @Valid
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class ClientConfiguration{
+  public static class ClientConfiguration {
     @NotNull
     private String ClientId;
     @NotNull
-    private String ClienSecret;
-    private ClientAuthenticationMethod AuthenticationMethod = ClientAuthenticationMethod.CLIENT_SECRET_POST;
-    private AuthorizationGrantType GrantType = AuthorizationGrantType.PASSWORD;
+    private String ClientSecret;
+    @NotNull
+    private List<ClientAuthenticationMethod> AuthenticationMethods;
+    @NotNull
+    private List<AuthorizationGrantType> GrantTypes;
   }
-
 
   @Data
   @Valid
@@ -53,9 +57,9 @@ public class AuthenticationProperties {
   @NoArgsConstructor
   public static class JWTConfiguration{
     @NotNull
-    private String key;
+    private Duration access_token;
     @NotNull
-    private long duration;
+    private Duration refresh_token;
   }
 
 

@@ -39,7 +39,7 @@ public class DefaultEncryptionPasswordService implements EncryptionPasswordServi
   @Override
   public boolean matches(CharSequence charSequence, String s) {
     try{
-      //decryptPassword(s).equals(charSequence.toString());
+      decryptPassword(s).equals(charSequence.toString());
       return true;
     }catch (Exception e){
       LOGGER.error("Failed to decrypt due",e);

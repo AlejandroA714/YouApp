@@ -59,6 +59,9 @@ manifest.yml
 out
 overridedb.*
 target
+mvnw.*
+.mvn
+.mvn/
 .flattened-pom.xml
 secrets.yml
 .gradletasknamecache
