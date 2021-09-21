@@ -1,0 +1,29 @@
+server:
+  port: 8081
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          youapp:
+            client-id: youapp
+            client-secret: 9d[?hr%[Y>w~nV3_
+            provider: spring
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8081/foos"
+            scope: openid
+            client-name: youapp
+        provider:
+          spring:
+            issuer-uri: http://auth-server:8083
+
+logbook:
+  format:
+    style: http
+
+logging:
+  level:
+    org.springframework: TRACE
+    sv.com: TRACE
+    org.zalando.logbook: TRACE

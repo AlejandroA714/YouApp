@@ -23,32 +23,28 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/v1/auth")
 public class AuthController {
+    @NonNull
+    private final UserRepository            userRepository;
+    @NonNull
+    private final EncryptionPasswordService encryptionPasswordService;
 
-  @NonNull
-  private final UserRepository userRepository;
-  @NonNull
-  private final EncryptionPasswordService encryptionPasswordService;
+    @GetMapping("/list")
+    public List<User> test(@RequestParam String code) {
+        LOGGER.info("code {}", code);
+        // LOGGER.info("PRINCIPAL: {}",principal);
+        var users = userRepository.findAll();
+        return users;
+    }
 
-  @GetMapping("/list")
-  public List<User> test(@RequestParam String code){
-    LOGGER.info("code {}",code);
-    //LOGGER.info("PRINCIPAL: {}",principal);
-    var users = userRepository.findAll();
-    return users;
-  }
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public void Conflic(Exception e) {
+        LOGGER.error("Failed");
+    }
 
-  @ResponseStatus(value = HttpStatus.NOT_FOUND)
-  public void Conflic(Exception e){
-    LOGGER.error("Failed");
-  }
-
-  @GetMapping("/test")
-  public String asd() throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
-    return encryptionPasswordService.encryptPassword("9d[?hr%[Y>w~nV3_");
-  }
-
-
-
-
-
+    @GetMapping("/test")
+    public String asd() throws NoSuchPaddingException,
+            IllegalBlockSizeException, NoSuchAlgorithmException,
+            InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+        return encryptionPasswordService.encryptPassword("9d[?hr%[Y>w~nV3_");
+    }
 }

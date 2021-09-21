@@ -10,5 +10,8 @@
   <modules>
     <module>server-parent</module>
     <module>server-base</module>
+    <module>authentication-server</module>
+    <module>resource-server</module>
+    <module>foo-server</module>
   </modules>
 </project>

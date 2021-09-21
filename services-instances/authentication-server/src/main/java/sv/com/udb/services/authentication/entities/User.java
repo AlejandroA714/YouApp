@@ -15,44 +15,39 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer Id;
+    @Column(name = "active")
+    private boolean accountNonExpired;
+    @Column(name = "user_name", unique = true)
+    private String  username;
+    @Column
+    private String  password;
+    @Column
+    private String  roles;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer Id;
+    public User(String username) {
+        this.username = username;
+    }
 
-  @Column(name = "active")
-  private boolean accountNonExpired;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("APP_USER"));
+    }
 
-  @Column(name="user_name",unique = true)
-  private String username;
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.accountNonExpired;
+    }
 
-  @Column
-  private String password;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.accountNonExpired;
+    }
 
-  @Column
-  private String roles;
-
-  public User(String username){
-    this.username = username;
-  }
-
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Arrays.asList(new SimpleGrantedAuthority("APP_USER"));
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return this.accountNonExpired;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return this.accountNonExpired;
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return this.accountNonExpired;
-  }
+    @Override
+    public boolean isEnabled() {
+        return this.accountNonExpired;
+    }
 }

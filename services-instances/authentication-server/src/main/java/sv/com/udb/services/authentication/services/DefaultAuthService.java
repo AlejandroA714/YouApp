@@ -13,15 +13,15 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultAuthService implements AuthService {
+    @NonNull
+    private final UserRepository userRepository;
 
-  @NonNull
-  private final UserRepository userRepository;
-
-  @Override
-  public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    Optional<User> u = userRepository.findByUsername(s);
-    if(!u.isPresent()) throw new UsernameNotFoundException(s + " could not be found");
-    return u.get();
-  }
-
+    @Override
+    public UserDetails loadUserByUsername(String s)
+            throws UsernameNotFoundException {
+        Optional<User> u = userRepository.findByUsername(s);
+        if (!u.isPresent())
+            throw new UsernameNotFoundException(s + " could not be found");
+        return u.get();
+    }
 }

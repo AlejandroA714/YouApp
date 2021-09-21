@@ -21,9 +21,15 @@
     <spring-security.version>5.5.2</spring-security.version>
     <jackson.version>2.12.0</jackson.version>
     <javax.version>2.0.1.Final</javax.version>
+    <authorization-server.version>0.2.0</authorization-server.version>
   </properties>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-oauth2-authorization-server</artifactId>
+        <version>${authorization-server.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
@@ -106,7 +112,7 @@
           <skipCssFormatting>true</skipCssFormatting>
           <skipJsFormatting>true</skipJsFormatting>
           <skipJsonFormatting>true</skipJsonFormatting>
-          <configFile>src/format-code-1.0.0-RELEASE.xml</configFile>
+          <configFile>../../src/format-code-1.0.0-RELEASE.xml</configFile>
         </configuration>
       </plugin>
     </plugins>
