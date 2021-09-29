@@ -23,6 +23,8 @@ public class AuthenticationProperties {
     private ClientConfiguration client;
     @NotNull
     private List<String>        redirectUris;
+    @NotNull
+    private String              roleHierarchy;
 
     @Data
     @Valid

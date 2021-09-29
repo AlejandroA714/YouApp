@@ -1,13 +1,13 @@
-package sv.com.udb.services.foo.controller;
+package sv.com.udb.services.resource.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import sv.com.udb.services.resource.dto.Foo;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import sv.com.udb.services.foo.dto.Foo;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;

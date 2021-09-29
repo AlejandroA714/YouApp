@@ -5,8 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import sv.com.udb.services.authentication.entities.User;
-import sv.com.udb.services.authentication.repository.UserRepository;
+import sv.com.udb.services.authentication.entities.Privilege;
+import sv.com.udb.services.authentication.entities.Role;
+import sv.com.udb.services.authentication.entities.YouAppPrincipal;
+import sv.com.udb.services.authentication.repository.PrincipalRepository;
+import sv.com.udb.services.authentication.repository.PrivilegeRepository;
+import sv.com.udb.services.authentication.repository.RoleRepository;
 import sv.com.udb.services.authentication.services.EncryptionPasswordService;
 
 import javax.crypto.BadPaddingException;
@@ -14,7 +18,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
@@ -24,16 +27,30 @@ import java.util.List;
 @RequestMapping("/v1/auth")
 public class AuthController {
     @NonNull
-    private final UserRepository            userRepository;
+    private final PrincipalRepository       userRepository;
+    @NonNull
+    private final RoleRepository            roleRepository;
+    @NonNull
+    private final PrivilegeRepository       privilegeRepository;
     @NonNull
     private final EncryptionPasswordService encryptionPasswordService;
 
     @GetMapping("/list")
-    public List<User> test(@RequestParam String code) {
+    public List<YouAppPrincipal> test(@RequestParam String code) {
         LOGGER.info("code {}", code);
         // LOGGER.info("PRINCIPAL: {}",principal);
         var users = userRepository.findAll();
         return users;
+    }
+
+    @GetMapping("/role")
+    public List<Role> test1() {
+        return roleRepository.findAll();
+    }
+
+    @GetMapping("/privi")
+    public List<Privilege> test2() {
+        return privilegeRepository.findAll();
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

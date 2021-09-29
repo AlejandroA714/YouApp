@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -20,8 +22,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
-import sv.com.udb.services.authentication.repository.UserRepository;
+import sv.com.udb.services.authentication.repository.PrincipalRepository;
 import sv.com.udb.services.authentication.services.AuthService;
 import sv.com.udb.services.authentication.services.DefaultAuthService;
 import sv.com.udb.services.authentication.services.DefaultEncryptionPasswordService;
@@ -40,7 +43,7 @@ public class AuthenticationServerConfiguration {
     private static final int    KEY_SIZE = 2048;
 
     @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
+    // @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(
             HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
@@ -49,13 +52,29 @@ public class AuthenticationServerConfiguration {
     }
 
     @Bean
+    public RoleHierarchy roleHierarchy(
+            AuthenticationProperties authProperties) {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy(authProperties.getRoleHierarchy());
+        return roleHierarchy;
+    }
+    // @Bean
+    // public DefaultWebSecurityExpressionHandler
+    // webSecurityExpressionHandler(RoleHierarchy roleHierarchy) {
+    // DefaultWebSecurityExpressionHandler expressionHandler = new
+    // DefaultWebSecurityExpressionHandler();
+    // expressionHandler.setRoleHierarchy(roleHierarchy);
+    // return expressionHandler;
+    // }
+
+    @Bean
     @ConfigurationProperties("auth")
     public AuthenticationProperties authProperties() {
         return new AuthenticationProperties();
     }
 
     @Bean
-    public AuthService authService(UserRepository userRepository) {
+    public AuthService authService(PrincipalRepository userRepository) {
         return new DefaultAuthService(userRepository);
     }
 

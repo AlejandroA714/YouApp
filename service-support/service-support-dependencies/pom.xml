@@ -21,6 +21,8 @@
     <spring-security.version>5.5.2</spring-security.version>
     <jackson.version>2.12.0</jackson.version>
     <javax.version>2.0.1.Final</javax.version>
+    <javax.inject.version>1</javax.inject.version>
+    <org.json.version>20190722</org.json.version>
     <authorization-server.version>0.2.0</authorization-server.version>
   </properties>
   <dependencyManagement>
@@ -49,6 +51,16 @@
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
         <version>${javax.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>${javax.inject.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>${org.json.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.security</groupId>
@@ -94,6 +106,9 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
         <executions>
           <execution>
             <goals>

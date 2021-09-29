@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.bytesw.tyu.bi.web.client.configuration.WebClientAutoConfiguration
