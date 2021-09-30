@@ -10,14 +10,14 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 @Configuration
 @EnableWebSecurity
 public class JWTSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests(
-                authz -> authz.antMatchers(HttpMethod.GET, "/foos/**")
-                        .hasAnyAuthority("SCOPE_openid")
-                        // .antMatchers(HttpMethod.POST,
-                        // "/foos").hasAnyAuthority()
-                        .anyRequest().authenticated())
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-    }
+   @Override
+   protected void configure(HttpSecurity http) throws Exception {
+      http.authorizeRequests(
+            authz -> authz.antMatchers(HttpMethod.GET, "/foos/**")
+                  .hasAnyAuthority("SCOPE_openid")
+                  // .antMatchers(HttpMethod.POST,
+                  // "/foos").hasAnyAuthority()
+                  .anyRequest().authenticated())
+            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+   }
 }

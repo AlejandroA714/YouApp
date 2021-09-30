@@ -16,27 +16,27 @@ import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 @RestController
 @RequestMapping(value = "/foos")
 public class FooController {
-    @GetMapping(value = "/{id}")
-    public Foo findOne(@PathVariable Long id) {
-        return new Foo(Long.parseLong(randomNumeric(2)), randomAlphabetic(4));
-    }
+   @GetMapping(value = "/{id}")
+   public Foo findOne(@PathVariable Long id) {
+      return new Foo(Long.parseLong(randomNumeric(2)), randomAlphabetic(4));
+   }
 
-    @GetMapping(value = "")
-    public List findAll(Principal principal) {
-        LOGGER.info("Principal: {}", principal);
-        List fooList = new ArrayList();
-        fooList.add(
-                new Foo(Long.parseLong(randomNumeric(2)), randomAlphabetic(4)));
-        fooList.add(
-                new Foo(Long.parseLong(randomNumeric(2)), randomAlphabetic(4)));
-        fooList.add(
-                new Foo(Long.parseLong(randomNumeric(2)), randomAlphabetic(4)));
-        return fooList;
-    }
+   @GetMapping(value = "")
+   public List findAll(Principal principal) {
+      LOGGER.info("Principal: {}", principal);
+      List fooList = new ArrayList();
+      fooList.add(
+            new Foo(Long.parseLong(randomNumeric(2)), randomAlphabetic(4)));
+      fooList.add(
+            new Foo(Long.parseLong(randomNumeric(2)), randomAlphabetic(4)));
+      fooList.add(
+            new Foo(Long.parseLong(randomNumeric(2)), randomAlphabetic(4)));
+      return fooList;
+   }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public void create(@RequestBody Foo newFoo) {
-        LOGGER.info("Foo created");
-    }
+   @ResponseStatus(HttpStatus.CREATED)
+   @PostMapping
+   public void create(@RequestBody Foo newFoo) {
+      LOGGER.info("Foo created");
+   }
 }

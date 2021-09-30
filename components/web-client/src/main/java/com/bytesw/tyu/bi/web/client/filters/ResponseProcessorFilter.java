@@ -11,27 +11,28 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @NoArgsConstructor
 public class ResponseProcessorFilter implements ExchangeFilterFunction {
-    @Override
-    public Mono<ClientResponse> filter(ClientRequest clientRequest,
-            ExchangeFunction exchangeFunction) {
-        return exchangeFunction.exchange(clientRequest)
-                .flatMap(this::responseProccesor);
-    }
+   @Override
+   public Mono<ClientResponse> filter(ClientRequest clientRequest,
+         ExchangeFunction exchangeFunction) {
+      return exchangeFunction.exchange(clientRequest)
+            .flatMap(this::responseProccesor);
+   }
 
-    private Mono<ClientResponse> responseProccesor(
-            ClientResponse clientResponse) {
-        LOGGER.info("[WebClientService] Incoming Response: {}",
-                clientResponse.statusCode());
-        if (LOGGER.isTraceEnabled()) {
-            clientResponse.headers().asHttpHeaders().forEach((name,
-                    values) -> values.forEach(value -> LOGGER.trace(
-                            "[WebClientService] Response Header: \"{}={}\"",
-                            name, value)));
-        }
-        if (clientResponse.statusCode().isError()) {
-            return clientResponse.createException().flatMap(Mono::error);
-        }
-        else
-            return Mono.just(clientResponse);
-    }
+   private Mono<ClientResponse> responseProccesor(
+         ClientResponse clientResponse) {
+      LOGGER.info("[WebClientService] Incoming Response: {}",
+            clientResponse.statusCode());
+      if (LOGGER.isTraceEnabled()) {
+         clientResponse.headers().asHttpHeaders()
+               .forEach((name,
+                     values) -> values.forEach(value -> LOGGER.trace(
+                           "[WebClientService] Response Header: \"{}={}\"",
+                           name, value)));
+      }
+      if (clientResponse.statusCode().isError()) {
+         return clientResponse.createException().flatMap(Mono::error);
+      }
+      else
+         return Mono.just(clientResponse);
+   }
 }

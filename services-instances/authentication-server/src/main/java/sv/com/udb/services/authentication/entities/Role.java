@@ -14,16 +14,16 @@ import java.util.Collection;
 @AllArgsConstructor
 @Entity(name = "role")
 public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long                  id;
-    @Column(length = 32, nullable = false)
-    private String                name;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "roles_privileges",
-               joinColumns = @JoinColumn(name = "role_id",
-                                         referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "privilege_id",
-                                                referencedColumnName = "id"))
-    private Collection<Privilege> privileges;
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long                  id;
+   @Column(length = 32, nullable = false)
+   private String                name;
+   @ManyToMany(fetch = FetchType.EAGER)
+   @JoinTable(name = "roles_privileges",
+              joinColumns = @JoinColumn(name = "role_id",
+                                        referencedColumnName = "id"),
+              inverseJoinColumns = @JoinColumn(name = "privilege_id",
+                                               referencedColumnName = "id"))
+   private Collection<Privilege> privileges;
 }

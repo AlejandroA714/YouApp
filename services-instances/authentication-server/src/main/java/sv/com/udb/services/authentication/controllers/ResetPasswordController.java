@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/auth/reset-password")
 public class ResetPasswordController {
-    @GetMapping("/")
-    public String reset() {
-        return "Reseting Password";
-    }
+   @GetMapping("/")
+   public String reset() {
+      return "Reseting Password";
+   }
 }

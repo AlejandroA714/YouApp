@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebClientParameter {
-    private String name;
-    private Object value;
+   private String name;
+   private Object value;
 }

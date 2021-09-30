@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Foo {
-    private long   id;
-    private String name;
-    // constructor, getters and setters
+   private long   id;
+   private String name;
+   // constructor, getters and setters
 }

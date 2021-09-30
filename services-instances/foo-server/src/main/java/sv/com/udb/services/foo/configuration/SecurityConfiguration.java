@@ -6,8 +6,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+   @Override
+   protected void configure(HttpSecurity http) throws Exception {
     // @formatter:off
     http
       .authorizeRequests(a -> a
@@ -16,5 +16,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       )
       .oauth2Login();
     // @formatter:on
-    }
+   }
 }

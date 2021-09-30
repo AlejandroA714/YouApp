@@ -1,14 +1,22 @@
 package sv.com.udb.services.authentication.entities;
 
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 
-import java.io.Serializable;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
-@Getter
-public class GooglePrincipal implements Serializable {
-    private String          idToken;
-    private List<String>    scopes;
-    private String          serverAuthCode;
-    private YouAppPrincipal user;
+@Data
+@Builder
+public class GooglePrincipal {
+   @NotNull
+   private String id;
+   @NotNull
+   private String email;
+   @NotNull
+   private String familyName;
+   @NotNull
+   private String givenName;
+   @NotNull
+   private String name;
+   private String photo;
 }
