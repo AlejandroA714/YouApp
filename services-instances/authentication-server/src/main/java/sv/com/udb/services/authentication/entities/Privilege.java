@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sv.com.udb.services.authentication.enums.IPrivilege;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -16,14 +17,8 @@ import java.util.Collection;
 public class Privilege {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
-   private Long   id;
+   private int        id;
+   @Enumerated(EnumType.STRING)
    @Column(length = 32, nullable = false)
-   private String name;
-   // @ManyToMany
-   // @JoinTable(name = "roles_privileges",
-   // inverseJoinColumns = @JoinColumn( name = "role_id", referencedColumnName
-   // = "id"),
-   // joinColumns = @JoinColumn( name = "privilege_id", referencedColumnName =
-   // "id"))
-   // private Collection<Role> roles;
+   private IPrivilege name;
 }

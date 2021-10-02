@@ -9,6 +9,12 @@
 
   insert into oauth_registration_type values (null,"YOUAPP"),(null,"GOOGLE");
 
+  create table oauth_registration(
+    id int primary key auto_increment,
+    external_id varchar(255) not null,
+    
+  );
+
   create table role(
     id int primary key auto_increment,
     name varchar(32) not null
@@ -33,13 +39,13 @@
   insert into roles_privileges values (1,1),(1,2),(1,3),(3,1);
 
   create table user(
-      id int primary key auto_increment, --got id but got long
+      id int primary key auto_increment, --got id but got long or string
       given_name varchar(32) not null, --
       family_name varchar(32) not null, --
       email varchar(48) not null unique , --
-      username varchar(32) not null unique ,
-      password varchar(512) null,
-      birthday date null, -- null if birthday not public
+      username varchar(32) not null unique , -- will be null
+      password varchar(512) null, -- will be null
+      birthday date null, -- will be null
       description varchar(256) default '',
       photo varchar(512) null,--
       last_login datetime default CURRENT_TIMESTAMP,

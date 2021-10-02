@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sv.com.udb.services.authentication.enums.IRole;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -16,9 +17,10 @@ import java.util.Collection;
 public class Role {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
-   private Long                  id;
+   private Integer               id;
+   @Enumerated(EnumType.STRING)
    @Column(length = 32, nullable = false)
-   private String                name;
+   private IRole                 name;
    @ManyToMany(fetch = FetchType.EAGER)
    @JoinTable(name = "roles_privileges",
               joinColumns = @JoinColumn(name = "role_id",

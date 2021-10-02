@@ -13,11 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
-import sv.com.udb.services.authentication.services.IGoogleService;
+import sv.com.udb.services.authentication.services.IGoogleAuthenticationService;
 
 @Slf4j
 @RequiredArgsConstructor
-public class DefaultGoogleService implements IGoogleService {
+public class DefaultGoogleAuthenticationService
+      implements IGoogleAuthenticationService {
    @NonNull
    private final GoogleIdTokenVerifier                        verifier;
    @NonNull
@@ -30,15 +31,18 @@ public class DefaultGoogleService implements IGoogleService {
    private final AuthenticationProperties.GoogleConfiguration properties;
 
    @Override
-   public void validateToken(GoogleAuthorizationRequest principal)
+   public GoogleIdToken validateToken(GoogleAuthorizationRequest principal)
          throws InvalidTokenException {
       try {
          LOGGER.trace("Validando: {}", principal);
          GoogleIdToken token = verifier.verify(principal.getIdToken());
          if (token == null) throw new InvalidTokenException();
+         principal.setAuthenticated(true);
+         return token;
       }
       catch (Exception e) {
          LOGGER.error("Failed to validated token ", e);
+         throw new InvalidTokenException();
       }
    }
 

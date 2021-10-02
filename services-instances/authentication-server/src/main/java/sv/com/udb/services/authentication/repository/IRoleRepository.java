@@ -9,7 +9,7 @@ import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import java.util.List;
 import java.util.Optional;
 
-public interface RoleRepository extends JpaRepository<Role, Integer> {
+public interface IRoleRepository extends JpaRepository<Role, Integer> {
    // @Query("SELECT u FROM User u JOIN user_roles ON u.Id = user_roles.user_id
    // JOIN role ON role.Id = :roleId")
    // List<YouAppPrincipal> getUserByRole(@Param("roleId") String roleId);

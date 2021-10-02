@@ -6,7 +6,7 @@ import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 
 import java.util.Optional;
 
-public interface PrincipalRepository
+public interface IPrincipalRepository
       extends JpaRepository<YouAppPrincipal, Integer> {
    Optional<YouAppPrincipal> findByUsernameOrEmail(String username,
          String email);

@@ -59,9 +59,9 @@ public class YouAppPrincipal implements UserDetails {
    public Collection<? extends GrantedAuthority> getAuthorities() {
       List<String> authorities = new ArrayList<>();
       roles.forEach(r -> {
-         authorities.add(r.getName());
-         authorities.addAll(r.getPrivileges().stream().map(p -> p.getName())
-               .collect(Collectors.toSet()));
+         authorities.add(r.getName().toString());
+         authorities.addAll(r.getPrivileges().stream()
+               .map(p -> p.getName().toString()).collect(Collectors.toSet()));
       });
       var x = authorities.stream().map(s -> new SimpleGrantedAuthority(s))
             .collect(Collectors.toList());

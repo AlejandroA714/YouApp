@@ -6,5 +6,6 @@ import sv.com.udb.services.authentication.entities.Role;
 
 import java.util.Optional;
 
-public interface PrivilegeRepository extends JpaRepository<Privilege, Integer> {
+public interface IPrivilegeRepository
+      extends JpaRepository<Privilege, Integer> {
 }

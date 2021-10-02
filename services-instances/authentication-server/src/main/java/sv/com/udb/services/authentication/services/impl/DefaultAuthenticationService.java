@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
-import sv.com.udb.services.authentication.repository.PrincipalRepository;
+import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IAuthenticationService;
 
 import java.util.Optional;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DefaultAuthenticationService implements IAuthenticationService {
    @NonNull
-   private final PrincipalRepository userRepository;
+   private final IPrincipalRepository userRepository;
 
    @Override
    public UserDetails loadUserByUsername(String s)
