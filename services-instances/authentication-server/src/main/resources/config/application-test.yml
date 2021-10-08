@@ -23,8 +23,8 @@ auth:
       - client_secret_post
       - client_secret_basic
   redirect-uris:
-    - http://192.168.1.12:8081/login/oauth2/code/youapp
-    - http://192.168.1.12:8081/login/oauth2/code/google
+    - http://192.168.101.3:8081/login/oauth2/code/youapp
+    - http://192.168.101.3:8081/login/oauth2/code/google
     - https://oidcdebugger.com/debug
     - http://youappmobile/login/code
   role-hierarchy: ROLE_ADMIN > ROLE_MANTAINER > ROLE_USER

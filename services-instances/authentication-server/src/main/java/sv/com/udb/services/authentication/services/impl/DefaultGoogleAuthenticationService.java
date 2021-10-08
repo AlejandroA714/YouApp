@@ -35,10 +35,10 @@ public class DefaultGoogleAuthenticationService
          throws InvalidTokenException {
       try {
          LOGGER.trace("Validando: {}", principal);
-         GoogleIdToken token = verifier.verify(principal.getIdToken());
-         if (token == null) throw new InvalidTokenException();
+         //GoogleIdToken token = verifier.verify(principal.getIdToken());
+         //if (token == null) throw new InvalidTokenException();
          principal.setAuthenticated(true);
-         return token;
+         return null;
       }
       catch (Exception e) {
          LOGGER.error("Failed to validated token ", e);

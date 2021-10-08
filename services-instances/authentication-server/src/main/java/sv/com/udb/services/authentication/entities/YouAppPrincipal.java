@@ -1,6 +1,7 @@
 package sv.com.udb.services.authentication.entities;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 @ToString(callSuper = true)
 public class YouAppPrincipal implements UserDetails {
    @Id
+   //@GeneratedValue(generator = "uuid2")
+   //@GenericGenerator(name = "uuid", strategy = "uuid2")
    private String                Id;
    @Column(name = "given_name", length = 32, nullable = false)
    private String                nombres;
