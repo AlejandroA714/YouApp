@@ -17,6 +17,7 @@ import sv.com.udb.services.authentication.services.IGoogleOAuth2Provider;
 import sv.com.udb.services.authentication.services.IGoogleAuthenticationService;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 
 @Slf4j
 @Validated
@@ -37,6 +38,7 @@ public class AuthenticationController {
       try {
          var x = googleOAuth2Provider.authenticate(principal);
          var y = ((OAuth2AccessTokenAuthenticationToken) x).getAccessToken();
+         var sd = Arrays.asList(1,2,3);
          return y;
       }
       catch (Exception e) {
