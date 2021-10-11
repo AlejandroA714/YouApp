@@ -7,10 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
-import sv.com.udb.services.authentication.entities.GooglePrincipal;
+import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
+import sv.com.udb.services.authentication.entities.*;
+import sv.com.udb.services.authentication.enums.IOAuthRegistrationType;
+import sv.com.udb.services.authentication.enums.IRole;
 import sv.com.udb.services.authentication.exceptions.InvalidAuthenticationException;
+import sv.com.udb.services.authentication.repository.IOAuthRegistrationRepository;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
+import sv.com.udb.services.authentication.repository.IRoleRepository;
 import sv.com.udb.services.authentication.services.IGoogleOAuth2Provider;
 import sv.com.udb.services.authentication.services.IGoogleAuthenticationService;
 import sv.com.udb.services.authentication.services.IOAuth2TokenService;
@@ -23,22 +27,40 @@ public class DefaultGoogleOAuth2Provider implements IGoogleOAuth2Provider {
    @NonNull
    private final IPrincipalRepository         IPrincipalRepository;
    @NonNull
+   private final IRoleRepository              IRoleRepository;
+   @NonNull
+   private final IOAuthRegistrationRepository IOAuthRepository;
+   @NonNull
    private final IOAuth2TokenService          IOAuth2TokenService;
 
    @Override
    public Authentication authenticate(Authentication authentication)
          throws AuthenticationException {
       LOGGER.trace("Trying to authenticate: {}", authentication);
-      if (!supports(authentication.getClass()))
-         throw new InvalidAuthenticationException(authentication.getClass());
       try {
          GoogleAuthorizationRequest authRequest = (GoogleAuthorizationRequest) authentication;
-         GoogleIdToken TOKEN = IGoogleService.validateToken(authRequest);
-         return IOAuth2TokenService.getAcessToken(authentication);
+         IGoogleService.validateToken(authRequest);
+         registerGoogleUser(authRequest);
+         OAuth2AccessTokenAuthenticationToken acessToken = IOAuth2TokenService
+               .getAcessToken(authentication);
+         return acessToken;
       }
       catch (Exception e) {
          LOGGER.error("Failed to authenticate: {}", authentication, e);
          throw new InvalidAuthenticationException(e);
+      }
+   }
+
+   private void registerGoogleUser(GoogleAuthorizationRequest authRequest) {
+      OAuthRegistrationType registrationType = IOAuthRepository
+            .findOAuthRegistrationTypeByName(IOAuthRegistrationType.GOOGLE);
+      Role role = IRoleRepository.findRoleByName(IRole.ROLE_USER);
+      if (!IPrincipalRepository
+            .existsById(authRequest.getPrincipal().getId())) {
+         YouAppPrincipal principal = YouAppPrincipal
+               .from(authRequest.getPrincipal())
+               .registrationType(registrationType).role(role).build();
+         IPrincipalRepository.save(principal);
       }
    }
 

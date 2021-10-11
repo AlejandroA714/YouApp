@@ -44,6 +44,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Configuration
 public class AuthenticationServerConfiguration {
@@ -52,6 +54,11 @@ public class AuthenticationServerConfiguration {
          HttpSecurity http) throws Exception {
       OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
       return http.formLogin(Customizer.withDefaults()).csrf().disable().build();
+   }
+
+   @Bean
+   public ExecutorService executorService() {
+      return Executors.newWorkStealingPool(4);
    }
 
    @Bean

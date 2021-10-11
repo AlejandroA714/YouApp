@@ -1,11 +1,16 @@
 package sv.com.udb.services.authentication.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import sv.com.udb.services.authentication.converter.DateConverter;
+import sv.com.udb.services.authentication.enums.IOAuthRegistrationType;
+import sv.com.udb.services.authentication.enums.IPrivilege;
+import sv.com.udb.services.authentication.enums.IRole;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -21,11 +26,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "user")
-@ToString(callSuper = true)
+@EqualsAndHashCode(exclude = { "roles", "registrationType" })
+@ToString(callSuper = true, exclude = { "roles", "registrationType" })
 public class YouAppPrincipal implements UserDetails {
    @Id
-   //@GeneratedValue(generator = "uuid2")
-   //@GenericGenerator(name = "uuid", strategy = "uuid2")
    private String                Id;
    @Column(name = "given_name", length = 32, nullable = false)
    private String                nombres;
@@ -35,6 +39,7 @@ public class YouAppPrincipal implements UserDetails {
    private String                email;
    @Column(unique = true, length = 32, nullable = false)
    private String                username;
+   @JsonIgnore
    @Column(length = 512)
    private String                password;
    @Column
@@ -49,8 +54,11 @@ public class YouAppPrincipal implements UserDetails {
    @Column(name = "email_confirmed")
    private boolean               isActive;
    @ManyToOne
+   @JsonManagedReference
    private OAuthRegistrationType registrationType;
-   @ManyToMany(fetch = FetchType.EAGER)
+   @Singular
+   @ManyToMany
+   @JsonManagedReference
    @JoinTable(name = "users_roles",
               joinColumns = @JoinColumn(name = "user_id",
                                         referencedColumnName = "id"),
@@ -89,5 +97,13 @@ public class YouAppPrincipal implements UserDetails {
    @Override
    public boolean isEnabled() {
       return this.isActive;
+   }
+
+   public static YouAppPrincipal.YouAppPrincipalBuilder from(
+         GooglePrincipal principal) {
+      return YouAppPrincipal.builder().Id(principal.getId())
+            .email(principal.getEmail()).nombres(principal.getGivenName())
+            .apellidos(principal.getFamilyName()).username(principal.getEmail())
+            .photo(principal.getPhoto()).isActive(true);
    }
 }

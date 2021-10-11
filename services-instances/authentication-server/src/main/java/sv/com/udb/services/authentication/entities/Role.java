@@ -1,9 +1,9 @@
 package sv.com.udb.services.authentication.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import sv.com.udb.services.authentication.enums.IRole;
 
 import javax.persistence.*;
@@ -14,18 +14,25 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "role")
+@ToString(exclude = { "principals", "privileges" })
+@EqualsAndHashCode(exclude = { "principals", "privileges" })
 public class Role {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
-   private Integer               id;
+   private Integer                     id;
    @Enumerated(EnumType.STRING)
    @Column(length = 32, nullable = false)
-   private IRole                 name;
-   @ManyToMany(fetch = FetchType.EAGER)
+   private IRole                       name;
+   @JsonBackReference
+   @ManyToMany(mappedBy = "roles")
+   private Collection<YouAppPrincipal> principals;
+   @Singular
+   @ManyToMany
+   @JsonManagedReference
    @JoinTable(name = "roles_privileges",
               joinColumns = @JoinColumn(name = "role_id",
                                         referencedColumnName = "id"),
               inverseJoinColumns = @JoinColumn(name = "privilege_id",
                                                referencedColumnName = "id"))
-   private Collection<Privilege> privileges;
+   private Collection<Privilege>       privileges;
 }

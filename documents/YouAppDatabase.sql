@@ -4,21 +4,21 @@
 
   create table oauth_registration_type(
     id int primary key auto_increment,
-    registration_type varchar(64) not null
+    registration_type varchar(64) not null unique
   );
 
   insert into oauth_registration_type values (null,"YOUAPP"),(null,"GOOGLE"), (null,"OTHER");
 
   create table role(
     id int primary key auto_increment,
-    name varchar(32) not null
+    name varchar(32) not null unique
   );  
 
   insert into role values (null,"ROLE_ADMIN"),(null,"ROLE_MANTAINER"),(null,"ROLE_USER");
 
   create table privilege(
     id int primary key auto_increment,
-    name varchar(32) not null
+    name varchar(32) not null unique
   );
 
   insert into privilege values (null,"READ_PRIVILEGE"),(null,"WRITE_PRIVILEGE"),(null,"PERMISSIONS_PRIVILEGE");
@@ -66,7 +66,8 @@
   create table users_roles(
     user_id varchar(56),
     role_id int,
-    foreign key(user_id) references user(id),
+    foreign key(user_id) references user(id)
+    ON DELETE CASCADE,
     foreign key(role_id) references role(id)
   );
 
@@ -78,7 +79,8 @@
       age int,
       descripction varchar(512),
       user_id varchar(56) not null unique ,
-      foreign key (user_id) references user(id)
+      foreign key (user_id) references user(id) 
+      ON DELETE CASCADE
   );
 
   create table genre(
@@ -110,6 +112,7 @@
       title varchar(64) default 'Playlist',
       user_id varchar(56) not null ,
       foreign key (user_id) references user(id)
+      ON DELETE CASCADE
   );
 
   create table playlist_song(

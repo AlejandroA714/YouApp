@@ -63,8 +63,7 @@ public class OAut2TokenConfiguration {
    @Bean
    public IOAuth2TokenService auth2TokenService(
          RegisteredClientRepository clientRepository,
-         ProviderSettings providerSettings,
-         HttpSecurityBuilder builder) {
+         ProviderSettings providerSettings, HttpSecurityBuilder builder) {
       JwtEncoder jwtEncoder = getJwtEncoder(builder);
       OAuth2AuthorizationService service = getAuthorizationService(builder);
       return new DefaultOAuth2TokenService(clientRepository, providerSettings,
@@ -85,7 +84,8 @@ public class OAut2TokenConfiguration {
       return keyPairGenerator.generateKeyPair();
    }
 
-   static <B extends HttpSecurityBuilder<B>> JwtEncoder getJwtEncoder(B builder) {
+   static <B extends HttpSecurityBuilder<B>> JwtEncoder getJwtEncoder(
+         B builder) {
       JwtEncoder jwtEncoder = builder.getSharedObject(JwtEncoder.class);
       if (jwtEncoder == null) {
          jwtEncoder = getOptionalBean(builder, JwtEncoder.class);
@@ -97,34 +97,40 @@ public class OAut2TokenConfiguration {
       }
       return jwtEncoder;
    }
+
    static <B extends HttpSecurityBuilder<B>> OAuth2AuthorizationService getAuthorizationService(
-     B builder) {
+         B builder) {
       OAuth2AuthorizationService authorizationService = builder
-        .getSharedObject(OAuth2AuthorizationService.class);
+            .getSharedObject(OAuth2AuthorizationService.class);
       if (authorizationService == null) {
          authorizationService = getOptionalBean(builder,
-           OAuth2AuthorizationService.class);
+               OAuth2AuthorizationService.class);
          if (authorizationService == null) {
             authorizationService = new InMemoryOAuth2AuthorizationService();
          }
          builder.setSharedObject(OAuth2AuthorizationService.class,
-           authorizationService);
+               authorizationService);
       }
       return authorizationService;
    }
 
-   static <B extends HttpSecurityBuilder<B>> JWKSource<SecurityContext> getJwkSource(B builder) {
-      JWKSource<SecurityContext> jwkSource = builder.getSharedObject(JWKSource.class);
+   static <B extends HttpSecurityBuilder<B>> JWKSource<SecurityContext> getJwkSource(
+         B builder) {
+      JWKSource<SecurityContext> jwkSource = builder
+            .getSharedObject(JWKSource.class);
       if (jwkSource == null) {
-         ResolvableType type = ResolvableType.forClassWithGenerics(JWKSource.class, SecurityContext.class);
+         ResolvableType type = ResolvableType
+               .forClassWithGenerics(JWKSource.class, SecurityContext.class);
          jwkSource = getBean(builder, type);
          builder.setSharedObject(JWKSource.class, jwkSource);
       }
       return jwkSource;
    }
 
-   static <B extends HttpSecurityBuilder<B>, T> T getBean(B builder, ResolvableType type) {
-      ApplicationContext context = builder.getSharedObject(ApplicationContext.class);
+   static <B extends HttpSecurityBuilder<B>, T> T getBean(B builder,
+         ResolvableType type) {
+      ApplicationContext context = builder
+            .getSharedObject(ApplicationContext.class);
       String[] names = context.getBeanNamesForType(type);
       if (names.length == 1) {
          return (T) context.getBean(names[0]);
@@ -136,15 +142,15 @@ public class OAut2TokenConfiguration {
    }
 
    static <B extends HttpSecurityBuilder<B>, T> T getOptionalBean(B builder,
-                                                                  Class<T> type) {
+         Class<T> type) {
       Map<String, T> beansMap = BeanFactoryUtils.beansOfTypeIncludingAncestors(
-        builder.getSharedObject(ApplicationContext.class), type);
+            builder.getSharedObject(ApplicationContext.class), type);
       if (beansMap.size() > 1) {
          throw new NoUniqueBeanDefinitionException(type, beansMap.size(),
-           "Expected single matching bean of type '" + type.getName()
-             + "' but found " + beansMap.size() + ": "
-             + StringUtils.collectionToCommaDelimitedString(
-             beansMap.keySet()));
+               "Expected single matching bean of type '" + type.getName()
+                     + "' but found " + beansMap.size() + ": "
+                     + StringUtils.collectionToCommaDelimitedString(
+                           beansMap.keySet()));
       }
       return (!beansMap.isEmpty() ? beansMap.values().iterator().next() : null);
    }

@@ -17,7 +17,9 @@ import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2Au
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.util.StringUtils;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
+import sv.com.udb.services.authentication.repository.IOAuthRegistrationRepository;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
+import sv.com.udb.services.authentication.repository.IRoleRepository;
 import sv.com.udb.services.authentication.services.IGoogleAuthenticationService;
 import sv.com.udb.services.authentication.services.IGoogleOAuth2Provider;
 import sv.com.udb.services.authentication.services.IOAuth2TokenService;
@@ -65,9 +67,11 @@ public class GoogleConfiguration {
    @Bean
    public IGoogleOAuth2Provider googleOAuth2Provider(
          IGoogleAuthenticationService googleAuth,
+         IRoleRepository roleRepository,
+         IOAuthRegistrationRepository registrationRepository,
          IPrincipalRepository principalRepository,
          IOAuth2TokenService tokenService) {
       return new DefaultGoogleOAuth2Provider(googleAuth, principalRepository,
-            tokenService);
+            roleRepository, registrationRepository, tokenService);
    }
 }

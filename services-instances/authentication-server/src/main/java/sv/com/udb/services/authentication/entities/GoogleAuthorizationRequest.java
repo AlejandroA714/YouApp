@@ -32,10 +32,9 @@ public class GoogleAuthorizationRequest
    private List<String>    scopes;
    @Valid
    @NotNull
-   @JsonProperty("user")
    private GooglePrincipal principal;
    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   private boolean         authenticated = false;
+   private boolean         authenticated;
    private String          serverAuthCode;
 
    @Override

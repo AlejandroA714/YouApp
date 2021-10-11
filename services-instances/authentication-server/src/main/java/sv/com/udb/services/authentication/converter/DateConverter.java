@@ -12,7 +12,7 @@ public class DateConverter implements AttributeConverter<LocalDate, String> {
 
    @Override
    public String convertToDatabaseColumn(LocalDate attribute) {
-      return attribute.format(dateTimeFormatter);
+      return attribute == null ? null : attribute.format(dateTimeFormatter);
    }
 
    @Override

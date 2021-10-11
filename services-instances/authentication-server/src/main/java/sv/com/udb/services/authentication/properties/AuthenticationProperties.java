@@ -6,10 +6,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.validation.annotation.Validated;
+import sv.com.udb.services.authentication.task.AuthenticationTask;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,17 +19,18 @@ import java.util.List;
 @NoArgsConstructor
 public class AuthenticationProperties {
    @NotNull
-   private AuthKeys            keys;
+   private AuthKeys                                  keys;
    @NotNull
-   private JWTConfiguration    jwt;
+   private JWTConfiguration                          jwt;
    @NotNull
-   private GoogleConfiguration google;
+   private GoogleConfiguration                       google;
    @NotNull
-   private ClientConfiguration client;
+   private ClientConfiguration                       client;
    @NotNull
-   private List<String>        redirectUris;
+   private List<String>                              redirectUris;
    @NotNull
-   private String              roleHierarchy;
+   private String                                    roleHierarchy;
+   private List<Class<? extends AuthenticationTask>> postCreationTasks = new ArrayList<>();
 
    @Data
    @NoArgsConstructor
