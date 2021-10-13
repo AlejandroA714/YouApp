@@ -1,0 +1,20 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: noresponse.youapp@gmail.com
+    password: aydqvxlpjkypmcpi
+    tls: true
+    protocol: smtp
+    properties.mail.stmp:
+      starttls:
+      enable: true
+      required: true
+      auth: true
+      connectiontimeout: 5000
+      timeout: 5000
+      writetimeout: 5000
+    #jhipster:
+     # mail:
+      #  from: noresponse.youapp@gmail.com
+      #  base-url: http://127.0.0.1:8083

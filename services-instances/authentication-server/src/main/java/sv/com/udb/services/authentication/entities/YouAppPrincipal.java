@@ -3,58 +3,43 @@ package sv.com.udb.services.authentication.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import sv.com.udb.services.authentication.converter.DateConverter;
-import sv.com.udb.services.authentication.enums.IOAuthRegistrationType;
-import sv.com.udb.services.authentication.enums.IPrivilege;
-import sv.com.udb.services.authentication.enums.IRole;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
-@Builder
+@Validated
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "user")
-@EqualsAndHashCode(exclude = { "roles", "registrationType" })
 @ToString(callSuper = true, exclude = { "roles", "registrationType" })
-public class YouAppPrincipal implements UserDetails {
+@EqualsAndHashCode(callSuper = true, exclude = { "roles", "registrationType" })
+public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
    @Id
+   @GeneratedValue(generator = "uuid2")
+   @GenericGenerator(name = "uuid2",
+                     strategy = "org.hibernate.id.UUIDGenerator")
    private String                Id;
-   @Column(name = "given_name", length = 32, nullable = false)
-   private String                nombres;
-   @Column(name = "family_name", length = 32, nullable = false)
-   private String                apellidos;
-   @Column(unique = true, length = 48, nullable = false)
-   private String                email;
-   @Column(unique = true, length = 32, nullable = false)
-   private String                username;
-   @JsonIgnore
-   @Column(length = 512)
-   private String                password;
-   @Column
-   @Convert(converter = DateConverter.class)
-   private LocalDate             birthday;
-   @Column(length = 256)
-   private String                description;
-   @Column(length = 512)
-   private String                photo;
    @Column(name = "last_login")
    private LocalDateTime         lastLogin;
    @Column(name = "email_confirmed")
-   private boolean               isActive;
+   private Boolean               isActive;
    @ManyToOne
    @JsonManagedReference
+   @MapKeyColumn(name = "name")
    private OAuthRegistrationType registrationType;
    @Singular
    @ManyToMany
@@ -99,11 +84,48 @@ public class YouAppPrincipal implements UserDetails {
       return this.isActive;
    }
 
-   public static YouAppPrincipal.YouAppPrincipalBuilder from(
-         GooglePrincipal principal) {
+   @Override
+   public String getId() {
+      return this.Id;
+   }
+
+   @Override
+   public boolean isActive() {
+      return this.isActive;
+   }
+
+   public static YouAppPrincipal from(Principal principal) {
       return YouAppPrincipal.builder().Id(principal.getId())
-            .email(principal.getEmail()).nombres(principal.getGivenName())
-            .apellidos(principal.getFamilyName()).username(principal.getEmail())
-            .photo(principal.getPhoto()).isActive(true);
+            .email(principal.getEmail()).nombres(principal.getNombres())
+            .apellidos(principal.getApellidos())
+            .username(principal.getUsername()).photo(principal.getPhoto())
+            .isActive(principal.isActive())
+            .registrationType(OAuthRegistrationType
+                  .from(principal.getOAuthRegistrationType()))
+            .role(Role.from(principal.getRol()))
+            .birthday(principal.getBirthday()).build();
+   }
+
+   @JsonIgnore
+   public Map<String, Object> getFields() {
+      Map<String, Object> cFields = new HashMap<>();
+      List<java.lang.reflect.Field> fields = Arrays
+            .stream(this.getClass().getDeclaredFields())
+            .filter(x -> x.getType().equals(String.class)
+                  || x.getType().equals(LocalDate.class))
+            .collect(Collectors.toList());
+      fields.forEach(f -> {
+         try {
+            Object p = new PropertyDescriptor(f.getName(),
+                  YouAppPrincipal.class).getReadMethod().invoke(this);
+            cFields.put(f.getName(), p);
+         }
+         catch (IllegalAccessException | IntrospectionException
+               | InvocationTargetException e) {
+            cFields.put(f.getName(), null);
+            e.printStackTrace();
+         }
+      });
+      return cFields;
    }
 }

@@ -25,7 +25,10 @@ public class OAuthRegistrationType {
    @OneToMany(mappedBy = "registrationType")
    private Collection<YouAppPrincipal> registrations;
 
-   public OAuthRegistrationType(IOAuthRegistrationType registrationType) {
-      this.name = registrationType;
+   public static OAuthRegistrationType from(
+         IOAuthRegistrationType registrationType) {
+      return OAuthRegistrationType.builder()
+            .id(registrationType.getPrimaryKey()).name(registrationType)
+            .build();
    }
 }

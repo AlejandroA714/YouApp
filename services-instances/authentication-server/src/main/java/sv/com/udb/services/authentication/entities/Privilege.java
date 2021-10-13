@@ -25,4 +25,9 @@ public class Privilege {
    @JsonBackReference
    @ManyToMany(mappedBy = "privileges")
    private Collection<Role> roles;
+
+   public static Privilege from(IPrivilege privilege) {
+      return Privilege.builder().id(privilege.getPrimaryKey()).name(privilege)
+            .build();
+   }
 }

@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import sv.com.udb.components.mail.sender.model.Mail;
+import sv.com.udb.components.mail.sender.model.ModelType;
+import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 
 @Slf4j
@@ -14,6 +17,7 @@ import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SendEmailTask implements AuthenticationTask {
    @NonNull
+   private IEmailService   emailService;
    private YouAppPrincipal principal;
 
    @Override
@@ -23,13 +27,18 @@ public class SendEmailTask implements AuthenticationTask {
 
    @Override
    public void run() {
-      /*
-       * getOnboardingProperties().getPostCreationTasks().parallelStream()
-       * .forEach(c -> { try { var clazz = Class.forName(c); var t =
-       * (OnboardingTask) getApplicationContext() .getBean(clazz);
-       * t.setData(getOnboardingProperties(), request, finalCreateUserResponse,
-       * node); getExecutorService().submit(t); } catch (Exception e) {
-       * LOGGER.error("Ocurrio un error", e); } });
-       */
+      try {
+         emailService
+               .sendEmail(Mail.builder().to(principal.getEmail())
+                     .subject("YouApp Confirmacion")
+                     .from("noresponse.youapp@gmail.com")
+                     .htmlTemplate(Mail.HtmlTemplate.builder()
+                           .props(principal.getFields())
+                           .template(ModelType.CONFIRM_MAIL).build())
+                     .build());
+      }
+      catch (Exception e) {
+         LOGGER.error("Failed to send mail");
+      }
    }
 }

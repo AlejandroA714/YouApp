@@ -28,6 +28,9 @@ auth:
     - https://oidcdebugger.com/debug
     - http://youappmobile/login/code
   role-hierarchy: ROLE_ADMIN > ROLE_MANTAINER > ROLE_USER
+  post-creation-tasks:
+   - sv.com.udb.services.authentication.task.SendEmailTask
+   - sv.com.udb.services.authentication.task.RegisterLoginTask
 
 logbook:
   format:

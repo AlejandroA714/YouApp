@@ -18,5 +18,6 @@ public class RegisterLoginTask implements AuthenticationTask {
 
    @Override
    public void run() {
+      LOGGER.info("Register login task");
    }
 }

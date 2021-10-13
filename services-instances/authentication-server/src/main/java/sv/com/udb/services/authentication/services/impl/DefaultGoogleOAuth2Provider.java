@@ -58,8 +58,7 @@ public class DefaultGoogleOAuth2Provider implements IGoogleOAuth2Provider {
       if (!IPrincipalRepository
             .existsById(authRequest.getPrincipal().getId())) {
          YouAppPrincipal principal = YouAppPrincipal
-               .from(authRequest.getPrincipal())
-               .registrationType(registrationType).role(role).build();
+               .from(authRequest.getPrincipal());
          IPrincipalRepository.save(principal);
       }
    }
