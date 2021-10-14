@@ -2,28 +2,54 @@ package sv.com.udb.services.authentication.controllers;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sv.com.udb.components.mail.sender.model.MailType;
+import sv.com.udb.components.mail.sender.services.IEmailService;
+import sv.com.udb.services.authentication.entities.YouAppPrincipal;
+import sv.com.udb.services.authentication.exceptions.PrincipalDoesNotExist;
+import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.util.Map;
+import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/auth/reset-password")
 public class ResetPasswordController {
    @NonNull
    private final IEncryptionPasswordService passwordService;
+   @NonNull
+   private final IEmailService              emailService;
+   @NonNull
+   private final IPrincipalRepository       principalRepository;
+   private static final String              NEW_PASS = "newpass";
 
-   @GetMapping("/")
-   public String reset() {
-      return "Reseting Password";
+   @GetMapping("/{email}")
+   public String reset(@PathVariable String email) {
+      try {
+         Optional<YouAppPrincipal> _principal = principalRepository
+               .findByEmail(email);
+         if (!_principal.isPresent()) throw new PrincipalDoesNotExist(email);
+         YouAppPrincipal principal = _principal.get();
+         String passwd = passwordService.generateRandomPassword(12);
+         Map<String, Object> props = principal.getFields();
+         props.put(NEW_PASS, passwd);
+         emailService.sendMail(MailType.RECOVER_PASWORD, principal.getEmail(),
+               props);
+         principal.setPassword(passwordService.encryptPassword(passwd));
+         principalRepository.save(principal);
+         return passwd;
+      }
+      catch (Exception e) {
+         LOGGER.error("{}", e);
+         return "error :C";
+      }
    }
 
    @GetMapping("/decrypt")

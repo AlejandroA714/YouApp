@@ -6,8 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import sv.com.udb.components.mail.sender.model.Mail;
-import sv.com.udb.components.mail.sender.model.ModelType;
+import sv.com.udb.components.mail.sender.model.MailType;
 import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 
@@ -28,14 +27,8 @@ public class SendEmailTask implements AuthenticationTask {
    @Override
    public void run() {
       try {
-         emailService
-               .sendEmail(Mail.builder().to(principal.getEmail())
-                     .subject("YouApp Confirmacion")
-                     .from("noresponse.youapp@gmail.com")
-                     .htmlTemplate(Mail.HtmlTemplate.builder()
-                           .props(principal.getFields())
-                           .template(ModelType.CONFIRM_MAIL).build())
-                     .build());
+         emailService.sendMail(MailType.CONFIRM_MAIL, principal.getEmail(),
+               principal.getFields());
       }
       catch (Exception e) {
          LOGGER.error("Failed to send mail");

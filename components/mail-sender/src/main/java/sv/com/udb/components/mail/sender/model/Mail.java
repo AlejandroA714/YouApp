@@ -1,6 +1,5 @@
 package sv.com.udb.components.mail.sender.model;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.*;
 
 import java.util.Map;
@@ -18,10 +17,10 @@ public class Mail {
    @Builder
    @ToString
    public static class HtmlTemplate {
-      private ModelType           template;
+      private MailType            template;
       private Map<String, Object> props;
 
-      public HtmlTemplate(ModelType template, Map<String, Object> props) {
+      public HtmlTemplate(MailType template, Map<String, Object> props) {
          this.template = template;
          this.props = props;
       }

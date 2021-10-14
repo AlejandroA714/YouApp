@@ -17,21 +17,5 @@ import javax.validation.constraints.NotNull;
 public abstract class AbstractWebClientProperties {
    @NotNull
    @URL(message = "Invalid URL")
-   private java.net.URL remoteAddress;
-
-   public String getRemoteAddress() {
-      return remoteAddress.toString();
-   }
-
-   public int getPort() {
-      if (null != remoteAddress) return remoteAddress.getPort();
-      else
-         return remoteAddress.getDefaultPort();
-   }
-
-   public String getHost() {
-      if (null != remoteAddress) return remoteAddress.getHost();
-      else
-         return "";
-   }
+   private String remoteAddress;
 }

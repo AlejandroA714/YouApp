@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Data
 @Validated
@@ -109,8 +110,9 @@ public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
    @JsonIgnore
    public Map<String, Object> getFields() {
       Map<String, Object> cFields = new HashMap<>();
-      List<java.lang.reflect.Field> fields = Arrays
-            .stream(this.getClass().getDeclaredFields())
+      List<java.lang.reflect.Field> fields = Stream
+            .concat(Stream.of(getClass().getDeclaredFields()),
+                  Stream.of(getClass().getSuperclass().getDeclaredFields()))
             .filter(x -> x.getType().equals(String.class)
                   || x.getType().equals(LocalDate.class))
             .collect(Collectors.toList());

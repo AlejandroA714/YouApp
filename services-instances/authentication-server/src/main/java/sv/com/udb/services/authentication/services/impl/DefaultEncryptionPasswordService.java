@@ -3,6 +3,7 @@ package sv.com.udb.services.authentication.services.impl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 
@@ -10,10 +11,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -27,6 +25,8 @@ public class DefaultEncryptionPasswordService
    private final AuthenticationProperties authProperties;
    private static final String            RSA                   = "RSA";
    private static final String            RSA_ECB_PKCS1_PADDING = "RSA/ECB/PKCS1Padding";
+   private static final char[]            characters            = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?"
+         .toCharArray();
 
    @Override
    public String encode(CharSequence charSequence) {
@@ -79,6 +79,12 @@ public class DefaultEncryptionPasswordService
       finally {
          cipherDecrypt = null;
       }
+   }
+
+   @Override
+   public String generateRandomPassword(int length) {
+      return RandomStringUtils.random(length, 0, characters.length - 1, true,
+            true, characters, new SecureRandom());
    }
 
    private Key getPublicKey(String publicKey)

@@ -10,4 +10,6 @@ public interface IPrincipalRepository
       extends JpaRepository<YouAppPrincipal, String> {
    Optional<YouAppPrincipal> findByUsernameOrEmail(String username,
          String email);
+
+   Optional<YouAppPrincipal> findByEmail(String email);
 }

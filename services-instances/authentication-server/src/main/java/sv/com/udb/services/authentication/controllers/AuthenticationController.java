@@ -3,24 +3,27 @@ package sv.com.udb.services.authentication.controllers;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import sv.com.udb.services.authentication.entities.*;
-import sv.com.udb.services.authentication.enums.IOAuthRegistrationType;
+import sv.com.udb.components.minio.client.services.IMinioService;
+import sv.com.udb.services.authentication.entities.AbstractPrincipal;
+import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
+import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.RegistrationException;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
-import sv.com.udb.services.authentication.repository.IOAuthRegistrationRepository;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
+import sv.com.udb.services.authentication.services.IAuthenticationService;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 import sv.com.udb.services.authentication.services.IGoogleOAuth2Provider;
 import sv.com.udb.services.authentication.task.AuthenticationTask;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -31,19 +34,21 @@ import java.util.concurrent.ExecutorService;
 @RequestMapping("/v1/auth")
 public class AuthenticationController {
    @NonNull
-   private final IGoogleOAuth2Provider        googleOAuth2Provider;
+   private final IGoogleOAuth2Provider      googleOAuth2Provider;
    @NonNull
-   private final IPrincipalRepository         principalRepository;
+   private final IPrincipalRepository       principalRepository;
    @NonNull
-   private final IOAuthRegistrationRepository oAuthRegistrationRepository;
+   private final IAuthenticationService     authService;
    @NonNull
-   private final IEncryptionPasswordService   encryptionPasswordService;
+   private final IEncryptionPasswordService encryptionPasswordService;
    @NonNull
-   private final AuthenticationProperties     properties;
+   private final AuthenticationProperties   properties;
    @NonNull
-   private final ApplicationContext           context;
+   private final ApplicationContext         context;
    @NonNull
-   private final ExecutorService              executorService;
+   private final ExecutorService            executorService;
+   @NonNull
+   private final IMinioService              minioService;
 
    @PostMapping("/google")
    public OAuth2AccessToken google(
@@ -63,6 +68,8 @@ public class AuthenticationController {
          YouAppPrincipal youAppPrincipal = YouAppPrincipal.from(principal);
          youAppPrincipal.setPassword(encryptionPasswordService
                .encryptPassword(principal.getPassword()));
+         minioService.upload(Base64.decode(principal.getPhoto()), "suffix.jpg",
+               "application/jpeg");
          principalRepository.save(youAppPrincipal);
       }
       catch (Exception e) {
@@ -71,9 +78,25 @@ public class AuthenticationController {
       }
    }
 
+   @GetMapping(value = "/getFile", produces = MediaType.IMAGE_JPEG_VALUE)
+   public byte[] getFile() {
+      try {
+         var x = minioService
+               .getFile("566a1985-bcd3-45c6-bdd4-539e653d2607suffix.jpg");
+         return x;
+      }
+      catch (Exception e) {
+         return null;
+      }
+   }
+
    @GetMapping("/list")
    public List<YouAppPrincipal> principal() {
       return principalRepository.findAll();
+   }
+
+   @GetMapping("/test")
+   public void test() throws Exception {
    }
 
    @GetMapping("/call")

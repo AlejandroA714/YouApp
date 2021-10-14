@@ -17,4 +17,6 @@ public interface IEncryptionPasswordService extends PasswordEncoder {
    String decryptPassword(String payload) throws NoSuchPaddingException,
          NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException,
          IllegalBlockSizeException, BadPaddingException;
+
+   String generateRandomPassword(int length);
 }

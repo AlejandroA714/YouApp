@@ -1,0 +1,6 @@
+app:
+  minio:
+    client:
+      url: http://localhost:9091
+      accessKey: minioadmin
+      secretKey: minioadmin

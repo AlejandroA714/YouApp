@@ -41,7 +41,6 @@ public class AbstractPrincipal implements Principal {
    protected String    password;
    @Convert(converter = DateConverter.class)
    protected LocalDate birthday;
-   @NotNull
    @Column(length = 512)
    protected String    photo;
 
