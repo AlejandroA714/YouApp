@@ -1,5 +1,6 @@
 package sv.com.udb.services.authentication.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -24,7 +25,7 @@ public class EmailToken {
    @Column(name = "expiration_date", nullable = false)
    private LocalDateTime   expiration;
    @ManyToOne
-   @JsonManagedReference
+   @JsonBackReference
    @JoinColumn(name = "user_id", referencedColumnName = "id")
    private YouAppPrincipal user;
 }

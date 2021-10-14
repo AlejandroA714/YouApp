@@ -22,6 +22,8 @@ import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 import sv.com.udb.services.authentication.services.IGoogleOAuth2Provider;
 import sv.com.udb.services.authentication.task.AuthenticationTask;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
@@ -72,10 +74,15 @@ public class DefaultAuthenticationService implements IAuthenticationService {
    @Override
    public void validateToken(String token) throws InvalidTokenException {
       YouAppPrincipal principal;
-      EmailToken token_ = tokenRepository
-            .getEmailTokenByToken("0bbc0036-01ca-4621-a6c5-7e4ec135d0c1");
+      Optional<EmailToken> token_ = tokenRepository.getEmailTokenByToken(token);
       LOGGER.info("got: {}", token_);
-      principal = token_.getUser();
+      if (!token_.isPresent() || token_.get().getExpiration()
+            .isAfter(LocalDateTime.now(ZoneId.of("GMT-06:00")))) {
+         throw new InvalidTokenException();
+      }
+      principal = token_.get().getUser();
+      principal.setIsActive(true);
+      principalRepository.save(principal);
       LOGGER.info("Principal: {}", principal);
    }
 }

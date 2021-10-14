@@ -65,7 +65,7 @@
   create table email_token(
     id int primary key auto_increment,
     token varchar(48) not null unique,
-    expiration_date datetime not null,
+    expiration_date timestamp not null,
     user_id varchar(56),
     foreign key(user_id) references user(id)
     ON DELETE CASCADE
@@ -148,3 +148,5 @@
       music_id int not null unique ,
       foreign key (music_id) references music(id)
   );
+
+  SET @@global.time_zone = '-06:00';

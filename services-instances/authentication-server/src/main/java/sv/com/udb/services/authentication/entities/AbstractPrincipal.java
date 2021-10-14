@@ -6,13 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import sv.com.udb.services.authentication.converter.DateConverter;
-import sv.com.udb.services.authentication.enums.IOAuthRegistrationType;
-import sv.com.udb.services.authentication.enums.IRole;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -39,7 +34,6 @@ public class AbstractPrincipal implements Principal {
    @Column(length = 512)
    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
    protected String    password;
-   @Convert(converter = DateConverter.class)
    protected LocalDate birthday;
    @Column(length = 512)
    protected String    photo;

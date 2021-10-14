@@ -45,7 +45,7 @@ public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
    @JsonManagedReference
    private OAuthRegistrationType registrationType;
    @JsonIgnore
-   @JsonBackReference
+   @JsonManagedReference
    @OneToMany(mappedBy = "user")
    private List<EmailToken>      emailTokens;
    @Singular

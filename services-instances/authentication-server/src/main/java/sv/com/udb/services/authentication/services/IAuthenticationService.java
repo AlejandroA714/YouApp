@@ -8,7 +8,6 @@ import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 
 public interface IAuthenticationService extends UserDetailsService {
-
    YouAppPrincipal register(AbstractPrincipal principal) throws Exception;
 
    void validateToken(String token) throws InvalidTokenException;
