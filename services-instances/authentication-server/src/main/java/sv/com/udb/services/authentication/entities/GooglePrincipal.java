@@ -1,7 +1,9 @@
 package sv.com.udb.services.authentication.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import sv.com.udb.services.authentication.enums.IOAuthRegistrationType;
 import sv.com.udb.services.authentication.enums.IRole;
 
@@ -10,6 +12,8 @@ import java.time.LocalDate;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GooglePrincipal implements Principal {
    @NotNull
    private String    id;

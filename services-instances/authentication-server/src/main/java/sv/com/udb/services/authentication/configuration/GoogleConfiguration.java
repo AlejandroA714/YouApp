@@ -63,15 +63,4 @@ public class GoogleConfiguration {
       return new DefaultGoogleAuthenticationService(verifier, netTransport,
             jsonFactory, credential, props.getGoogle());
    }
-
-   @Bean
-   public IGoogleOAuth2Provider googleOAuth2Provider(
-         IGoogleAuthenticationService googleAuth,
-         IRoleRepository roleRepository,
-         IOAuthRegistrationRepository registrationRepository,
-         IPrincipalRepository principalRepository,
-         IOAuth2TokenService tokenService) {
-      return new DefaultGoogleOAuth2Provider(googleAuth, principalRepository,
-            roleRepository, registrationRepository, tokenService);
-   }
 }

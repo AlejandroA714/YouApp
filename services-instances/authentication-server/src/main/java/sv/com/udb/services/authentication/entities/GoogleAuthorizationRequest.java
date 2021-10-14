@@ -2,9 +2,8 @@ package sv.com.udb.services.authentication.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,10 +19,12 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
+@With
 @ToString
+@SuperBuilder
+@NoArgsConstructor
 @AllArgsConstructor
-public class GoogleAuthorizationRequest
-      implements Authentication, Serializable {
+public class GoogleAuthorizationRequest implements Authentication {
    @NotNull
    private String          idToken;
    @NotNull

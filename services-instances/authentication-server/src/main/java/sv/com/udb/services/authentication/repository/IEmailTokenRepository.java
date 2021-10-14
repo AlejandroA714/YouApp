@@ -9,5 +9,5 @@ public interface IEmailTokenRepository
       extends JpaRepository<EmailToken, Integer> {
    List<EmailToken> getEmailTokenByUserId(String principalId);
 
-   List<EmailToken> getEmailTokenByToken(String token);
+   EmailToken getEmailTokenByToken(String token);
 }

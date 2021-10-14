@@ -28,10 +28,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import sv.com.udb.services.authentication.services.IOAuth2TokenService;
 
-import java.security.Principal;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Set;

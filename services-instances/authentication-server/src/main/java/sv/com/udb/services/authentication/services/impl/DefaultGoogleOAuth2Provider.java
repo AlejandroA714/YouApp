@@ -23,13 +23,9 @@ import sv.com.udb.services.authentication.services.IOAuth2TokenService;
 @RequiredArgsConstructor
 public class DefaultGoogleOAuth2Provider implements IGoogleOAuth2Provider {
    @NonNull
-   private final IGoogleAuthenticationService IGoogleService;
-   @NonNull
-   private final IPrincipalRepository         IPrincipalRepository;
-   @NonNull
-   private final IRoleRepository              IRoleRepository;
-   @NonNull
-   private final IOAuthRegistrationRepository IOAuthRepository;
+   private final IGoogleAuthenticationService IGoogleService; //
+   // @NonNull
+   // private final IPrincipalRepository IPrincipalRepository;
    @NonNull
    private final IOAuth2TokenService          IOAuth2TokenService;
 
@@ -39,8 +35,8 @@ public class DefaultGoogleOAuth2Provider implements IGoogleOAuth2Provider {
       LOGGER.trace("Trying to authenticate: {}", authentication);
       try {
          GoogleAuthorizationRequest authRequest = (GoogleAuthorizationRequest) authentication;
-         IGoogleService.validateToken(authRequest);
-         registerGoogleUser(authRequest);
+         // IGoogleService.validateToken(authRequest);
+         // registerGoogleUser(authRequest);
          OAuth2AccessTokenAuthenticationToken acessToken = IOAuth2TokenService
                .getAcessToken(authentication);
          return acessToken;
@@ -50,21 +46,20 @@ public class DefaultGoogleOAuth2Provider implements IGoogleOAuth2Provider {
          throw new InvalidAuthenticationException(e);
       }
    }
-
-   private void registerGoogleUser(GoogleAuthorizationRequest authRequest) {
-      OAuthRegistrationType registrationType = IOAuthRepository
-            .findOAuthRegistrationTypeByName(IOAuthRegistrationType.GOOGLE);
-      Role role = IRoleRepository.findRoleByName(IRole.ROLE_USER);
-      if (!IPrincipalRepository
-            .existsById(authRequest.getPrincipal().getId())) {
-         YouAppPrincipal principal = YouAppPrincipal
-               .from(authRequest.getPrincipal());
-         IPrincipalRepository.save(principal);
-      }
-   }
+   // private void registerGoogleUser(GoogleAuthorizationRequest authRequest) {
+   // OAuthRegistrationType registrationType = IOAuthRepository
+   // .findOAuthRegistrationTypeByName(IOAuthRegistrationType.GOOGLE);
+   // Role role = IRoleRepository.findRoleByName(IRole.ROLE_USER);
+   // if (!IPrincipalRepository
+   // .existsById(authRequest.getPrincipal().getId())) {
+   // YouAppPrincipal principal = YouAppPrincipal
+   // .from(authRequest.getPrincipal());
+   // IPrincipalRepository.save(principal);
+   // }
+   // }
 
    @Override
    public boolean supports(Class<?> authentication) {
-      return Authentication.class.isAssignableFrom(authentication);
+      return GoogleAuthorizationRequest.class.isAssignableFrom(authentication);
    }
 }
