@@ -43,6 +43,8 @@ public class AuthenticationController {
    private final IAuthenticationService authService;
    @NonNull
    private final IEmailTokenRepository  tokenRepository;
+   @NonNull
+   private final IPrincipalRepository   principalRepository;
 
    @GetMapping("/confirm_email")
    public void validateToken(@RequestParam String token) {
@@ -52,6 +54,11 @@ public class AuthenticationController {
       catch (Exception e) {
          throw new InvalidTokenException();
       }
+   }
+
+   @GetMapping("/users")
+   public List<YouAppPrincipal> user() {
+      return principalRepository.findAll();
    }
 
    @GetMapping("/test")

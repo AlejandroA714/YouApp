@@ -30,9 +30,14 @@
 </p>
 <p>
 
-    <a href="${http://auth-server:8083/v1/auth/confirm_email?token=${TOKEN}}">
+    <a th:href="${'http://auth-server:8083/v1/auth/confirm_email?token=' +TOKEN}">
         <img src="https://lh3.googleusercontent.com/a-/AOh14GgA3_5dWIGw4yXVw1gaRmIIc5Qit2Qiy0RbaOjnUA=s96-c" alt="htts://javabydeveloper.com" height="250" width="250"/>
     </a>
+
+    <br/>
+    Also there is the uri:
+
+    <span th:text="${'http://auth-server:8083/v1/auth/confirm_email?token=' +TOKEN}" />
 </p>
 <p>
     Regards, <br />

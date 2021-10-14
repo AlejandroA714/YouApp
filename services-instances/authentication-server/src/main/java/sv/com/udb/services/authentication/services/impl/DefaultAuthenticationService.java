@@ -77,7 +77,7 @@ public class DefaultAuthenticationService implements IAuthenticationService {
       Optional<EmailToken> token_ = tokenRepository.getEmailTokenByToken(token);
       LOGGER.info("got: {}", token_);
       if (!token_.isPresent() || token_.get().getExpiration()
-            .isAfter(LocalDateTime.now(ZoneId.of("GMT-06:00")))) {
+            .isBefore(LocalDateTime.now(ZoneId.of("GMT-06:00")))) {
          throw new InvalidTokenException();
       }
       principal = token_.get().getUser();

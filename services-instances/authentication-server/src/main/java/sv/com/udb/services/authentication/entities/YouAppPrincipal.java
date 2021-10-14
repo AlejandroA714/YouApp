@@ -49,8 +49,8 @@ public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
    @OneToMany(mappedBy = "user")
    private List<EmailToken>      emailTokens;
    @Singular
-   @ManyToMany
    @JsonManagedReference
+   @ManyToMany(fetch = FetchType.EAGER)
    @JoinTable(name = "users_roles",
               joinColumns = @JoinColumn(name = "user_id",
                                         referencedColumnName = "id"),
