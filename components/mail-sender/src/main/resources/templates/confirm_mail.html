@@ -20,7 +20,7 @@
 <p th:text="${'Hello: ' +  nombres + 'with birthday: ' + birthday}"></p>
 
 <p>
-    Please confirm you mail with username
+    Please confirm you mail with username with <span th:text="${TOKEN}"/>
     <span th:text="${username}"/>
     <span th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></span>
 </p>

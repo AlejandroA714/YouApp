@@ -1,5 +1,6 @@
 package sv.com.udb.services.authentication.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -26,22 +27,27 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "user")
-@ToString(callSuper = true, exclude = { "roles", "registrationType" })
-@EqualsAndHashCode(callSuper = true, exclude = { "roles", "registrationType" })
+@ToString(callSuper = true,
+          exclude = { "roles", "registrationType", "emailTokens" })
+@EqualsAndHashCode(callSuper = true,
+                   exclude = { "roles", "registrationType", "emailTokens" })
 public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
    @Id
    @GeneratedValue(generator = "uuid2")
    @GenericGenerator(name = "uuid2",
                      strategy = "org.hibernate.id.UUIDGenerator")
-   private String                Id;
-   @Column(name = "last_login")
-   private LocalDateTime         lastLogin;
+   private String                id;
+   @Column(name = "registration_date")
+   private LocalDate             registration;
    @Column(name = "email_confirmed")
    private Boolean               isActive;
    @ManyToOne
    @JsonManagedReference
-   @MapKeyColumn(name = "name")
    private OAuthRegistrationType registrationType;
+   @JsonIgnore
+   @JsonBackReference
+   @OneToMany(mappedBy = "user")
+   private List<EmailToken>      emailTokens;
    @Singular
    @ManyToMany
    @JsonManagedReference
@@ -87,7 +93,7 @@ public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
 
    @Override
    public String getId() {
-      return this.Id;
+      return this.id;
    }
 
    @Override
@@ -96,7 +102,7 @@ public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
    }
 
    public static YouAppPrincipal from(Principal principal) {
-      return YouAppPrincipal.builder().Id(principal.getId())
+      return YouAppPrincipal.builder().id(principal.getId())
             .email(principal.getEmail()).nombres(principal.getNombres())
             .apellidos(principal.getApellidos())
             .username(principal.getUsername()).photo(principal.getPhoto())

@@ -47,8 +47,6 @@ public class AuthenticationController {
    private final ApplicationContext         context;
    @NonNull
    private final ExecutorService            executorService;
-   @NonNull
-   private final IMinioService              minioService;
 
    @PostMapping("/google")
    public OAuth2AccessToken google(
@@ -63,14 +61,22 @@ public class AuthenticationController {
    }
 
    @PostMapping("/register")
-   public void register(@Valid @RequestBody AbstractPrincipal principal) {
+   public YouAppPrincipal register(
+         @Valid @RequestBody AbstractPrincipal principal) {
       try {
          YouAppPrincipal youAppPrincipal = YouAppPrincipal.from(principal);
          youAppPrincipal.setPassword(encryptionPasswordService
                .encryptPassword(principal.getPassword()));
-         minioService.upload(Base64.decode(principal.getPhoto()), "suffix.jpg",
-               "application/jpeg");
+         String base64photo = youAppPrincipal.getPhoto();
+         youAppPrincipal.setPhoto(null);
          principalRepository.save(youAppPrincipal);
+         youAppPrincipal.setPhoto(base64photo);
+         properties.getPostCreationTasks().parallelStream().forEach(Class -> {
+            AuthenticationTask task = context.getBean(Class);
+            task.setPrincipal(youAppPrincipal);
+            executorService.submit(task);
+         });
+         return youAppPrincipal;
       }
       catch (Exception e) {
          LOGGER.error("Failed to register, due: {}", e.getMessage());
@@ -81,9 +87,9 @@ public class AuthenticationController {
    @GetMapping(value = "/getFile", produces = MediaType.IMAGE_JPEG_VALUE)
    public byte[] getFile() {
       try {
-         var x = minioService
-               .getFile("566a1985-bcd3-45c6-bdd4-539e653d2607suffix.jpg");
-         return x;
+         // var x = minioService
+         // .getFile("566a1985-bcd3-45c6-bdd4-539e653d2607suffix.jpg");
+         return new byte[0];
       }
       catch (Exception e) {
          return null;

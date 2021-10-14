@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import sv.com.udb.components.minio.client.enums.ContentType;
 import sv.com.udb.components.minio.client.properties.MinioClientProperties;
 import sv.com.udb.components.minio.client.services.IMinioService;
 
@@ -24,8 +25,8 @@ public class DefaultMinioService implements IMinioService {
    private final MinioClientProperties properties;
 
    @Override
-   public JSONObject upload(byte[] byteArray, String suffix, String contentType)
-         throws Exception {
+   public JSONObject upload(byte[] byteArray, String suffix,
+         ContentType contentType) throws Exception {
       try (ByteArrayInputStream stream = new ByteArrayInputStream(byteArray)) {
          return upload(stream, suffix, (long) byteArray.length, contentType);
       }

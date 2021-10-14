@@ -25,4 +25,8 @@ public class MinioClientProperties {
    private String secretKey;
    @NotNull
    private String bucket;
+
+   public String getUri(String fileName) {
+      return String.format("%s/%s/%s", url, bucket, fileName);
+   }
 }
