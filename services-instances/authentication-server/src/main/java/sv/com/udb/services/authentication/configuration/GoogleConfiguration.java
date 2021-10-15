@@ -59,8 +59,9 @@ public class GoogleConfiguration {
    public IGoogleAuthenticationService googleService(
          GoogleIdTokenVerifier verifier, NetHttpTransport netTransport,
          JsonFactory jsonFactory, Credential credential,
-         AuthenticationProperties props) {
+         AuthenticationProperties props,
+         IPrincipalRepository repository) {
       return new DefaultGoogleAuthenticationService(verifier, netTransport,
-            jsonFactory, credential, props.getGoogle());
+            jsonFactory, credential, props.getGoogle(),repository);
    }
 }

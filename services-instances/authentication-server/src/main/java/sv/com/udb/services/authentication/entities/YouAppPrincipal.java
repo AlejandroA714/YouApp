@@ -109,6 +109,7 @@ public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
             .isActive(principal.isActive())
             .registrationType(OAuthRegistrationType
                   .from(principal.getOAuthRegistrationType()))
+            .registration(principal.getRegistration())
             .role(Role.from(principal.getRol()))
             .birthday(principal.getBirthday()).build();
    }

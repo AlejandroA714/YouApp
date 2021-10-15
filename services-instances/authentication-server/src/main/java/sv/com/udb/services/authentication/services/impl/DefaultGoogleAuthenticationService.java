@@ -11,9 +11,15 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
+import sv.com.udb.services.authentication.entities.GooglePrincipal;
+import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
+import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IGoogleAuthenticationService;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,16 +35,18 @@ public class DefaultGoogleAuthenticationService
    private final Credential                                   credential;
    @NonNull
    private final AuthenticationProperties.GoogleConfiguration properties;
+   @NonNull
+   private final IPrincipalRepository principalRepository;
 
    @Override
    public GoogleIdToken validateToken(GoogleAuthorizationRequest principal)
          throws InvalidTokenException {
       try {
          LOGGER.trace("Validando: {}", principal);
-         // GoogleIdToken token = verifier.verify(principal.getIdToken());
-         // if (token == null) throw new InvalidTokenException();
+         GoogleIdToken token = verifier.verify(principal.getIdToken());
+         //if (token == null) throw new InvalidTokenException();
          principal.setAuthenticated(true);
-         return null;
+         return token;
       }
       catch (Exception e) {
          LOGGER.error("Failed to validated token ", e);
@@ -47,9 +55,31 @@ public class DefaultGoogleAuthenticationService
    }
 
    @Override
+   public void registerIfNotExits(GoogleAuthorizationRequest authorizationRequest) {
+      var principal = authorizationRequest.getPrincipal();
+      LOGGER.info("Trying to register google user: {}",principal);
+      Optional<YouAppPrincipal> opt  = principalRepository.findById(principal.getId());
+      if(!opt.isPresent()){
+        var youprincipal = YouAppPrincipal.from(principal);
+        Person p = this.getPerson(authorizationRequest.getAccessToken());
+        if(null != p && null != p.getBirthdays()){
+           var birthday = p.getBirthdays().stream().findFirst();
+           if(birthday.isPresent()){
+              var date = birthday.get().getDate();
+              youprincipal.setBirthday(LocalDate.of(date.getYear(),date.getMonth(),date.getDay()));
+           }
+        }
+        principalRepository.save(youprincipal);
+        LOGGER.info("Google user: {} register",principal.getEmail());
+      }else
+         LOGGER.info("Google User already exits");
+   }
+
+   @Override
    public Person getPerson(String accessToken) {
       PeopleService peopleService;
       try {
+         LOGGER.trace("Trying to get Person...");
          credential.setAccessToken(accessToken);
          peopleService = new PeopleService(netTransport, jsonFactory,
                credential);
@@ -58,10 +88,10 @@ public class DefaultGoogleAuthenticationService
       }
       catch (Exception e) {
          LOGGER.error("Failed to recover fields from user google");
+         return null;
       }
       finally {
          peopleService = null;
       }
-      return null;
    }
 }

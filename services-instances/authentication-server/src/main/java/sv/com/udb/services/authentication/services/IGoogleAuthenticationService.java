@@ -9,5 +9,7 @@ public interface IGoogleAuthenticationService {
    GoogleIdToken validateToken(GoogleAuthorizationRequest principal)
          throws InvalidTokenException;
 
+   void registerIfNotExits(GoogleAuthorizationRequest principal);
+
    Person getPerson(String accessToken);
 }
