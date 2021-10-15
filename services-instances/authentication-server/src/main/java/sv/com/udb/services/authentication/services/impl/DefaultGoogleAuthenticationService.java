@@ -11,7 +11,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
-import sv.com.udb.services.authentication.entities.GooglePrincipal;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
@@ -36,7 +35,7 @@ public class DefaultGoogleAuthenticationService
    @NonNull
    private final AuthenticationProperties.GoogleConfiguration properties;
    @NonNull
-   private final IPrincipalRepository principalRepository;
+   private final IPrincipalRepository                         principalRepository;
 
    @Override
    public GoogleIdToken validateToken(GoogleAuthorizationRequest principal)
@@ -44,7 +43,7 @@ public class DefaultGoogleAuthenticationService
       try {
          LOGGER.trace("Validando: {}", principal);
          GoogleIdToken token = verifier.verify(principal.getIdToken());
-         //if (token == null) throw new InvalidTokenException();
+         // if (token == null) throw new InvalidTokenException();
          principal.setAuthenticated(true);
          return token;
       }
@@ -55,23 +54,27 @@ public class DefaultGoogleAuthenticationService
    }
 
    @Override
-   public void registerIfNotExits(GoogleAuthorizationRequest authorizationRequest) {
+   public void registerIfNotExits(
+         GoogleAuthorizationRequest authorizationRequest) {
       var principal = authorizationRequest.getPrincipal();
-      LOGGER.info("Trying to register google user: {}",principal);
-      Optional<YouAppPrincipal> opt  = principalRepository.findById(principal.getId());
-      if(!opt.isPresent()){
-        var youprincipal = YouAppPrincipal.from(principal);
-        Person p = this.getPerson(authorizationRequest.getAccessToken());
-        if(null != p && null != p.getBirthdays()){
-           var birthday = p.getBirthdays().stream().findFirst();
-           if(birthday.isPresent()){
-              var date = birthday.get().getDate();
-              youprincipal.setBirthday(LocalDate.of(date.getYear(),date.getMonth(),date.getDay()));
-           }
-        }
-        principalRepository.save(youprincipal);
-        LOGGER.info("Google user: {} register",principal.getEmail());
-      }else
+      LOGGER.info("Trying to register google user: {}", principal);
+      Optional<YouAppPrincipal> opt = principalRepository
+            .findById(principal.getId());
+      if (!opt.isPresent()) {
+         var youprincipal = YouAppPrincipal.from(principal);
+         Person p = this.getPerson(authorizationRequest.getAccessToken());
+         if (null != p && null != p.getBirthdays()) {
+            var birthday = p.getBirthdays().stream().findFirst();
+            if (birthday.isPresent()) {
+               var date = birthday.get().getDate();
+               youprincipal.setBirthday(LocalDate.of(date.getYear(),
+                     date.getMonth(), date.getDay()));
+            }
+         }
+         principalRepository.save(youprincipal);
+         LOGGER.info("Google user: {} register", principal.getEmail());
+      }
+      else
          LOGGER.info("Google User already exits");
    }
 

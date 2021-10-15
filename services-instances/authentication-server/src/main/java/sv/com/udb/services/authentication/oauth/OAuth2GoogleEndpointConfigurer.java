@@ -15,7 +15,7 @@ import sv.com.udb.services.authentication.services.impl.DefaultGoogleOAuth2Provi
 public class OAuth2GoogleEndpointConfigurer
       extends AbstractOAuth2ProviderConfigurer {
    private RequestMatcher requestMatcher;
-   private final String   TOKEN_ENDPOINT = "/v1/auth/google";
+   private final String   TOKEN_ENDPOINT = "/v1/auth/google/";
 
    public OAuth2GoogleEndpointConfigurer(
          ObjectPostProcessor<Object> objectPostProcessor) {

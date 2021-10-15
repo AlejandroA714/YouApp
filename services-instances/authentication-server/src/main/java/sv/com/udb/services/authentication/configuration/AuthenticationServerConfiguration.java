@@ -1,5 +1,6 @@
 package sv.com.udb.services.authentication.configuration;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -25,9 +26,9 @@ import sv.com.udb.services.authentication.properties.AuthenticationProperties;
 import sv.com.udb.services.authentication.repository.IEmailTokenRepository;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IAuthenticationService;
+import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 import sv.com.udb.services.authentication.services.impl.DefaultAuthenticationService;
 import sv.com.udb.services.authentication.services.impl.DefaultEncryptionPasswordService;
-import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -45,7 +46,8 @@ public class AuthenticationServerConfiguration {
 
    @Bean
    public ObjectMapper objectMapper() {
-      return new ObjectMapper().findAndRegisterModules();
+      return new ObjectMapper().findAndRegisterModules().configure(
+            DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
    }
 
    @Bean

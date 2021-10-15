@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 public interface Principal {
-
    String getId();
 
    String getEmail();
@@ -24,7 +23,7 @@ public interface Principal {
 
    boolean isActive();
 
-   default LocalDate getRegistration(){
+   default LocalDate getRegistration() {
       return LocalDate.now(ZoneId.of("GMT-06:00"));
    }
 

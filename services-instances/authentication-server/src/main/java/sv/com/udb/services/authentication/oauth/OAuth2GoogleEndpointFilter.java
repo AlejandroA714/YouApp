@@ -30,7 +30,7 @@ import java.io.IOException;
 
 @Slf4j
 public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
-   private static final String           DEFAULT_AUTHORIZATION_ENDPOINT_URI = "/v1/auth/google";
+   private static final String           DEFAULT_AUTHORIZATION_ENDPOINT_URI = "/v1/auth/google/";
    @NonNull
    private final AuthenticationManager   authenticationManager;
    @NonNull
@@ -72,14 +72,15 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
                .convert(request);
          OAuth2AccessTokenAuthenticationToken accessToken = (OAuth2AccessTokenAuthenticationToken) this.authenticationManager
                .authenticate(authorizationRequest);
-         filterChain.doFilter(request, response);
          sendResponse(HttpStatus.OK,
                objectMapper.writeValueAsString(accessToken.getAccessToken()),
                response);
+         return;
       }
       catch (OAuth2AuthenticationException e) {
          sendResponse(HttpStatus.BAD_REQUEST,
                objectMapper.writeValueAsString(e), response);
+         return;
       }
    }
 

@@ -1,22 +1,18 @@
 package sv.com.udb.services.authentication.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.validation.annotation.Validated;
 import sv.com.udb.services.authentication.enums.IPrivilege;
 import sv.com.udb.services.authentication.enums.IRole;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 @With
@@ -29,8 +25,6 @@ public class GoogleAuthorizationRequest implements Authentication {
    private String          idToken;
    @NotNull
    private String          accessToken;
-   @NotNull
-   private List<String>    scopes;
    @Valid
    @NotNull
    private GooglePrincipal principal;

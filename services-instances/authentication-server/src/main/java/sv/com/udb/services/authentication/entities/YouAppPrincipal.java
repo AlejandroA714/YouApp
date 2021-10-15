@@ -33,9 +33,6 @@ import java.util.stream.Stream;
                    exclude = { "roles", "registrationType", "emailTokens" })
 public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
    @Id
-   @GeneratedValue(generator = "uuid2")
-   @GenericGenerator(name = "uuid2",
-                     strategy = "org.hibernate.id.UUIDGenerator")
    private String                id;
    @Column(name = "registration_date")
    private LocalDate             registration;
@@ -99,6 +96,13 @@ public class YouAppPrincipal extends AbstractPrincipal implements UserDetails {
    @Override
    public boolean isActive() {
       return this.isActive;
+   }
+
+   @PrePersist
+   public void initializeUUID() {
+      if (id == null) {
+         id = UUID.randomUUID().toString();
+      }
    }
 
    public static YouAppPrincipal from(Principal principal) {
