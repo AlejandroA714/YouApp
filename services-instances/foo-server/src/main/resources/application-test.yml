@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 594103153319-gm26n3kirsecq2kfl52fsh2p5ejd09qp.apps.googleusercontent.com
+            client-secret: BXqcoWFDQogPDdoJQS1H3n_A
+            redirect-uri: "http://localhost:8081/login/oauth2/code/google"
+            client-name: google
+          youapp:
+            client-id: youapp
+            client-secret: 9d[?hr%[Y>w~nV3_
+            provider: spring
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope: openid
+            redirect-uri: "http://192.168.1.12:8081/login/oauth2/code/{registrationId}"
+            client-name: youapp
+        provider:
+          spring:
+            issuer-uri: http://auth-server:8083
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-server:8083
+
+logbook:
+  format:
+    style: http
+
+logging:
+  level:
+    org.springframework: TRACE
+    sv.com: TRACE
+    org.zalando.logbook: TRACE
