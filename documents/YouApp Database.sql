@@ -7,7 +7,51 @@
     registration_type varchar(64) not null unique
   );
 
-  insert into oauth_registration_type values (null,"YOUAPP"),(null,"GOOGLE"), (null,"OTHER");
+  CREATE TABLE oauth2_registered_client (
+    id varchar(100) NOT NULL,
+    client_id varchar(100) NOT NULL,
+    client_id_issued_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    client_secret varchar(512) DEFAULT NULL,
+    client_secret_expires_at timestamp DEFAULT NULL,
+    client_name varchar(200) NOT NULL,
+    client_authentication_methods varchar(1000) NOT NULL,
+    authorization_grant_types varchar(1000) NOT NULL,
+    redirect_uris varchar(1000) DEFAULT NULL,
+    scopes varchar(1000) NOT NULL,
+    client_settings varchar(2000) NOT NULL,
+    token_settings varchar(2000) NOT NULL,
+    PRIMARY KEY (id)
+  );
+
+  CREATE TABLE oauth2_authorization (
+    id varchar(100) NOT NULL,
+    registered_client_id varchar(100) NOT NULL,
+    principal_name varchar(200) NOT NULL,
+    authorization_grant_type varchar(100) NOT NULL,
+    attributes varchar(4000) DEFAULT NULL,
+    state varchar(500) DEFAULT NULL,
+    authorization_code_value blob DEFAULT NULL,
+    authorization_code_issued_at timestamp DEFAULT NULL,
+    authorization_code_expires_at timestamp DEFAULT NULL,
+    authorization_code_metadata varchar(2000) DEFAULT NULL,
+    access_token_value blob DEFAULT NULL,
+    access_token_issued_at timestamp DEFAULT NULL,
+    access_token_expires_at timestamp DEFAULT NULL,
+    access_token_metadata varchar(2000) DEFAULT NULL,
+    access_token_type varchar(100) DEFAULT NULL,
+    access_token_scopes varchar(1000) DEFAULT NULL,
+    oidc_id_token_value blob DEFAULT NULL,
+    oidc_id_token_issued_at timestamp DEFAULT NULL,
+    oidc_id_token_expires_at timestamp DEFAULT NULL,
+    oidc_id_token_metadata varchar(2000) DEFAULT NULL,
+    refresh_token_value blob DEFAULT NULL,
+    refresh_token_issued_at timestamp DEFAULT NULL,
+    refresh_token_expires_at timestamp DEFAULT NULL,
+    refresh_token_metadata varchar(2000) DEFAULT NULL,
+    PRIMARY KEY (id)
+  );
+
+  insert into oauth2_registration_type values (null,"YOUAPP"),(null,"GOOGLE"), (null,"OTHER");
 
   create table role(
     id int primary key auto_increment,
@@ -26,8 +70,10 @@
   create table roles_privileges(
     role_id int,
     privilege_id int,
-    foreign key(role_id) references role(id),
+    foreign key(role_id) references role(id) 
+    ON DELETE CASCADE,
     foreign key(privilege_id) references privilege(id)
+    ON DELETE CASCADE
   );
 
   insert into roles_privileges values (1,1),(1,2),(1,3),(3,1);
@@ -45,7 +91,7 @@
       registration_date date null,
       email_confirmed boolean default false,
       registration_type_id int not null, 
-      foreign key(registration_type_id) references oauth_registration_type(id) 
+      foreign key(registration_type_id) references oauth2_registration_type(id) 
   );
 
   DELIMITER $$
@@ -77,6 +123,7 @@
     foreign key(user_id) references user(id)
     ON DELETE CASCADE,
     foreign key(role_id) references role(id)
+    ON DELETE CASCADE
   );
 
   insert into users_roles values((SELECT (id) FROM user limit 1) ,1);

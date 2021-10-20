@@ -6,26 +6,28 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Valid
 @Builder
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "email_token")
-public class EmailToken {
+@ToString(exclude = "user")
+public class EmailToken implements Serializable {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Integer         id;
+   private Integer           id;
    @Column(nullable = false, length = 48)
-   private String          token;
+   private String            token;
    @Column(name = "expiration_date", nullable = false)
-   private LocalDateTime   expiration;
+   private LocalDateTime     expiration;
    @ManyToOne
    @JsonBackReference
    @JoinColumn(name = "user_id", referencedColumnName = "id")
-   private YouAppPrincipal user;
+   private YouAppPrincipal   user;
+   private static final long serialVersionUID = -3616737586508310768L;
 }

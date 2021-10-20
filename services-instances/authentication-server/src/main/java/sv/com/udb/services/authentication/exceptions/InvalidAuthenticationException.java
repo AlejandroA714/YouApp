@@ -1,7 +1,7 @@
 package sv.com.udb.services.authentication.exceptions;
 
 import org.springframework.security.core.AuthenticationException;
-import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
+import sv.com.udb.services.authentication.models.GoogleAuthorizationRequest;
 
 public class InvalidAuthenticationException extends AuthenticationException {
    public InvalidAuthenticationException(Throwable cause) {

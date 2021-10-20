@@ -4,19 +4,31 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import sv.com.udb.services.authentication.enums.IRole;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "role")
-@ToString(exclude = { "principals", "privileges" })
-@EqualsAndHashCode(exclude = { "principals", "privileges" })
-public class Role {
+@ToString(exclude = { "privileges", "principals" })
+@EqualsAndHashCode(exclude = { "privileges", "principals" })
+@NamedEntityGraphs({
+      @NamedEntityGraph(name = "roles_privileges",
+                        attributeNodes = @NamedAttributeNode(value = "privileges")),
+      @NamedEntityGraph(name = "roles_principals",
+                        attributeNodes = {
+                              @NamedAttributeNode(value = "principals"),
+                              @NamedAttributeNode(value = "privileges") }) })
+public class Role implements Serializable {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    private Integer                     id;
@@ -27,14 +39,15 @@ public class Role {
    @ManyToMany(mappedBy = "roles")
    private Collection<YouAppPrincipal> principals;
    @Singular
+   @ManyToMany
    @JsonManagedReference
-   @ManyToMany(fetch = FetchType.EAGER)
    @JoinTable(name = "roles_privileges",
               joinColumns = @JoinColumn(name = "role_id",
                                         referencedColumnName = "id"),
               inverseJoinColumns = @JoinColumn(name = "privilege_id",
                                                referencedColumnName = "id"))
-   private Collection<Privilege>       privileges;
+   private Set<Privilege>              privileges;
+   private static final long           serialVersionUID = -1076892611352691032L;
 
    public static Role from(IRole role) {
       return Role.builder().id(role.getPrimaryKey()).name(role).build();

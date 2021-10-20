@@ -10,9 +10,10 @@ import com.google.api.services.people.v1.model.Person;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
+import sv.com.udb.services.authentication.models.GoogleAuthorizationRequest;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
+import sv.com.udb.services.authentication.models.GooglePrincipal;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IGoogleAuthenticationService;
@@ -54,12 +55,12 @@ public class DefaultGoogleAuthenticationService
    }
 
    @Override
-   public void registerIfNotExits(
+   public GooglePrincipal registerIfNotExits(
          GoogleAuthorizationRequest authorizationRequest) {
       var principal = authorizationRequest.getPrincipal();
       LOGGER.info("Trying to register google user: {}", principal);
       Optional<YouAppPrincipal> opt = principalRepository
-            .findById(principal.getId());
+            .findByIdWithRoles(principal.getId());
       if (!opt.isPresent()) {
          var youprincipal = YouAppPrincipal.from(principal);
          Person p = this.getPerson(authorizationRequest.getAccessToken());
@@ -73,9 +74,13 @@ public class DefaultGoogleAuthenticationService
          }
          principalRepository.save(youprincipal);
          LOGGER.info("Google user: {} register", principal.getEmail());
+         principal.setAuthorities(youprincipal.getAuthorities());
       }
-      else
+      else {
          LOGGER.info("Google User already exits");
+         principal.setAuthorities(opt.get().getAuthorities());
+      }
+      return principal;
    }
 
    @Override

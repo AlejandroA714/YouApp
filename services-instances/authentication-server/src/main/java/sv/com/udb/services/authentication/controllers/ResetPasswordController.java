@@ -14,6 +14,7 @@ import sv.com.udb.services.authentication.exceptions.PrincipalDoesNotExist;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class ResetPasswordController {
          if (!_principal.isPresent()) throw new PrincipalDoesNotExist(email);
          YouAppPrincipal principal = _principal.get();
          String passwd = passwordService.generateRandomPassword(12);
-         Map<String, Object> props = principal.getFields();
+         Map<String, Object> props = new HashMap<>();
          props.put(NEW_PASS, passwd);
          emailService.sendMail(MailType.RECOVER_PASWORD, principal.getEmail(),
                props);

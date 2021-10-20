@@ -14,6 +14,7 @@ import sv.com.udb.services.authentication.repository.IEmailTokenRepository;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,7 +43,7 @@ public class SendEmailTask implements AuthenticationTask {
                      LocalDateTime.now(ZoneId.of("GMT-06:00")).plusHours(1))
                .user(principal).build();
          tokenRepository.save(token);
-         Map<String, Object> props = principal.getFields();
+         Map<String, Object> props = new HashMap<>();
          props.put("TOKEN", token.getToken());
          emailService.sendMail(MailType.CONFIRM_MAIL, principal.getEmail(),
                props);

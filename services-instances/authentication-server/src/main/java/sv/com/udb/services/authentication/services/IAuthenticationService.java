@@ -1,9 +1,7 @@
 package sv.com.udb.services.authentication.services;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import sv.com.udb.services.authentication.entities.AbstractPrincipal;
-import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
+import sv.com.udb.services.authentication.models.AbstractPrincipal;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 

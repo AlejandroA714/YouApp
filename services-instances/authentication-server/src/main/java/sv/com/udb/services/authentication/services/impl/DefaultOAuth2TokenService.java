@@ -2,6 +2,7 @@ package sv.com.udb.services.authentication.services.impl;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
@@ -39,20 +40,21 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public class DefaultOAuth2TokenService implements IOAuth2TokenService {
    @NonNull
-   private final RegisteredClientRepository                clientRepository;
+   private final RegisteredClientRepository          clientRepository;
    @NonNull
-   private final ProviderSettings                          providerSettings;
+   private final ProviderSettings                    providerSettings;
    @NonNull
-   private final OAuth2AuthorizationService                authorizationService;
+   private final OAuth2AuthorizationService          authorizationService;
    @NonNull
-   private final JwtEncoder                                jwtEncoder;
-   private final OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer                   = (
+   private final JwtEncoder                          jwtEncoder;
+   @Setter
+   private OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer                   = (
          context) -> {
-                                                                                           };
-   private static final StringKeyGenerator                 DEFAULT_REFRESH_TOKEN_GENERATOR = new Base64StringKeyGenerator(
+                                                                                     };
+   private static final StringKeyGenerator           DEFAULT_REFRESH_TOKEN_GENERATOR = new Base64StringKeyGenerator(
          Base64.getUrlEncoder().withoutPadding(), 96);
-   private Supplier<String>                                refreshTokenGenerator           = DEFAULT_REFRESH_TOKEN_GENERATOR::generateKey;
-   private final String                                    CLIENT_ID                       = "youapp";
+   private Supplier<String>                          refreshTokenGenerator           = DEFAULT_REFRESH_TOKEN_GENERATOR::generateKey;
+   private final String                              CLIENT_ID                       = "youapp";
 
    @Override
    public OAuth2AccessTokenAuthenticationToken getAcessToken(

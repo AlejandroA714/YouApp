@@ -1,6 +1,7 @@
 package sv.com.udb.services.authentication.configuration;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -8,19 +9,29 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.jackson2.SecurityJackson2Modules;
+import org.springframework.security.oauth2.core.OAuth2TokenType;
+import org.springframework.security.oauth2.server.authorization.*;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository.RegisteredClientParametersMapper;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import sv.com.udb.services.authentication.jackson.OAuthProviderSecurityModule;
+import sv.com.udb.services.authentication.models.Principal;
 import sv.com.udb.services.authentication.oauth.OAuth2ProviderConfigurer;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
 import sv.com.udb.services.authentication.repository.IEmailTokenRepository;
@@ -30,12 +41,17 @@ import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 import sv.com.udb.services.authentication.services.impl.DefaultAuthenticationService;
 import sv.com.udb.services.authentication.services.impl.DefaultEncryptionPasswordService;
 
-import java.util.UUID;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 @Configuration(proxyBeanMethods = false)
 public class AuthenticationServerConfiguration {
+   private static final String AUTHORITIES_CLAIM = "authorities";
+   private static final String UUID_CLAIM        = "id";
+
    @Bean
    @Order(Ordered.HIGHEST_PRECEDENCE)
    public SecurityFilterChain authorizationServerSecurityFilterChain(
@@ -45,9 +61,24 @@ public class AuthenticationServerConfiguration {
    }
 
    @Bean
+   public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+      return context -> {
+         if (context.getTokenType().getValue()
+               .equals(OAuth2TokenType.ACCESS_TOKEN.getValue())) {
+            Authentication principal = context.getPrincipal();
+            Set<String> authorities = principal.getAuthorities().stream()
+                  .map(GrantedAuthority::getAuthority)
+                  .collect(Collectors.toSet());
+            context.getClaims().claim(AUTHORITIES_CLAIM, authorities);
+         }
+      };
+   }
+
+   @Bean
    public ObjectMapper objectMapper() {
-      return new ObjectMapper().findAndRegisterModules().configure(
+      var mapper = new ObjectMapper().findAndRegisterModules().configure(
             DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      return mapper;
    }
 
    @Bean
@@ -63,7 +94,7 @@ public class AuthenticationServerConfiguration {
    }
 
    @Bean
-   @ConfigurationProperties("auth")
+   @ConfigurationProperties("app.auth")
    public AuthenticationProperties authProperties() {
       return new AuthenticationProperties();
    }
@@ -86,19 +117,35 @@ public class AuthenticationServerConfiguration {
    }
 
    @Bean
+   public RegisteredClientParametersMapper parametersMapper(
+         IEncryptionPasswordService passwordService) {
+      var parametersMapper = new RegisteredClientParametersMapper();
+      parametersMapper.setPasswordEncoder(passwordService);
+      return parametersMapper;
+   }
+
+   @Bean
    public RegisteredClientRepository registeredClientRepository(
-         AuthenticationProperties authProperties, TokenSettings tokenSettings) {
-      RegisteredClient registeredClient = RegisteredClient
-            .withId(UUID.randomUUID().toString())
-            .clientId(authProperties.getClient().getClientId())
-            .clientSecret(authProperties.getClient().getClientSecret())
-            .clientAuthenticationMethods(ca -> ca.addAll(
-                  authProperties.getClient().getAuthenticationMethods()))
-            .authorizationGrantTypes(
-                  gt -> gt.addAll(authProperties.getClient().getGrantTypes()))
-            .redirectUris(uris -> uris.addAll(authProperties.getRedirectUris()))
-            .scope(OidcScopes.OPENID).tokenSettings(tokenSettings).build();
-      return new InMemoryRegisteredClientRepository(registeredClient);
+         AuthenticationProperties properties, TokenSettings tokenSettings,
+         JdbcTemplate jdbcTemplate,
+         RegisteredClientParametersMapper parametersMapper) {
+      JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(
+            jdbcTemplate);
+      registeredClientRepository
+            .setRegisteredClientParametersMapper(parametersMapper);
+      properties.getClients().forEach(c -> {
+         RegisteredClient registeredClient = RegisteredClient.withId(c.getId())
+               .clientId(c.getClientId()).clientName(c.getClientName())
+               .clientSecret(c.getClientSecret())
+               .clientAuthenticationMethods(
+                     ca -> ca.addAll(c.getAuthenticationMethods()))
+               .authorizationGrantTypes(gt -> gt.addAll(c.getGrantTypes()))
+               .redirectUris(uris -> uris.addAll(c.getRedirectUris()))
+               .scopes(s -> s.addAll(c.getScopes()))
+               .tokenSettings(tokenSettings).build();
+         registeredClientRepository.save(registeredClient);
+      });
+      return registeredClientRepository;
    }
 
    @Bean
@@ -123,4 +170,36 @@ public class AuthenticationServerConfiguration {
             .apply(googleProviderConfigurer);
       http.apply(authorizationServerConfigurer);
    }
+
+   @Bean
+   public RowMapper<OAuth2Authorization> rowMapper(
+         RegisteredClientRepository registeredClientRepository) {
+      var rowMapper = new JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper(
+            registeredClientRepository);
+      ObjectMapper objectMapper = new ObjectMapper();
+      ClassLoader classLoader = JdbcOAuth2AuthorizationService.class
+            .getClassLoader();
+      List<Module> securityModules = SecurityJackson2Modules
+            .getModules(classLoader);
+      objectMapper.registerModules(securityModules);
+      objectMapper
+            .registerModule(new OAuth2AuthorizationServerJackson2Module());
+      objectMapper.registerModule(new OAuthProviderSecurityModule());
+      rowMapper.setObjectMapper(objectMapper);
+      return rowMapper;
+   }
+
+   @Bean
+   public OAuth2AuthorizationService authorizationService(
+         JdbcTemplate jdbcTemplate,
+         RegisteredClientRepository registeredClientRepository,
+         RowMapper<OAuth2Authorization> mapper) {
+      var d = new JdbcOAuth2AuthorizationService(jdbcTemplate,
+            registeredClientRepository);
+      d.setAuthorizationRowMapper(mapper);
+      return d;
+   }
 }
+/*
+ * Uses of jdbc authorization service not retrives principal properly
+ */

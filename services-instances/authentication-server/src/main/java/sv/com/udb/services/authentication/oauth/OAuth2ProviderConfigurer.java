@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.server.authorization.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenCustomizer;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
@@ -36,11 +39,15 @@ public class OAuth2ProviderConfigurer<B extends HttpSecurityBuilder<B>>
 
    @Override
    public void init(B builder) {
+      OAuth2ConfigurerUtils.getBean(builder, OAuth2TokenCustomizer.class);
       IOAuth2TokenService tokenService = new DefaultOAuth2TokenService(
             OAuth2ConfigurerUtils.getRegisteredClientRepository(builder),
             OAuth2ConfigurerUtils.getBean(builder, ProviderSettings.class),
             OAuth2ConfigurerUtils.getAuthorizationService(builder),
             OAuth2ConfigurerUtils.getJwtEncoder(builder));
+      OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer = OAuth2ConfigurerUtils
+            .getJwtCustomizer(builder);
+      if (jwtCustomizer != null) tokenService.setJwtCustomizer(jwtCustomizer);
       OAuth2ConfigurerUtils.IOAuth2TokenService(builder, tokenService);
       this.configurers.values().forEach(configurer -> configurer.init(builder));
       ExceptionHandlingConfigurer<B> exceptionHandling = builder

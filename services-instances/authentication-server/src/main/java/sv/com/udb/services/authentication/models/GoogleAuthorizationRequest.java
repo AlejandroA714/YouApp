@@ -1,4 +1,4 @@
-package sv.com.udb.services.authentication.entities;
+package sv.com.udb.services.authentication.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import sv.com.udb.services.authentication.enums.IPrivilege;
 import sv.com.udb.services.authentication.enums.IRole;
+import sv.com.udb.services.authentication.models.GooglePrincipal;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -15,28 +16,25 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @Getter
-@With
 @ToString
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 public class GoogleAuthorizationRequest implements Authentication {
    @NotNull
-   private String          idToken;
+   private String            idToken;
    @NotNull
-   private String          accessToken;
+   private String            accessToken;
    @Valid
    @NotNull
-   private GooglePrincipal principal;
+   private GooglePrincipal   principal;
    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   private boolean         authenticated;
-   private String          serverAuthCode;
+   private boolean           authenticated;
+   private String            serverAuthCode;
+   private static final long serialVersionUID = 8172113494027008843L;
 
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return Arrays.asList(
-            new SimpleGrantedAuthority(IRole.ROLE_USER.toString()),
-            new SimpleGrantedAuthority(IPrivilege.READ_PRIVILEGE.toString()));
+      return principal.getAuthorities();
    }
 
    @Override

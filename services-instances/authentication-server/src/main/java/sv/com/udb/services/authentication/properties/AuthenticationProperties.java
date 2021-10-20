@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.validation.annotation.Validated;
 import sv.com.udb.services.authentication.task.AuthenticationTask;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -25,9 +24,7 @@ public class AuthenticationProperties {
    @NotNull
    private GoogleConfiguration                       google;
    @NotNull
-   private ClientConfiguration                       client;
-   @NotNull
-   private List<String>                              redirectUris;
+   private List<ClientConfiguration>                 clients;
    @NotNull
    private String                                    roleHierarchy;
    private List<Class<? extends AuthenticationTask>> postCreationTasks = new ArrayList<>();
@@ -37,13 +34,21 @@ public class AuthenticationProperties {
    @AllArgsConstructor
    public static class ClientConfiguration {
       @NotNull
-      private String                           ClientId;
+      private String                           id;
       @NotNull
-      private String                           ClientSecret;
+      private String                           clientId;
       @NotNull
-      private List<ClientAuthenticationMethod> AuthenticationMethods;
+      private String                           clientName;
       @NotNull
-      private List<AuthorizationGrantType>     GrantTypes;
+      private String                           clientSecret;
+      @NotNull
+      private List<ClientAuthenticationMethod> authenticationMethods;
+      @NotNull
+      private List<AuthorizationGrantType>     grantTypes;
+      @NotNull
+      private List<String>                     scopes;
+      @NotNull
+      private List<String>                     redirectUris;
    }
 
    @Data

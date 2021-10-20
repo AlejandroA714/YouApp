@@ -20,7 +20,7 @@ import org.springframework.security.web.util.matcher.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
-import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
+import sv.com.udb.services.authentication.models.GoogleAuthorizationRequest;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

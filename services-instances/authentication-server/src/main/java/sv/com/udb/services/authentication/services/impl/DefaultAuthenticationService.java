@@ -4,14 +4,11 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
-import sv.com.udb.services.authentication.entities.AbstractPrincipal;
+import org.springframework.transaction.annotation.Transactional;
+import sv.com.udb.services.authentication.models.AbstractPrincipal;
 import sv.com.udb.services.authentication.entities.EmailToken;
-import sv.com.udb.services.authentication.entities.GoogleAuthorizationRequest;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
@@ -19,7 +16,6 @@ import sv.com.udb.services.authentication.repository.IEmailTokenRepository;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IAuthenticationService;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
-import sv.com.udb.services.authentication.services.IGoogleOAuth2Provider;
 import sv.com.udb.services.authentication.task.AuthenticationTask;
 
 import java.time.LocalDateTime;
@@ -44,13 +40,14 @@ public class DefaultAuthenticationService implements IAuthenticationService {
    private final IEmailTokenRepository      tokenRepository;
 
    @Override
+   @Transactional
    public UserDetails loadUserByUsername(String s)
          throws UsernameNotFoundException {
-      Optional<YouAppPrincipal> u = principalRepository.findByUsernameOrEmail(s,
-            s);
+      Optional<YouAppPrincipal> u = principalRepository
+            .findByUsernameOrEmail(s);
       if (!u.isPresent())
          throw new UsernameNotFoundException(s + " could not be found");
-      return u.get();
+      return AbstractPrincipal.from(u.get());
    }
 
    @Override
