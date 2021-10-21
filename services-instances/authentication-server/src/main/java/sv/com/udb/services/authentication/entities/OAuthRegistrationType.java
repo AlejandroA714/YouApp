@@ -14,10 +14,10 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "oauth_registration_type")
+@Entity(name = "oauth2_registration_type")
 @EqualsAndHashCode(exclude = { "registrations" })
 @ToString(callSuper = true, exclude = { "registrations" })
-@NamedEntityGraph(name = "oauth_registration",
+@NamedEntityGraph(name = "oauth2_registration",
                   attributeNodes = @NamedAttributeNode(value = "registrations"))
 public class OAuthRegistrationType implements Serializable {
    @Id

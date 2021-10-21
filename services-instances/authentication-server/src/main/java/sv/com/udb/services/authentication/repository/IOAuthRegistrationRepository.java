@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface IOAuthRegistrationRepository
       extends JpaRepository<OAuthRegistrationType, Integer> {
-   @Query("SELECT o FROM oauth_registration_type o")
-   @EntityGraph(value = "oauth_registration",
+   @Query("SELECT o FROM oauth2_registration_type o")
+   @EntityGraph(value = "oauth2_registration",
                 type = EntityGraph.EntityGraphType.LOAD)
    List<OAuthRegistrationType> findAllWithPrincipal();
 }

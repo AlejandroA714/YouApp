@@ -2,7 +2,7 @@
 
   use youapp;
 
-  create table oauth_registration_type(
+  create table oauth2_registration_type(
     id int primary key auto_increment,
     registration_type varchar(64) not null unique
   );
@@ -71,9 +71,9 @@
     role_id int,
     privilege_id int,
     foreign key(role_id) references role(id) 
-    ON DELETE CASCADE,
+    ON DELETE CASCADE ON UPDATE CASCADE,
     foreign key(privilege_id) references privilege(id)
-    ON DELETE CASCADE
+    ON UPDATE CASCADE ON DELETE CASCADE 
   );
 
   insert into roles_privileges values (1,1),(1,2),(1,3),(3,1);
@@ -114,29 +114,19 @@
     expiration_date timestamp not null,
     user_id varchar(56),
     foreign key(user_id) references user(id)
-    ON DELETE CASCADE
+    ON UPDATE CASCADE ON DELETE CASCADE 
   );
 
   create table users_roles(
     user_id varchar(56),
     role_id int,
     foreign key(user_id) references user(id)
-    ON DELETE CASCADE,
+    ON UPDATE CASCADE ON DELETE CASCADE,
     foreign key(role_id) references role(id)
-    ON DELETE CASCADE
+    ON UPDATE CASCADE ON DELETE CASCADE
   );
 
   insert into users_roles values((SELECT (id) FROM user limit 1) ,1);
-
-  create table artist(
-      id int primary key auto_increment,
-      photo blob,
-      age int,
-      descripction varchar(512),
-      user_id varchar(56) not null unique ,
-      foreign key (user_id) references user(id) 
-      ON DELETE CASCADE
-  );
 
   create table genre(
       id int primary key auto_increment,
@@ -150,8 +140,8 @@
       song_url varchar(256) not null ,
       genre_id int,
       foreign key (genre_id) references genre(id),
-      artist_id int,
-      foreign key (artist_id) references artist(id)
+      user_id varchar(56),
+      foreign key (user_id) references user(id)
   );
 
   create table favorites(
@@ -184,8 +174,8 @@
       duration time,
       genre_id int,
       foreign key (genre_id) references genre(id),
-      artist_id int,
-      foreign key (artist_id) references artist(id)
+      user_id varchar(56),
+      foreign key (user_id) references user(id)
   );
 
   create table album_songs(

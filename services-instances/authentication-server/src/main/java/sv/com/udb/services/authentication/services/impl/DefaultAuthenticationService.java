@@ -18,6 +18,7 @@ import sv.com.udb.services.authentication.services.IAuthenticationService;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 import sv.com.udb.services.authentication.task.AuthenticationTask;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
@@ -56,13 +57,12 @@ public class DefaultAuthenticationService implements IAuthenticationService {
       YouAppPrincipal youAppPrincipal = YouAppPrincipal.from(principal);
       youAppPrincipal.setPassword(
             encryptionPasswordService.encryptPassword(principal.getPassword()));
-      String base64photo = youAppPrincipal.getPhoto();
       youAppPrincipal.setPhoto(null);
+      youAppPrincipal.setRegistration(LocalDate.now(ZoneId.of("GMT-06:00")));
       principalRepository.save(youAppPrincipal);
-      youAppPrincipal.setPhoto(base64photo);
       properties.getPostCreationTasks().parallelStream().forEach(Class -> {
          AuthenticationTask task = context.getBean(Class);
-         task.setPrincipal(youAppPrincipal);
+         task.setPrincipal(principal);
          executorService.submit(task);
       });
       return youAppPrincipal;

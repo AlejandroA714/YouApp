@@ -3,6 +3,7 @@ package sv.com.udb.services.authentication.configuration;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ import org.springframework.security.oauth2.server.authorization.config.ProviderS
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import sv.com.udb.services.authentication.jackson.OAuthProviderSecurityModule;
 import sv.com.udb.services.authentication.models.Principal;
@@ -40,6 +42,7 @@ import sv.com.udb.services.authentication.services.IAuthenticationService;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 import sv.com.udb.services.authentication.services.impl.DefaultAuthenticationService;
 import sv.com.udb.services.authentication.services.impl.DefaultEncryptionPasswordService;
+import sv.com.udb.youapp.services.filter.FilterChainExceptionHandler;
 
 import java.util.List;
 import java.util.Set;
@@ -49,14 +52,17 @@ import java.util.stream.Collectors;
 
 @Configuration(proxyBeanMethods = false)
 public class AuthenticationServerConfiguration {
-   private static final String AUTHORITIES_CLAIM = "authorities";
-   private static final String UUID_CLAIM        = "id";
+   private static final String         AUTHORITIES_CLAIM = "authorities";
+   private static final String         UUID_CLAIM        = "id";
+   @Autowired
+   private FilterChainExceptionHandler filterChainExceptionHandler;
 
    @Bean
    @Order(Ordered.HIGHEST_PRECEDENCE)
    public SecurityFilterChain authorizationServerSecurityFilterChain(
          HttpSecurity http) throws Exception {
       applyCustomSecurity(http);
+      http.addFilterBefore(filterChainExceptionHandler, LogoutFilter.class);
       return http.formLogin(Customizer.withDefaults()).csrf().disable().build();
    }
 

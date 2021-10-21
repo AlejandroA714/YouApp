@@ -10,9 +10,11 @@ import org.springframework.stereotype.Component;
 import sv.com.udb.components.minio.client.enums.ContentType;
 import sv.com.udb.components.minio.client.services.IMinioService;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
+import sv.com.udb.services.authentication.models.Principal;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 
 import java.time.*;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -23,10 +25,10 @@ public class UploadPhotoTask implements AuthenticationTask {
    private final IMinioService        minioService;
    @NonNull
    private final IPrincipalRepository principalRepository;
-   private YouAppPrincipal            principal;
+   private Principal                  principal;
 
    @Override
-   public void setPrincipal(YouAppPrincipal principal) {
+   public void setPrincipal(Principal principal) {
       this.principal = principal;
    }
 
@@ -38,9 +40,14 @@ public class UploadPhotoTask implements AuthenticationTask {
          byte[] byteArray = Base64.decode(principal.getPhoto());
          var response = minioService.upload(byteArray, "",
                ContentType.IMAGE_JPEG);
-         principal.setPhoto(response.get(minioService.FILE_NAME).toString());
-         principal.setRegistration(LocalDate.now(ZoneId.of("GMT-06:00")));
-         principalRepository.save(principal);
+         var p = principalRepository.findById(principal.getId());
+         if (!p.isPresent()) {
+            LOGGER.error("User not exist in db with id: {}", principal.getId());
+            return;
+         }
+         var youapp = p.get();
+         youapp.setPhoto(response.get(minioService.FILE_NAME).toString());
+         principalRepository.save(youapp);
       }
       catch (Exception e) {
          LOGGER.info("Failed to upload user image, due: {}", e.getMessage());

@@ -1,19 +1,16 @@
 package sv.com.udb.services.authentication.exceptions;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.server.ResponseStatusException;
 import sv.com.udb.services.authentication.models.GoogleAuthorizationRequest;
 
-public class InvalidAuthenticationException extends AuthenticationException {
+public class InvalidAuthenticationException extends ResponseStatusException {
    public InvalidAuthenticationException(Throwable cause) {
-      super(cause.getMessage(), cause);
+      super(HttpStatus.BAD_REQUEST, "Failed to login with google", cause);
    }
 
-   public InvalidAuthenticationException(String msg, Throwable cause) {
-      super(msg, cause);
-   }
-
-   public InvalidAuthenticationException(Class<?> tClass) {
-      super(String.format("%s is not assignable from %s", tClass,
-            GoogleAuthorizationRequest.class));
+   public InvalidAuthenticationException(String message, Throwable cause) {
+      super(HttpStatus.BAD_REQUEST, message, cause);
    }
 }

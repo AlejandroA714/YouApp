@@ -77,10 +77,8 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
                response);
          return;
       }
-      catch (OAuth2AuthenticationException e) {
-         sendResponse(HttpStatus.BAD_REQUEST,
-               objectMapper.writeValueAsString(e), response);
-         return;
+      catch (Exception e) {
+         throw e;
       }
    }
 
@@ -93,8 +91,8 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
          response.getOutputStream().print(body);
       }
       catch (Exception e) {
-         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-               "Failed to read");
+         throw new ResponseStatusException(status,
+               "Failed to login with google", e.getCause());
       }
    }
 

@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.UUID;
 
 @Data
 @SuperBuilder
@@ -40,13 +41,11 @@ public class AbstractPrincipal implements Principal {
    @Column(length = 512)
    protected String                               photo;
    @Transient
-   // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-   private String                                 id;
+   private String                                 id = UUID.randomUUID()
+         .toString();
    @Transient
-   // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
    private Collection<? extends GrantedAuthority> authorities;
    @Transient
-   // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
    private boolean                                active;
 
    @Override

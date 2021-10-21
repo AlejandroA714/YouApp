@@ -12,6 +12,7 @@ import sv.com.udb.services.authentication.models.AbstractPrincipal;
 import sv.com.udb.services.authentication.models.Principal;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,16 +30,19 @@ import java.util.stream.Collectors;
                   subgraphs = @NamedSubgraph(name = "user_role_privileges",
                                              attributeNodes = @NamedAttributeNode(value = "privileges")))
 public class YouAppPrincipal extends AbstractPrincipal {
-   private static final long     serialVersionUID = 7389128175350348769L;
+   private static final long      serialVersionUID = 7389128175350348769L;
    @Id
-   private String                id;
+   private String                 id;
    @Column(name = "registration_date")
-   private LocalDate             registration;
+   private LocalDate              registration;
    @Column(name = "email_confirmed")
-   private Boolean               isActive;
+   private Boolean                isActive;
    @ManyToOne
    @JsonManagedReference
-   private OAuthRegistrationType registrationType;
+   private OAuthRegistrationType  registrationType;
+   @JsonManagedReference
+   @OneToMany(mappedBy = "user")
+   private Collection<EmailToken> emailTokens;
    @Singular
    @ManyToMany
    @JsonManagedReference
@@ -47,7 +51,7 @@ public class YouAppPrincipal extends AbstractPrincipal {
                                         referencedColumnName = "id"),
               inverseJoinColumns = @JoinColumn(name = "role_id",
                                                referencedColumnName = "id"))
-   private Set<Role>             roles;
+   private Set<Role>              roles;
 
    @PrePersist
    public void initializeUUID() {

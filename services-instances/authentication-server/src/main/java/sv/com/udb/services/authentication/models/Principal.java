@@ -44,22 +44,13 @@ public interface Principal extends UserDetails {
       return IRole.ROLE_USER;
    }
 
-   default Map<String, Object> fields() {
-      Map<String, Object> cFields = new HashMap<>();
-      List<Method> methods = Arrays.stream(this.getClass().getDeclaredMethods())
-            .filter(m -> m.getName().startsWith("get"))
-            .collect(Collectors.toList());
-      methods.forEach(m -> {
-         String name = m.getName().substring(3);
-         try {
-            Object value = m.invoke(this);
-            cFields.put(name, value);
-         }
-         catch (Exception e) {
-            cFields.put(name, null);
-         }
-      });
-      return cFields;
+   default Map<String, Object> getSummary() {
+      var map = new HashMap<String, Object>();
+      map.putAll(Map.of("id", getId(), "nombres", getNombres(), "apellidos",
+            getApellidos(), "fullname", getFullName(), "email", getEmail(),
+            "username", getUsername(), "birthday", getBirthday(), "photo",
+            getPhoto()));
+      return map;
    }
 
    @Override
