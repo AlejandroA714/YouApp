@@ -66,7 +66,7 @@ public class DebugController {
    @GetMapping("/users")
    public List<String> getUsers() {
       return principalRepository.findAllWithRoles().stream()
-              .map(x -> x.toString()).collect(Collectors.toList());
+            .map(x -> x.toString()).collect(Collectors.toList());
    }
 
    @GetMapping("/roles")

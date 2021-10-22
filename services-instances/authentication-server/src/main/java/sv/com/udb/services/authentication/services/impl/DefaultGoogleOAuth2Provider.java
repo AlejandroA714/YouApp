@@ -28,8 +28,7 @@ public class DefaultGoogleOAuth2Provider implements IGoogleOAuth2Provider {
          GoogleAuthorizationRequest authRequest = (GoogleAuthorizationRequest) authentication;
          IGoogleService.validateToken(authRequest);
          IGoogleService.registerIfNotExits(authRequest);
-         return IOAuth2TokenService
-               .getAcessToken(authentication);
+         return IOAuth2TokenService.getAcessToken(authentication);
       }
       catch (Exception e) {
          LOGGER.error("Failed to authenticate: {}", authentication, e);

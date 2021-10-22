@@ -60,7 +60,7 @@ public class OAut2TokenConfiguration {
       return TokenSettings.builder()
             .accessTokenTimeToLive(authProperties.getJwt().getAccess_token())
             .refreshTokenTimeToLive(authProperties.getJwt().getRefresh_token())
-            .build();
+            .reuseRefreshTokens(false).build();
    }
 
    private static RSAKey generateRsa() throws NoSuchAlgorithmException {

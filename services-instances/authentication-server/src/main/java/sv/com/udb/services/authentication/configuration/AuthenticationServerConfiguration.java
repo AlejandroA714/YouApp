@@ -72,10 +72,12 @@ public class AuthenticationServerConfiguration {
       return context -> {
          if (context.getTokenType().getValue()
                .equals(OAuth2TokenType.ACCESS_TOKEN.getValue())) {
-            Authentication principal = context.getPrincipal();
-            Set<String> authorities = principal.getAuthorities().stream()
+            Authentication auth = context.getPrincipal();
+            Set<String> authorities = auth.getAuthorities().stream()
                   .map(GrantedAuthority::getAuthority)
                   .collect(Collectors.toSet());
+            Principal p = (Principal) auth.getPrincipal();
+            context.getClaims().claim(UUID_CLAIM, p.getId());
             context.getClaims().claim(AUTHORITIES_CLAIM, authorities);
          }
       };

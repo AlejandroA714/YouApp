@@ -66,7 +66,7 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
          OAuth2AccessTokenAuthenticationToken accessToken = (OAuth2AccessTokenAuthenticationToken) this.authenticationManager
                .authenticate(authorizationRequest);
          sendResponse(
-                 objectMapper.writeValueAsString(accessToken.getAccessToken()),
+               objectMapper.writeValueAsString(accessToken.getAccessToken()),
                response);
          return;
       }
@@ -75,8 +75,7 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
       }
    }
 
-   private void sendResponse(String body,
-                             HttpServletResponse response) {
+   private void sendResponse(String body, HttpServletResponse response) {
       try {
          response.resetBuffer();
          response.setStatus(HttpStatus.OK.value());

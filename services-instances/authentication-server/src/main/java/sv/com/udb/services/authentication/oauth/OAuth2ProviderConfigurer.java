@@ -23,10 +23,10 @@ public class OAuth2ProviderConfigurer<B extends HttpSecurityBuilder<B>>
    private final Map<Class<? extends AbstractOAuth2ProviderConfigurer>, AbstractOAuth2ProviderConfigurer> configurers      = createConfigurers();
    @Getter
    private final RequestMatcher                                                                           endpointsMatcher = request -> {
-      return getRequestMatcher(
-            OAuth2GoogleEndpointConfigurer.class)
-                  .matches(
-                        request);
+                                                                                                                              return getRequestMatcher(
+                                                                                                                                    OAuth2GoogleEndpointConfigurer.class)
+                                                                                                                                          .matches(
+                                                                                                                                                request);
                                                                                                                            };
 
    private Map<Class<? extends AbstractOAuth2ProviderConfigurer>, AbstractOAuth2ProviderConfigurer> createConfigurers() {
