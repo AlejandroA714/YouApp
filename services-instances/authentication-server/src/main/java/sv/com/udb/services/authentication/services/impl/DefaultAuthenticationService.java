@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.authentication.models.AbstractPrincipal;
 import sv.com.udb.services.authentication.entities.EmailToken;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
@@ -21,6 +22,8 @@ import sv.com.udb.services.authentication.task.AuthenticationTask;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
@@ -39,6 +42,9 @@ public class DefaultAuthenticationService implements IAuthenticationService {
    private final ExecutorService            executorService;
    @NonNull
    private final IEmailTokenRepository      tokenRepository;
+   @NonNull
+   private final IEmailService              emailService;
+   private static final String              SUCCESS = "success";
 
    @Override
    @Transactional
@@ -69,17 +75,23 @@ public class DefaultAuthenticationService implements IAuthenticationService {
    }
 
    @Override
-   public void validateToken(String token) throws InvalidTokenException {
+   public String validateToken(String token) {
       YouAppPrincipal principal;
       Optional<EmailToken> token_ = tokenRepository.getEmailTokenByToken(token);
+      Map<String, Object> props = new HashMap<>();
       LOGGER.info("got: {}", token_);
       if (!token_.isPresent() || token_.get().getExpiration()
             .isBefore(LocalDateTime.now(ZoneId.of("GMT-06:00")))) {
-         throw new InvalidTokenException();
+         props.put(SUCCESS, false);
       }
-      principal = token_.get().getUser();
-      principal.setIsActive(true);
-      principalRepository.save(principal);
-      LOGGER.info("Principal: {}", principal);
+      else {
+         principal = token_.get().getUser();
+         principal.setIsActive(true);
+         principalRepository.save(principal);
+         LOGGER.info("User: {} has been activated", principal.getId());
+         props.put(SUCCESS, true);
+         props.putAll(principal.getSummary());
+      }
+      return emailService.processTemplate("confirmed_mail.html", props);
    }
 }

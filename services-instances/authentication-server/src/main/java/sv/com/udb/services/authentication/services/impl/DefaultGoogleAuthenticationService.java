@@ -50,7 +50,7 @@ public class DefaultGoogleAuthenticationService
       }
       catch (Exception e) {
          LOGGER.error("Failed to validated token ", e);
-         throw new InvalidTokenException();
+         throw new InvalidTokenException(e);
       }
    }
 

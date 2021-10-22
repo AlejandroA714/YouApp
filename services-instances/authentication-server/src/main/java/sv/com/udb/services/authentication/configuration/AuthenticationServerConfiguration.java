@@ -32,6 +32,7 @@ import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2A
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.authentication.jackson.OAuthProviderSecurityModule;
 import sv.com.udb.services.authentication.models.Principal;
 import sv.com.udb.services.authentication.oauth.OAuth2ProviderConfigurer;
@@ -110,10 +111,10 @@ public class AuthenticationServerConfiguration {
          IPrincipalRepository userRepository,
          IEncryptionPasswordService encryptionService,
          AuthenticationProperties props, ApplicationContext context,
-         ExecutorService executorService,
-         IEmailTokenRepository tokenRepository) {
+         ExecutorService executorService, IEmailTokenRepository tokenRepository,
+         IEmailService emailService) {
       return new DefaultAuthenticationService(userRepository, encryptionService,
-            props, context, executorService, tokenRepository);
+            props, context, executorService, tokenRepository, emailService);
    }
 
    @Bean
@@ -206,6 +207,3 @@ public class AuthenticationServerConfiguration {
       return d;
    }
 }
-/*
- * Uses of jdbc authorization service not retrives principal properly
- */

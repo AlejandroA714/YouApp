@@ -8,17 +8,19 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.authentication.entities.Role;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.models.AbstractPrincipal;
-import sv.com.udb.services.authentication.models.Principal;
 import sv.com.udb.services.authentication.repository.IOAuthRegistrationRepository;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.repository.IPrivilegeRepository;
 import sv.com.udb.services.authentication.repository.IRoleRepository;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -33,6 +35,21 @@ public class DebugController {
    private final IPrivilegeRepository         privilegeRepository;
    @NonNull
    private final IOAuthRegistrationRepository registrationRepository;
+   @NonNull
+   private final IEmailService                emailService;
+
+   @GetMapping(value = "/template", produces = "text/html")
+   public String template(@RequestParam String template) {
+      Map<String, Object> props = Map.of("id", "104918283748467935812",
+            "nombres", "Victor Alejandro", "apellidos", "Alejo Galvez",
+            "fullname", "Victor Alejandro Alejo Galvez", "email",
+            "alejandroalejo714@gmail.com", "username", "valejo", "birthday",
+            "2020-14-07", "photo",
+            "https://lh3.googleusercontent.com/a-/AOh14GgA3_5dWIGw4yXVw1gaRmIIc5Qit2Qiy0RbaOjnUA=s96-c",
+            "TOKEN", "b1b6a7fd-1c44-48e3-80ba-361bd14f71a5", "newpass",
+            "jjis19sdasd");
+      return emailService.processTemplate(template, props);
+   }
 
    @GetMapping("/protected")
    public void ispropsd(@AuthenticationPrincipal AbstractPrincipal user) {

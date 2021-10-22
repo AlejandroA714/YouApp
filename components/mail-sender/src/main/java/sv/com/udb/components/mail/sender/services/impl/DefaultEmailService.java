@@ -46,4 +46,11 @@ public class DefaultEmailService implements IEmailService {
    public Logger getLogger() {
       return LOGGER;
    }
+
+   @Override
+   public String processTemplate(String template, Map<String, Object> props) {
+      Context context = new Context();
+      context.setVariables(props);
+      return templateEngine.process(template, context);
+   }
 }

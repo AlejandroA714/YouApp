@@ -22,13 +22,14 @@ public class AuthenticationController {
    @NonNull
    private final IAuthenticationService authService;
 
-   @GetMapping("/confirm_email")
-   public void validateToken(@RequestParam String token) {
+   @GetMapping(value = "/confirm_email", produces = "text/html")
+   public String validateToken(@RequestParam String token) {
       try {
-         authService.validateToken(token);
+         return authService.validateToken(token);
       }
       catch (Exception e) {
-         throw new InvalidTokenException();
+         LOGGER.error("Failed to activate user, due: {}", e);
+         throw new InvalidTokenException(e);
       }
    }
 

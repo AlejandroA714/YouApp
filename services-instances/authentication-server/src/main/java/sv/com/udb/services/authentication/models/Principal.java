@@ -1,5 +1,6 @@
 package sv.com.udb.services.authentication.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.undertow.util.Methods;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,6 +45,7 @@ public interface Principal extends UserDetails {
       return IRole.ROLE_USER;
    }
 
+   @JsonIgnore
    default Map<String, Object> getSummary() {
       var map = new HashMap<String, Object>();
       map.putAll(Map.of("id", getId(), "nombres", getNombres(), "apellidos",

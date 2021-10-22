@@ -65,7 +65,7 @@ public class AbstractPrincipal implements Principal {
 
    @Override
    public String getFullName() {
-      return String.format("%S %S", nombres, apellidos);
+      return String.format("%s %s", nombres, apellidos);
    }
 
    public static AbstractPrincipal from(YouAppPrincipal p) {

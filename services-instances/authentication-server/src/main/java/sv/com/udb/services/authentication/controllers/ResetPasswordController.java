@@ -3,10 +3,12 @@ package sv.com.udb.services.authentication.controllers;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import sv.com.udb.components.mail.sender.model.MailType;
 import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.authentication.entities.YouAppPrincipal;
@@ -32,24 +34,24 @@ public class ResetPasswordController {
    private static final String              NEW_PASS = "newpass";
 
    @GetMapping("/{email}")
-   public String reset(@PathVariable String email) {
+   public void reset(@PathVariable String email) {
       try {
          Optional<YouAppPrincipal> _principal = principalRepository
                .findByEmail(email);
          if (!_principal.isPresent()) throw new PrincipalDoesNotExist(email);
          YouAppPrincipal principal = _principal.get();
          String passwd = passwordService.generateRandomPassword(12);
-         Map<String, Object> props = new HashMap<>();
+         Map<String, Object> props = principal.getSummary();
          props.put(NEW_PASS, passwd);
          emailService.sendMail(MailType.RECOVER_PASWORD, principal.getEmail(),
                props);
          principal.setPassword(passwordService.encryptPassword(passwd));
          principalRepository.save(principal);
-         return passwd;
       }
       catch (Exception e) {
          LOGGER.error("{}", e);
-         return "error :C";
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+               "Failed to recover passwrod, try againg");
       }
    }
 

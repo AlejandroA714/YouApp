@@ -18,6 +18,8 @@ public interface IEmailService {
 
    Logger getLogger();
 
+   String processTemplate(String template, Map<String, Object> props);
+
    void sendMail(MailType modelType, String to, Map<String, Object> props)
          throws MessagingException;
 
