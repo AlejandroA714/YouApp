@@ -26,7 +26,7 @@ public class DefaultMinioService implements IMinioService {
 
    @Override
    public JSONObject upload(byte[] byteArray, String suffix,
-         ContentType contentType) throws Exception {
+         ContentType contentType) {
       try (ByteArrayInputStream stream = new ByteArrayInputStream(byteArray)) {
          return upload(stream, suffix, (long) byteArray.length, contentType);
       }
@@ -48,6 +48,6 @@ public class DefaultMinioService implements IMinioService {
 
    @Override
    public Logger getLogger() {
-      return this.LOGGER;
+      return DefaultMinioService.LOGGER;
    }
 }

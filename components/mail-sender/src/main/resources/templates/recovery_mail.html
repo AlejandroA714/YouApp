@@ -349,7 +349,8 @@
                                     <td>
                                         <h2 class="mb-1">Hola, <!--/*@thymesVar id="nombres" type="java.lang.String"*/-->
                                             <span th:text="${nombres}"/></h2>
-                                        <p>Has solicitado una nueva contraseña para tu usuario <b><span th:text="${username}"/></b> </p>
+                                        <p>Has solicitado una nueva contraseña para tu usuario <b><!--/*@thymesVar id="username" type="java.lang.String"*/-->
+                                        <span th:text="${username}"/></b>
 
                                             Puedes encontrar tu nueva contraseña a continuacion:</p>
                                         <table role="presentation" border="0" cellpadding="5" cellspacing="0" class="table ">

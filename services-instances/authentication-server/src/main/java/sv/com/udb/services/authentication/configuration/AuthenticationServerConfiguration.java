@@ -83,9 +83,8 @@ public class AuthenticationServerConfiguration {
 
    @Bean
    public ObjectMapper objectMapper() {
-      var mapper = new ObjectMapper().findAndRegisterModules().configure(
+      return new ObjectMapper().findAndRegisterModules().configure(
             DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-      return mapper;
    }
 
    @Bean

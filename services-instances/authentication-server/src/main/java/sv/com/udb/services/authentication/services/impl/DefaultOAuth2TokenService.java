@@ -53,12 +53,12 @@ public class DefaultOAuth2TokenService implements IOAuth2TokenService {
                                                                                      };
    private static final StringKeyGenerator           DEFAULT_REFRESH_TOKEN_GENERATOR = new Base64StringKeyGenerator(
          Base64.getUrlEncoder().withoutPadding(), 96);
-   private Supplier<String>                          refreshTokenGenerator           = DEFAULT_REFRESH_TOKEN_GENERATOR::generateKey;
-   private final String                              CLIENT_ID                       = "youapp";
+   private final Supplier<String>                          refreshTokenGenerator           = DEFAULT_REFRESH_TOKEN_GENERATOR::generateKey;
 
    @Override
    public OAuth2AccessTokenAuthenticationToken getAcessToken(
          Authentication auth) {
+      String CLIENT_ID = "youapp";
       RegisteredClient registeredClient = clientRepository
             .findByClientId(CLIENT_ID);
       String issuer = this.providerSettings.getIssuer();

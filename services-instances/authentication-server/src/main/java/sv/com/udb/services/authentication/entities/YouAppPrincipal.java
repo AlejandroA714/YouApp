@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @NoArgsConstructor
 @Entity(name = "user")
-@ToString(callSuper = true, exclude = { "roles" })
-@EqualsAndHashCode(callSuper = true, exclude = { "roles" })
+@ToString(callSuper = true, exclude = { "roles", "emailTokens" })
+@EqualsAndHashCode(callSuper = true, exclude = { "roles", "emailTokens" })
 @NamedEntityGraph(name = "user_roles",
                   attributeNodes = @NamedAttributeNode(value = "roles",
                                                        subgraph = "user_role_privileges"),

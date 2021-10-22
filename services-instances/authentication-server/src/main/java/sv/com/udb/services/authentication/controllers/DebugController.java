@@ -21,6 +21,7 @@ import sv.com.udb.services.authentication.repository.IRoleRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -63,8 +64,9 @@ public class DebugController {
    }
 
    @GetMapping("/users")
-   public List<YouAppPrincipal> getUsers() {
-      return principalRepository.findAllWithRoles();
+   public List<String> getUsers() {
+      return principalRepository.findAllWithRoles().stream()
+              .map(x -> x.toString()).collect(Collectors.toList());
    }
 
    @GetMapping("/roles")

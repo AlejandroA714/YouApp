@@ -7,15 +7,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationConverter;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -39,8 +34,6 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
    private final ObjectMapper            objectMapper;
    @NonNull
    private final AuthenticationConverter authenticationConverter;
-   private final RedirectStrategy        redirectStrategy                   = new DefaultRedirectStrategy();
-   private AuthenticationSuccessHandler  authenticationSuccessHandler       = this::sendAuthorizationResponse;
 
    public OAuth2GoogleEndpointFilter(@NonNull AuthenticationManager authManager,
          @NonNull ObjectMapper mapper) {
@@ -72,8 +65,8 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
                .convert(request);
          OAuth2AccessTokenAuthenticationToken accessToken = (OAuth2AccessTokenAuthenticationToken) this.authenticationManager
                .authenticate(authorizationRequest);
-         sendResponse(HttpStatus.OK,
-               objectMapper.writeValueAsString(accessToken.getAccessToken()),
+         sendResponse(
+                 objectMapper.writeValueAsString(accessToken.getAccessToken()),
                response);
          return;
       }
@@ -82,24 +75,18 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
       }
    }
 
-   private void sendResponse(HttpStatus status, String body,
-         HttpServletResponse response) {
+   private void sendResponse(String body,
+                             HttpServletResponse response) {
       try {
          response.resetBuffer();
-         response.setStatus(status.value());
+         response.setStatus(HttpStatus.OK.value());
          response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
          response.getOutputStream().print(body);
       }
       catch (Exception e) {
-         throw new ResponseStatusException(status,
+         throw new ResponseStatusException(HttpStatus.OK.value(),
                "Failed to login with google", e.getCause());
       }
-   }
-
-   private void sendAuthorizationResponse(HttpServletRequest request,
-         HttpServletResponse response, Authentication authentication)
-         throws IOException {
-      this.redirectStrategy.sendRedirect(request, response, "/home");
    }
 
    private static RequestMatcher createDefaultRequestMatcher(
