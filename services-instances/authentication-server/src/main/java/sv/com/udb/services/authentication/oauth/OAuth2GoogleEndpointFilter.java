@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 import sv.com.udb.services.authentication.models.GoogleAuthorizationRequest;
+import sv.com.udb.services.authentication.models.OAuth2TokenResponse;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -65,9 +66,14 @@ public class OAuth2GoogleEndpointFilter extends OncePerRequestFilter {
                .convert(request);
          OAuth2AccessTokenAuthenticationToken accessToken = (OAuth2AccessTokenAuthenticationToken) this.authenticationManager
                .authenticate(authorizationRequest);
-         sendResponse(
-               objectMapper.writeValueAsString(accessToken.getAccessToken()),
-               response);
+         sendResponse(objectMapper.writeValueAsString(OAuth2TokenResponse
+               .builder()
+               .access_token(accessToken.getAccessToken().getTokenValue())
+               .refresh_token(accessToken.getRefreshToken().getTokenValue())
+               .expires_in(accessToken.getAccessToken().getExpiresAt())
+               .scope(accessToken.getAccessToken().getScopes().stream()
+                     .reduce("", String::concat))
+               .token_type("Bearer").build()), response);
          return;
       }
       catch (Exception e) {

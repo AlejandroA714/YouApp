@@ -158,7 +158,7 @@ public class AuthenticationServerConfiguration {
 
    @Bean
    public ProviderSettings providerSettings() {
-      return ProviderSettings.builder().issuer("http://auth-server:8083")
+      return ProviderSettings.builder().issuer("http://192.168.101.2:8083")
             .build();
    }
 

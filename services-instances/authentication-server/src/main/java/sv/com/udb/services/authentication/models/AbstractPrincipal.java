@@ -11,7 +11,9 @@ import sv.com.udb.services.authentication.entities.YouAppPrincipal;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.UUID;
@@ -23,18 +25,24 @@ import java.util.UUID;
 @ToString(callSuper = true)
 public class AbstractPrincipal implements Principal {
    @NotNull
+   @Size(min = 5, max = 32, message = "Nombre no valido")
    @Column(name = "given_name", length = 32, nullable = false)
    protected String                               nombres;
    @NotNull
+   @Size(min = 5, max = 32, message = "Apellido no valido")
    @Column(name = "family_name", length = 32, nullable = false)
    protected String                               apellidos;
    @NotNull
+   @Email(message = "Correo Invalido")
+   @Size(min = 5, max = 48, message = "Correo Invalido")
    @Column(unique = true, length = 48, nullable = false)
    protected String                               email;
    @NotNull
+   @Size(min = 5, max = 32, message = "Nombre de usuario invalido")
    @Column(unique = true, length = 32, nullable = false)
    protected String                               username;
    @Column(length = 512)
+   @Size(min = 4, max = 512, message = "Contraseña invalida")
    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
    protected String                               password;
    protected LocalDate                            birthday;

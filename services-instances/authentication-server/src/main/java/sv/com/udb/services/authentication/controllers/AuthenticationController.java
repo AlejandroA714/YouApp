@@ -41,7 +41,7 @@ public class AuthenticationController {
          return authService.register(principal);
       }
       catch (Exception e) {
-         LOGGER.error("Failed to register, due: {}", e.getMessage());
+         LOGGER.error("Failed to register, due: {}", e);
          throw new RegistrationException(e.getMessage(), e);
       }
    }

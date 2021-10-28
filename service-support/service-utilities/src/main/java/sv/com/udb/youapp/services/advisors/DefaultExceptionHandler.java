@@ -16,6 +16,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 import sv.com.udb.youapp.services.models.Error;
 
+import java.util.stream.Collectors;
+
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
@@ -27,7 +29,9 @@ public class DefaultExceptionHandler {
    public ResponseEntity<Error> handlingRemoteCoreException(
          MethodArgumentNotValidException ex, WebRequest request) {
       LOGGER.error("Ocurrio un error en {}", request.getContextPath(), ex);
-      var x = Error.builder().message("validation.error")
+      var message = ex.getAllErrors().stream().map(x -> x.getDefaultMessage())
+            .collect(Collectors.joining(", "));
+      var x = Error.builder().message(message)
             .status(HttpStatus.NOT_ACCEPTABLE.value())
             .exception(ex.getClass().getName());
       if (null != ex.getBindingResult()) {

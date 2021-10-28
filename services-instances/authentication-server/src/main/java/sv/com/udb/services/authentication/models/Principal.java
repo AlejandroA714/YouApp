@@ -25,13 +25,15 @@ public interface Principal extends UserDetails {
 
    String getApellidos();
 
-   String getFullName();
-
    String getUsername();
 
    String getPhoto();
 
    LocalDate getBirthday();
+
+   default String getFullName() {
+      return String.format("%s %s", getNombres(), getApellidos());
+   }
 
    default LocalDate getRegistration() {
       return LocalDate.now(ZoneId.of("GMT-06:00"));
@@ -51,7 +53,7 @@ public interface Principal extends UserDetails {
       map.putAll(Map.of("id", getId(), "nombres", getNombres(), "apellidos",
             getApellidos(), "fullname", getFullName(), "email", getEmail(),
             "username", getUsername(), "birthday", getBirthday(), "photo",
-            getPhoto()));
+            getPhoto() == null ? "" : getPhoto()));
       return map;
    }
 
