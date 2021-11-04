@@ -10,7 +10,7 @@
   <modules>
     <module>service-support-parent</module>
     <module>service-support-dependencies</module>
-      <module>service-utilities</module>
+    <module>service-utilities</module>
   </modules>
 
 </project>

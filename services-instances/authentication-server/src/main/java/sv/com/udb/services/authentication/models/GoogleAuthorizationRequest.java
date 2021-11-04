@@ -5,14 +5,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import sv.com.udb.services.authentication.enums.IPrivilege;
-import sv.com.udb.services.authentication.enums.IRole;
-import sv.com.udb.services.authentication.models.GooglePrincipal;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
 import java.util.Collection;
 
 @Getter

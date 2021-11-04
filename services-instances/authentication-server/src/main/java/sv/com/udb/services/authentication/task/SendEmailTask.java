@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import sv.com.udb.components.mail.sender.model.MailType;
 import sv.com.udb.components.mail.sender.services.IEmailService;
-import sv.com.udb.services.authentication.entities.EmailToken;
-import sv.com.udb.services.authentication.entities.YouAppPrincipal;
-import sv.com.udb.services.authentication.models.Principal;
+import sv.com.udb.services.commons.entities.EmailToken;
+import sv.com.udb.services.commons.entities.YouAppPrincipal;
+import sv.com.udb.services.commons.models.Principal;
 import sv.com.udb.services.authentication.repository.IEmailTokenRepository;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
 

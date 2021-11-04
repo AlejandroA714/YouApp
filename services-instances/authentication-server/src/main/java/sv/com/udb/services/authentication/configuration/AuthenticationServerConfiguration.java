@@ -34,7 +34,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.authentication.jackson.OAuthProviderSecurityModule;
-import sv.com.udb.services.authentication.models.Principal;
+import sv.com.udb.services.commons.models.Principal;
 import sv.com.udb.services.authentication.oauth.OAuth2ProviderConfigurer;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
 import sv.com.udb.services.authentication.repository.IEmailTokenRepository;

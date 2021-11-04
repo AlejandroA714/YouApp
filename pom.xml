@@ -13,5 +13,6 @@
     <module>service-support</module>
     <module>components</module>
     <module>rest-clients</module>
+    <module>service-commons</module>
   </modules>
 </project>

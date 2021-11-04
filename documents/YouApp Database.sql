@@ -68,8 +68,8 @@
   insert into privilege values (null,"READ_PRIVILEGE"),(null,"WRITE_PRIVILEGE"),(null,"PERMISSIONS_PRIVILEGE");
 
   create table roles_privileges(
-    role_id int,
-    privilege_id int,
+    role_id int not null,
+    privilege_id int not null,
     foreign key(role_id) references role(id) 
     ON DELETE CASCADE ON UPDATE CASCADE,
     foreign key(privilege_id) references privilege(id)
@@ -104,8 +104,8 @@
   END $$
   DELIMITER ;
 
-  insert into user(given_name,family_name,email,username,password,birthday,registration_date,email_confirmed,registration_type_id) 
-  values("Alejandro","Alejo","alejandroalejo714@gmail.com","alejandro","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
+  insert into user(id,given_name,family_name,email,username,password,birthday,registration_date,email_confirmed,registration_type_id) 
+  values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f","Alejandro","Alejo","alejandroalejo714@gmail.com","alejandro","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
   "2020-07-14",null,true,1);
 
   create table email_token(
@@ -118,29 +118,41 @@
   );
 
   create table users_roles(
-    user_id varchar(56),
-    role_id int,
+    user_id varchar(56) not null,
+    role_id int not null,
     foreign key(user_id) references user(id)
     ON UPDATE CASCADE ON DELETE CASCADE,
     foreign key(role_id) references role(id)
     ON UPDATE CASCADE ON DELETE CASCADE
   );
 
-  insert into users_roles values((SELECT (id) FROM user limit 1) ,1);
+  insert into users_roles values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f" ,1);
 
   create table genre(
       id int primary key auto_increment,
-      title varchar(128) not null
+      title varchar(32) not null
   );
+
+  insert into genre(title) values ("Rock"),("Pop"),("Rap"),("Electronica")
+                           ,("Metal"),("Salsa"),("Reggaeton"),("Banda");
+
+  create table status(
+     id int primary key auto_increment,
+     status varchar(32) not null
+  );
+
+  insert into status(status) values ("PENDING"),("UPLOADING"),("FAILED"),("PROCESSING"),("FINISH");
 
   create table music(
       id int primary key auto_increment,
       title varchar(128) not null,
-      duration time,
+      duration int,
       song_url varchar(256) not null ,
+      status_id int,
       genre_id int,
-      foreign key (genre_id) references genre(id),
       user_id varchar(56),
+      foreign key (status_id) references status(id),
+      foreign key (genre_id) references genre(id),
       foreign key (user_id) references user(id)
   );
 
@@ -154,7 +166,7 @@
 
   create table playlist(
       id int primary key auto_increment,
-      title varchar(64) default 'Playlist',
+      title varchar(64) not null,
       user_id varchar(56) not null ,
       foreign key (user_id) references user(id)
       ON DELETE CASCADE
@@ -166,24 +178,6 @@
       foreign key (music_id) references music(id),
       playlist_id int not null ,
       foreign key (playlist_id) references playlist(id)
-  );
-
-  create table album(
-      id int primary key auto_increment,
-      title varchar(64) not null ,
-      duration time,
-      genre_id int,
-      foreign key (genre_id) references genre(id),
-      user_id varchar(56),
-      foreign key (user_id) references user(id)
-  );
-
-  create table album_songs(
-      id int primary key auto_increment,
-      album_id int not null ,
-      foreign key (album_id) references album(id),
-      music_id int not null unique ,
-      foreign key (music_id) references music(id)
   );
 
   SET @@global.time_zone = '-06:00';

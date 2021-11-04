@@ -3,7 +3,7 @@ package sv.com.udb.services.authentication.repository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import sv.com.udb.services.authentication.entities.YouAppPrincipal;
+import sv.com.udb.services.commons.entities.YouAppPrincipal;
 
 import java.util.List;
 import java.util.Optional;

@@ -2,8 +2,7 @@ package sv.com.udb.services.authentication.jackson;
 
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
-import sv.com.udb.services.authentication.models.AbstractPrincipal;
+import sv.com.udb.services.commons.models.AbstractPrincipal;
 
 public class OAuthProviderSecurityModule extends SimpleModule {
    public OAuthProviderSecurityModule() {

@@ -6,12 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import sv.com.udb.services.authentication.enums.IOAuthRegistrationType;
+import sv.com.udb.services.commons.models.Principal;
+import sv.com.udb.services.commons.enums.IOAuthRegistrationType;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 

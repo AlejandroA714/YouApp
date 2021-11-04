@@ -9,12 +9,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import sv.com.udb.components.minio.client.enums.ContentType;
 import sv.com.udb.components.minio.client.services.IMinioService;
-import sv.com.udb.services.authentication.entities.YouAppPrincipal;
-import sv.com.udb.services.authentication.models.Principal;
+import sv.com.udb.services.commons.models.Principal;
 import sv.com.udb.services.authentication.repository.IPrincipalRepository;
-
-import java.time.*;
-import java.util.Optional;
 
 @Slf4j
 @Component

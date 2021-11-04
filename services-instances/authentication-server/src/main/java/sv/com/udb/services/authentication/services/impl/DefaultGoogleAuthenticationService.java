@@ -11,7 +11,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sv.com.udb.services.authentication.models.GoogleAuthorizationRequest;
-import sv.com.udb.services.authentication.entities.YouAppPrincipal;
+import sv.com.udb.services.commons.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 import sv.com.udb.services.authentication.models.GooglePrincipal;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
