@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import sv.com.udb.components.minio.client.enums.ContentType;
+import sv.com.udb.components.minio.client.exceptions.TransferException;
 import sv.com.udb.components.minio.client.properties.MinioClientProperties;
 import sv.com.udb.components.minio.client.services.IMinioService;
 
@@ -26,12 +27,15 @@ public class DefaultMinioService implements IMinioService {
 
    @Override
    public JSONObject upload(byte[] byteArray, String suffix,
-         ContentType contentType) {
+         ContentType contentType) throws TransferException {
+      if (byteArray.length == 0) {
+         throw new TransferException("Omitting due length is 0");
+      }
       try (ByteArrayInputStream stream = new ByteArrayInputStream(byteArray)) {
          return upload(stream, suffix, (long) byteArray.length, contentType);
       }
       catch (Exception e) {
-         return null;
+         throw new TransferException("Omitting due length is 0", e);
       }
    }
 

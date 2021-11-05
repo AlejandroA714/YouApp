@@ -12,8 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 import sv.com.udb.components.mail.sender.model.MailType;
 import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.commons.entities.YouAppPrincipal;
-import sv.com.udb.services.authentication.exceptions.PrincipalDoesNotExist;
-import sv.com.udb.services.authentication.repository.IPrincipalRepository;
+import sv.com.udb.services.commons.exceptions.PrincipalDoesNotExist;
+import sv.com.udb.services.commons.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 
 import java.util.Map;

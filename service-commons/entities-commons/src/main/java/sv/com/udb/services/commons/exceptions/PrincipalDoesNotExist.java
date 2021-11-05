@@ -1,4 +1,4 @@
-package sv.com.udb.services.authentication.exceptions;
+package sv.com.udb.services.commons.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

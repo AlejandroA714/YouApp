@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @NoArgsConstructor
 @Entity(name = "user")
-@ToString(callSuper = true, exclude = { "roles", "emailTokens", "songs", "favorities" })
+@ToString(callSuper = true,
+          exclude = { "roles", "emailTokens", "songs", "favorities" })
 @EqualsAndHashCode(callSuper = true,
                    exclude = { "roles", "emailTokens", "songs", "favorities" })
 @NamedEntityGraphs(value = {
@@ -31,7 +32,8 @@ import java.util.stream.Collectors;
                                                    attributeNodes = @NamedAttributeNode(value = "privileges"))),
       @NamedEntityGraph(name = "user_songs",
                         attributeNodes = @NamedAttributeNode("songs")),
-      @NamedEntityGraph(name = "user_favorities", attributeNodes = @NamedAttributeNode("favorities"))})
+      @NamedEntityGraph(name = "user_favorities",
+                        attributeNodes = @NamedAttributeNode("favorities")) })
 public class YouAppPrincipal extends AbstractPrincipal {
    private static final long      serialVersionUID = 7389128175350348769L;
    @Id

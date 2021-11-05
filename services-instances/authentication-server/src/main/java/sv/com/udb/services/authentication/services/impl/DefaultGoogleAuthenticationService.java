@@ -15,7 +15,7 @@ import sv.com.udb.services.commons.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 import sv.com.udb.services.authentication.models.GooglePrincipal;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
-import sv.com.udb.services.authentication.repository.IPrincipalRepository;
+import sv.com.udb.services.commons.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IGoogleAuthenticationService;
 
 import java.time.LocalDate;

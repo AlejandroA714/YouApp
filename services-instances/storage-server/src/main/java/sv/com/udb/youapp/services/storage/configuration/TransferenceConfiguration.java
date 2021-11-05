@@ -1,5 +1,7 @@
 package sv.com.udb.youapp.services.storage.configuration;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.aop.Advice;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import sv.com.udb.youapp.services.storage.properties.StorageProperties;
 import sv.com.udb.youapp.services.storage.properties.StorageProperties.FileConfiguration;
+import sv.com.udb.youapp.services.storage.services.ITransferService;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -26,13 +29,16 @@ import java.time.Duration;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class TransferenceConfiguration {
-   private static final String CLEAN                    = "clean";
-   private static final String TASK                     = "task";
-   private static final String ZIP                      = "*.zip";
-   private static final String TRANSFER_ERROR_CHANNEL   = "transferErrorChannel";
-   private static final String TRANSFER_SUCCESS_CHANNEL = "transferSuccessChannel";
-   private static final String OUTBOUND_CHANNEL         = "outboundChannel";
+   @NonNull
+   private final ITransferService transferService;
+   private static final String    CLEAN                    = "clean";
+   private static final String    TASK                     = "task";
+   private static final String    ZIP                      = "*.zip";
+   private static final String    TRANSFER_ERROR_CHANNEL   = "transferErrorChannel";
+   private static final String    TRANSFER_SUCCESS_CHANNEL = "transferSuccessChannel";
+   private static final String    OUTBOUND_CHANNEL         = "outboundChannel";
 
    @PostConstruct
    protected void init() {
@@ -88,7 +94,7 @@ public class TransferenceConfiguration {
          StorageProperties storageProperties) {
       return IntegrationFlows.from(TRANSFER_ERROR_CHANNEL).handle(p -> {
          if (p.getPayload().getClass().isAssignableFrom(File.class)) {
-            LOGGER.info("Update music with error");
+            transferService.upload((File) p.getPayload());
          }
          else {
             LOGGER.error("Se reporto un error en la transferencia {}",
@@ -102,7 +108,7 @@ public class TransferenceConfiguration {
          Advice transferAdvice, MessageChannel transferErrorChannel,
          StorageProperties properties) {
       return IntegrationFlows.from(OUTBOUND_CHANNEL).handle(message -> {
-         LOGGER.info("ASDASDASD");
+         transferService.upload((File) message.getPayload());
       }, e -> e.advice(transferRetryAdvice(transferErrorChannel))
             .advice(transferAdvice)).get();
    }

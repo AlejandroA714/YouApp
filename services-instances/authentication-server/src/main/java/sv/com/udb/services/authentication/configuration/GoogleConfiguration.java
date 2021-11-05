@@ -7,28 +7,15 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
-import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import org.springframework.util.StringUtils;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
-import sv.com.udb.services.authentication.repository.IOAuthRegistrationRepository;
-import sv.com.udb.services.authentication.repository.IPrincipalRepository;
-import sv.com.udb.services.authentication.repository.IRoleRepository;
+import sv.com.udb.services.commons.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IGoogleAuthenticationService;
-import sv.com.udb.services.authentication.services.IGoogleOAuth2Provider;
-import sv.com.udb.services.authentication.services.IOAuth2TokenService;
 import sv.com.udb.services.authentication.services.impl.DefaultGoogleAuthenticationService;
-import sv.com.udb.services.authentication.services.impl.DefaultGoogleOAuth2Provider;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Map;
 
 @Configuration
 public class GoogleConfiguration {

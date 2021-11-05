@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import sv.com.udb.components.minio.client.enums.ContentType;
 import sv.com.udb.components.minio.client.services.IMinioService;
 import sv.com.udb.services.commons.models.Principal;
-import sv.com.udb.services.authentication.repository.IPrincipalRepository;
+import sv.com.udb.services.commons.repository.IPrincipalRepository;
 
 @Slf4j
 @Component

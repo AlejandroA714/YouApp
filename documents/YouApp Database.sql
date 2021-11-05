@@ -141,7 +141,7 @@
      status varchar(32) not null
   );
 
-  insert into status(status) values ("PENDING"),("UPLOADING"),("FAILED"),("PROCESSING"),("FINISH");
+  insert into status(status) values ("PENDING"),("UPLOADING"),("FAILED"),("READY");
 
   create table music(
       id int primary key auto_increment,

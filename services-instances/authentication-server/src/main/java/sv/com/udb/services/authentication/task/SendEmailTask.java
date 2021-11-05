@@ -11,8 +11,8 @@ import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.commons.entities.EmailToken;
 import sv.com.udb.services.commons.entities.YouAppPrincipal;
 import sv.com.udb.services.commons.models.Principal;
-import sv.com.udb.services.authentication.repository.IEmailTokenRepository;
-import sv.com.udb.services.authentication.repository.IPrincipalRepository;
+import sv.com.udb.services.commons.repository.IEmailTokenRepository;
+import sv.com.udb.services.commons.repository.IPrincipalRepository;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
