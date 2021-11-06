@@ -1,6 +1,7 @@
 package sv.com.udb.services.commons.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +37,7 @@ public class EmailToken implements Serializable {
    @Column(name = "expiration_date", nullable = false)
    private LocalDateTime     expiration;
    @ManyToOne
-   @JsonBackReference
+   @JsonManagedReference
    @JoinColumn(name = "user_id", referencedColumnName = "id")
    private YouAppPrincipal   user;
    private static final long serialVersionUID = -3616737586508310768L;

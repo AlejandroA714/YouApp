@@ -8,4 +8,6 @@ public interface IAuthenticationService extends UserDetailsService {
    YouAppPrincipal register(AbstractPrincipal principal) throws Exception;
 
    String validateToken(String token);
+
+   YouAppPrincipal me(String uuid);
 }

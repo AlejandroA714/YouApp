@@ -1,5 +1,6 @@
 package sv.com.udb.services.commons.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -45,10 +46,10 @@ public class YouAppPrincipal extends AbstractPrincipal {
    @ManyToOne
    @JsonManagedReference
    private OAuthRegistrationType  registrationType;
-   @JsonManagedReference
+   @JsonBackReference
    @OneToMany(mappedBy = "user")
    private Collection<EmailToken> emailTokens;
-   @JsonManagedReference
+   @JsonBackReference
    @OneToMany(mappedBy = "user")
    private Collection<Music>      songs;
    @Singular
@@ -62,7 +63,7 @@ public class YouAppPrincipal extends AbstractPrincipal {
    private Set<Role>              roles;
    @Singular
    @ManyToMany
-   @JsonManagedReference
+   @JsonBackReference
    @JoinTable(name = "favorites",
               joinColumns = @JoinColumn(name = "user_id",
                                         referencedColumnName = "id"),

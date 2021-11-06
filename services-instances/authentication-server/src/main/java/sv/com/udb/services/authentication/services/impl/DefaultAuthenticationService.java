@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import sv.com.udb.components.mail.sender.services.IEmailService;
+import sv.com.udb.services.commons.exceptions.PrincipalDoesNotExist;
 import sv.com.udb.services.commons.models.AbstractPrincipal;
 import sv.com.udb.services.commons.entities.EmailToken;
 import sv.com.udb.services.commons.entities.YouAppPrincipal;
@@ -92,5 +93,14 @@ public class DefaultAuthenticationService implements IAuthenticationService {
          props.putAll(principal.getSummary());
       }
       return emailService.processTemplate("confirmed_mail.html", props);
+   }
+
+   @Override
+   public YouAppPrincipal me(String uuid) {
+      Optional<YouAppPrincipal> principal = principalRepository.findById(uuid);
+      if(!principal.isPresent()){
+         throw new PrincipalDoesNotExist(uuid + " does not exits");
+      }
+      return principal.get();
    }
 }

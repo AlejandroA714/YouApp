@@ -14,7 +14,9 @@ public class WebSecurityConfiguration {
    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
          throws Exception {
       http.authorizeRequests(authorizeRequests -> authorizeRequests
-            .antMatchers("/**").permitAll().anyRequest().authenticated()).csrf()
+            .antMatchers("/v1/auth/*").permitAll()
+            .antMatchers("/v1/auth/me").authenticated())
+          .csrf()
             .disable().formLogin(Customizer.withDefaults());
       return http.build();
    }

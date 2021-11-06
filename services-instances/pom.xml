@@ -13,5 +13,6 @@
     <module>authentication-server</module>
     <module>resource-server</module>
     <module>storage-server</module>
+      <module>api-gateway</module>
   </modules>
 </project>

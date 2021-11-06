@@ -97,7 +97,7 @@ public class TransferenceConfiguration {
             transferService.upload((File) p.getPayload());
          }
          else {
-            LOGGER.error("Se reporto un error en la transferencia {}",
+            LOGGER.error("Se reporto un error en la transferencia",
                   p.getPayload());
          }
       }).get();
@@ -116,7 +116,7 @@ public class TransferenceConfiguration {
    @Bean
    public Advice transferRetryAdvice(MessageChannel transferErrorChannel) {
       final FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
-      backOffPolicy.setBackOffPeriod(Duration.ofSeconds(10).toMillis());
+      backOffPolicy.setBackOffPeriod(Duration.ofSeconds(15).toMillis());
       final SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5);
       RetryTemplate template = new RetryTemplate();
       template.setBackOffPolicy(backOffPolicy);

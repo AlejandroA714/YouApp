@@ -46,7 +46,7 @@ public class Music {
    @JsonBackReference
    @ManyToMany(mappedBy = "songs")
    private Set<Playlist>        playlist;
-   @JsonBackReference
+   @JsonManagedReference
    @ManyToMany(mappedBy = "favorities")
    private Set<YouAppPrincipal> user_favorites;
 }

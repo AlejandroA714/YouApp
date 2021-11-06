@@ -12,11 +12,12 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+      enabled: true
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://192.168.101.2:8083
+          issuer-uri: http://10.0.40.48:8083
 logbook:
   format:
     style: http

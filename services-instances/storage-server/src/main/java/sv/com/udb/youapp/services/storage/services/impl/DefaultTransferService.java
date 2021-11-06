@@ -58,7 +58,7 @@ public class DefaultTransferService implements ITransferService {
    private final IGenreRepository     genreRepository;
    @NonNull
    private final IStatusRepository    statusRepository;
-   private static final String        ZIP            = ".zip";
+   private static final String        ZIP            = "zip";
    private static final String        DOT            = ".";
    private static final String        SEPARATOR      = "_";
    private static final String        MUSIC_ID_CLAIM = "music_id";
@@ -95,7 +95,7 @@ public class DefaultTransferService implements ITransferService {
    }
 
    @Override
-   public void save(byte[] bytes, String uuid, UploadRequest request) {
+   public Music save(byte[] bytes, String uuid, UploadRequest request) {
       try {
          Optional<YouAppPrincipal> principal = principalRepository
                .findById(uuid);
@@ -106,7 +106,7 @@ public class DefaultTransferService implements ITransferService {
          summary.put(MUSIC_ID_CLAIM, m.getId());
          var file = properties
                .getFileConfiguration().getMusicRepository().createRelative(uuid
-                     + SEPARATOR + Instant.now().getEpochSecond() + DOT + ZIP)
+                     + SEPARATOR + m.getId() + DOT + ZIP)
                .getFile();
          Files.createParentDirs(file);
          try (ZipOutputStream zip = new ZipOutputStream(
@@ -117,11 +117,12 @@ public class DefaultTransferService implements ITransferService {
                   properties.getFileConfiguration().getInformation());
          }
          catch (Exception e) {
-            LOGGER.error("Failed to create zip");
+            LOGGER.error("Failed to create zip",e);
          }
+         return musicRepository.findById(m.getId()).get();
       }
       catch (Exception e) {
-         LOGGER.error("Failed", e);
+         LOGGER.error("Failed to save music", e);
          throw new UploadException(e.getMessage(), e);
       }
    }
@@ -174,7 +175,7 @@ public class DefaultTransferService implements ITransferService {
    }
 
    private void sendToZip(byte[] content, ZipOutputStream zip,
-         ZipFileConfiguration configuration) throws IOException {
+         ZipFileConfiguration configuration) {
       if (!configuration.isEnabled() || content == null
             || content.length == 0) {
          return;
