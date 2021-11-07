@@ -148,6 +148,7 @@
       title varchar(128) not null,
       duration int,
       song_url varchar(256) not null ,
+      photo varchar(512) null,
       status_id int,
       genre_id int,
       user_id varchar(56),

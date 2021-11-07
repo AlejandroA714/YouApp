@@ -28,7 +28,7 @@ public class MusicController {
    private final IGenreRepository genreRepository;
 
    @GetMapping("/")
-   public List<Music> music(@PathVariable Integer genreId) {
+   public List<Music> music() {
       return musicRepository.findAll();
    }
 

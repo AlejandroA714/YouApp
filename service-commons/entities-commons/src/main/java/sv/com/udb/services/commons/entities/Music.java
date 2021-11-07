@@ -34,6 +34,8 @@ public class Music {
    private int                  duration;
    @Column(name = "song_url", length = 256)
    private String               uri;
+   @Column(length = 512)
+   protected String             photo;
    @ManyToOne
    @JsonManagedReference
    private Status               status;
