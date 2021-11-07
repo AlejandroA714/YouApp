@@ -31,6 +31,7 @@ public class DefaultEmailService implements IEmailService {
    @Override
    public void sendMail(MailType modelType, String to,
          Map<String, Object> props) throws MessagingException {
+      props.put(REMOTE_ADDRESS, properties.getRemoteAddress());
       Mail mail = Mail.builder().to(to).subject(modelType.getSubject())
             .htmlTemplate(Mail.HtmlTemplate.builder().props(props)
                   .template(modelType).build())
