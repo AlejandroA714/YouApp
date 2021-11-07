@@ -6,7 +6,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 @SpringBootApplication(scanBasePackages = "sv.com")
 public class ApiGateway {
    public static void main(String[] args) {
-      new SpringApplicationBuilder(ApiGateway.class)
-            .registerShutdownHook(true).run(args);
+      new SpringApplicationBuilder(ApiGateway.class).registerShutdownHook(true)
+            .run(args);
    }
 }

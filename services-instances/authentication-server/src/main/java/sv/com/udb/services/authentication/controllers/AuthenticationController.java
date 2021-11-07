@@ -23,15 +23,17 @@ import javax.validation.Valid;
 public class AuthenticationController {
    @NonNull
    private final IAuthenticationService authService;
-   private static final String UUID_CLAIM = "id";
+   private static final String          UUID_CLAIM = "id";
 
    @PostMapping(value = "/me")
-   public YouAppPrincipal me(Authentication authentication){
+   public YouAppPrincipal me(Authentication authentication) {
       JwtAuthenticationToken principal;
       if (authentication instanceof JwtAuthenticationToken) {
          principal = (JwtAuthenticationToken) authentication;
-         return authService.me(principal.getToken().getClaimAsString(UUID_CLAIM));
-      }else{
+         return authService
+               .me(principal.getToken().getClaimAsString(UUID_CLAIM));
+      }
+      else {
          throw new InvalidTokenException("Auhentication no valid");
       }
    }
