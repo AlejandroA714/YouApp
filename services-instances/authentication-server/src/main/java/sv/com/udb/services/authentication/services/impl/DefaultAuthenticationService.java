@@ -98,7 +98,7 @@ public class DefaultAuthenticationService implements IAuthenticationService {
    @Override
    public YouAppPrincipal me(String uuid) {
       Optional<YouAppPrincipal> principal = principalRepository.findById(uuid);
-      if(!principal.isPresent()){
+      if (!principal.isPresent()) {
          throw new PrincipalDoesNotExist(uuid + " does not exits");
       }
       return principal.get();

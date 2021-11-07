@@ -104,9 +104,8 @@ public class DefaultTransferService implements ITransferService {
          Music m = createMusic(uuid, request);
          Map<String, Object> summary = principal.get().getSummary();
          summary.put(MUSIC_ID_CLAIM, m.getId());
-         var file = properties
-               .getFileConfiguration().getMusicRepository().createRelative(uuid
-                     + SEPARATOR + m.getId() + DOT + ZIP)
+         var file = properties.getFileConfiguration().getMusicRepository()
+               .createRelative(uuid + SEPARATOR + m.getId() + DOT + ZIP)
                .getFile();
          Files.createParentDirs(file);
          try (ZipOutputStream zip = new ZipOutputStream(
@@ -117,7 +116,7 @@ public class DefaultTransferService implements ITransferService {
                   properties.getFileConfiguration().getInformation());
          }
          catch (Exception e) {
-            LOGGER.error("Failed to create zip",e);
+            LOGGER.error("Failed to create zip", e);
          }
          return musicRepository.findById(m.getId()).get();
       }
