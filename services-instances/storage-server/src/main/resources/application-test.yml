@@ -3,7 +3,7 @@ server:
 app:
   minio:
     client:
-      url: http://localhost:9090 #https://play.min.io
+      url: http://@minio-ip@:9090 #https://play.min.io
       accessKey: minioadmin #Q3AM3UQ867SPQQA43P2F
       secretKey: minioadmin #zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG
       bucket: youapp
@@ -17,7 +17,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://10.0.40.48:8083
+          issuer-uri: http://@api.gateway-ip@:8083
 logbook:
   format:
     style: http

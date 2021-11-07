@@ -2,6 +2,8 @@ server:
   port: 8081
 
 spring:
+  main:
+    web-application-type: reactive
   cloud:
     gateway:
       routes:
@@ -9,7 +11,8 @@ spring:
           id: authentication_server
           uri: http://localhost:8083/
           predicates:
-            - Path=/v1/auth/**
+            - Path=/oauth2/**
+            #- Path=/v1/auth/**
         -
           id: storage_server
           uri: http://localhost:8085/

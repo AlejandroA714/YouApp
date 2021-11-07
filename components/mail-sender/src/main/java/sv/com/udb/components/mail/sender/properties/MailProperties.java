@@ -11,15 +11,5 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class MailProperties {
    @NotNull
-   private String  host;
-   @NotNull
-   private Integer port;
-   @NotNull
-   private String  username;
-   @NotNull
-   private String  password;
-   @NotNull
-   private Boolean enableSSL;
-   @NotNull
-   private String  protocol;
+   private String remoteAddress;
 }

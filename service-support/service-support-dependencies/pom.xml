@@ -27,16 +27,14 @@
         <javax.inject.version>1</javax.inject.version>
         <org.json.version>20190722</org.json.version>
         <authorization-server.version>0.2.0</authorization-server.version>
+        <api.gateway-ip>192.168.101.2</api.gateway-ip>
+        <mysql-ip>localhost</mysql-ip>
+        <mysql.user>root</mysql.user>
+        <mysql.password>Password01</mysql.password>
+        <minio-ip>localhost</minio-ip>
     </properties>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2020.0.4</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-oauth2-authorization-server</artifactId>
@@ -89,6 +87,13 @@
                 <version>${org.json.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2020.0.4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
                 <version>${spring-security.version}</version>
@@ -133,7 +138,9 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
-                        <skip>true</skip>
+                        <environmentVariables>
+                            <YOUAPP_IP>${api.gateway-ip}</YOUAPP_IP>
+                        </environmentVariables>
                     </configuration>
                     <executions>
                         <execution>
@@ -159,5 +166,42 @@
             </plugins>
         </pluginManagement>
     </build>
-
+    <profiles>
+        <profile>
+            <id>alejo</id>
+            <properties>
+                <api.gateway-ip>192.168.101.2</api.gateway-ip>
+            </properties>
+        </profile>
+        <profile>
+            <id>matias</id>
+            <properties>
+                <api.gateway-ip>192.168.0.17</api.gateway-ip>
+                <mysql.user>root</mysql.user>
+                <mysql.password>123456</mysql.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>marko</id>
+            <properties>
+                <api.gateway-ip>192.168.0.9</api.gateway-ip>
+            </properties>
+        </profile>
+        <profile>
+            <id>denys</id>
+            <properties>
+                <mysql.user>root</mysql.user>
+                <mysql.password>Password01</mysql.password>
+                <api.gateway-ip>192.168.0.7</api.gateway-ip>
+            </properties>
+        </profile>
+        <profile>
+            <id>alvaro</id>
+            <properties>
+                <mysql.user>root</mysql.user>
+                <mysql.password></mysql.password>
+                <api.gateway-ip>192.168.0.17</api.gateway-ip>
+            </properties>
+        </profile>
+    </profiles>
 </project>

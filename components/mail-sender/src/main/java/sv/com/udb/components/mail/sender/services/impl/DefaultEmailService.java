@@ -10,6 +10,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import sv.com.udb.components.mail.sender.model.Mail;
 import sv.com.udb.components.mail.sender.model.MailType;
+import sv.com.udb.components.mail.sender.properties.MailProperties;
 import sv.com.udb.components.mail.sender.services.IEmailService;
 
 import javax.mail.MessagingException;
@@ -23,6 +24,9 @@ public class DefaultEmailService implements IEmailService {
    private final JavaMailSender       emailSender;
    @NonNull
    private final SpringTemplateEngine templateEngine;
+   @NonNull
+   private final MailProperties       properties;
+   private static final String        REMOTE_ADDRESS = "remoteAddress";
 
    @Override
    public void sendMail(MailType modelType, String to,
@@ -50,6 +54,7 @@ public class DefaultEmailService implements IEmailService {
    @Override
    public String processTemplate(String template, Map<String, Object> props) {
       Context context = new Context();
+      props.put(REMOTE_ADDRESS, properties.getRemoteAddress());
       context.setVariables(props);
       return templateEngine.process(template, context);
    }

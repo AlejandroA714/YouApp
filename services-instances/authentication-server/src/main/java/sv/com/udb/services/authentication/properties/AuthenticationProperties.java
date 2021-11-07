@@ -27,6 +27,8 @@ public class AuthenticationProperties {
    private List<ClientConfiguration>                 clients;
    @NotNull
    private String                                    roleHierarchy;
+   @NotNull
+   private String                                    ipAddress;
    private List<Class<? extends AuthenticationTask>> postCreationTasks = new ArrayList<>();
 
    @Data

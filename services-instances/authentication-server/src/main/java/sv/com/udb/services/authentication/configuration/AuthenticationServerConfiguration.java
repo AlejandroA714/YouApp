@@ -3,6 +3,9 @@ package sv.com.udb.services.authentication.configuration;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -45,18 +48,21 @@ import sv.com.udb.services.authentication.services.impl.DefaultAuthenticationSer
 import sv.com.udb.services.authentication.services.impl.DefaultEncryptionPasswordService;
 import sv.com.udb.youapp.services.filter.FilterChainExceptionHandler;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+@Slf4j
+@RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 public class AuthenticationServerConfiguration {
-   private static final String         AUTHORITIES_CLAIM = "authorities";
-   private static final String         UUID_CLAIM        = "id";
-   @Autowired
-   private FilterChainExceptionHandler filterChainExceptionHandler;
+   private static final String               AUTHORITIES_CLAIM = "authorities";
+   private static final String               UUID_CLAIM        = "id";
+   @NonNull
+   private final FilterChainExceptionHandler filterChainExceptionHandler;
 
    @Bean
    @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -157,9 +163,9 @@ public class AuthenticationServerConfiguration {
    }
 
    @Bean
-   public ProviderSettings providerSettings() {
-      return ProviderSettings.builder().issuer("http://10.0.40.48:8083")
-            .build();
+   public ProviderSettings providerSettings(
+         AuthenticationProperties properties) {
+      return ProviderSettings.builder().issuer(String.format("http://%s:8083", properties.getIpAddress())).build();
    }
 
    public static void applyCustomSecurity(HttpSecurity http) throws Exception {

@@ -362,7 +362,7 @@
                                                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="text-center"> <a th:href="${'http://192.168.101.2:8083/v1/auth/confirm_email?token=' + TOKEN}" target="_blank">Confirmar</a> </td>
+                                                            <td class="text-center"> <a th:href="${'http://'+ remoteAddress +':8083/v1/auth/confirm_email?token=' + TOKEN}" target="_blank">Confirmar</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -371,7 +371,7 @@
                                             </tbody>
                                         </table>
                                         <p>Si el boton anterior no funciona has click
-                                            <a th:href="${'http://192.168.101.2:8083/v1/auth/confirm_email?token=' + TOKEN}" target="_blank" >aqui</a>
+                                            <a th:href="${'http://' + remoteAddress + ':8083/v1/auth/confirm_email?token=' + TOKEN}" target="_blank" >aqui</a>
                                         </p>
 
                                     </td>
