@@ -75,7 +75,7 @@ public class DefaultTransferService implements ITransferService {
                properties.getFileConfiguration().getInformation().getFileName(),
                EMPTY));
          Optional<Music> _song = musicRepository
-               .findById(node.get(MUSIC_ID_CLAIM).asInt());
+               .findByIdU(node.get(MUSIC_ID_CLAIM).asInt());
          if (!_song.isPresent())
             throw new TransferException("That song doest not exist");
          Music song = _song.get();

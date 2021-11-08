@@ -14,6 +14,5 @@ public class OAuthProviderSecurityModule extends SimpleModule {
    public void setupModule(SetupContext context) {
       context.setMixInAnnotations(AbstractPrincipal.class,
             AbstractPrincipalMixin.class);
-
    }
 }

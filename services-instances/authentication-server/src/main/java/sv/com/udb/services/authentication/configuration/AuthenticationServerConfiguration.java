@@ -171,8 +171,7 @@ public class AuthenticationServerConfiguration {
    @Bean
    public ProviderSettings providerSettings(
          AuthenticationProperties properties) {
-      return ProviderSettings.builder()
-            .issuer(String.format("http://%s:8083", properties.getIpAddress()))
+      return ProviderSettings.builder().issuer(properties.getIpAddress())
             .build();
    }
 

@@ -27,14 +27,14 @@
         <javax.inject.version>1</javax.inject.version>
         <org.json.version>20190722</org.json.version>
         <authorization-server.version>0.2.0</authorization-server.version>
-        <api.gateway-ip>localhost</api.gateway-ip>
-        <authentication.server-ip>localhost</authentication.server-ip>
-        <storage.server-ip>localhost</storage.server-ip>
+        <api.gateway-ip>192.168.101.2</api.gateway-ip>
+        <authentication.server-ip>192.168.101.2</authentication.server-ip>
+        <storage.server-ip>192.168.101.2</storage.server-ip>
         <mysql-ip>localhost</mysql-ip>
         <mysql-port>3306</mysql-port>
         <mysql.user>root</mysql.user>
         <mysql.password>Password01</mysql.password>
-        <minio-ip>localhost</minio-ip>
+        <minio-ip>192.168.101.2</minio-ip>
     </properties>
     <dependencyManagement>
         <dependencies>

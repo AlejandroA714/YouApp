@@ -26,4 +26,9 @@ public interface IMusicRepository extends JpaRepository<Music, Integer> {
                 type = EntityGraph.EntityGraphType.LOAD)
    @Query("SELECT m from music m WHERE m.id = ?1 AND m.status.id = 4")
    Optional<Music> findById(Integer id);
+
+   @EntityGraph(value = "music_favorites",
+       type = EntityGraph.EntityGraphType.LOAD)
+   @Query("SELECT m from music m WHERE m.id = ?1")
+   Optional<Music> findByIdU(Integer id);
 }
