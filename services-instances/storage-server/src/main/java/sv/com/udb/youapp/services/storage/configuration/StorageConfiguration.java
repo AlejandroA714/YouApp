@@ -1,6 +1,7 @@
 package sv.com.udb.youapp.services.storage.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,8 @@ public class StorageConfiguration {
 
    @Bean
    public ObjectMapper objectMapper() {
-      return new ObjectMapper().findAndRegisterModules();
+      return new ObjectMapper().findAndRegisterModules()
+            .registerModule(new Hibernate5Module());
    }
 
    @Bean

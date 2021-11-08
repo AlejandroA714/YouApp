@@ -22,6 +22,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-hibernate5</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.zalando</groupId>
         <artifactId>logbook-spring-boot-autoconfigure</artifactId>
         <version>${logbook.version}</version>

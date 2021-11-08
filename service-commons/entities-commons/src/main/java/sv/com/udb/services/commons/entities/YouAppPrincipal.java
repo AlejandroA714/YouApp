@@ -1,8 +1,10 @@
 package sv.com.udb.services.commons.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
@@ -54,7 +56,6 @@ public class YouAppPrincipal extends AbstractPrincipal {
    private Collection<Music>      songs;
    @Singular
    @ManyToMany
-   @JsonManagedReference
    @JoinTable(name = "users_roles",
               joinColumns = @JoinColumn(name = "user_id",
                                         referencedColumnName = "id"),
@@ -63,13 +64,12 @@ public class YouAppPrincipal extends AbstractPrincipal {
    private Set<Role>              roles;
    @Singular
    @ManyToMany
-   @JsonBackReference
    @JoinTable(name = "favorites",
               joinColumns = @JoinColumn(name = "user_id",
                                         referencedColumnName = "id"),
               inverseJoinColumns = @JoinColumn(name = "music_id",
                                                referencedColumnName = "id"))
-   private Collection<Music>      favorities;
+   private Set<Music>             favorities;
 
    @PrePersist
    public void initializeUUID() {

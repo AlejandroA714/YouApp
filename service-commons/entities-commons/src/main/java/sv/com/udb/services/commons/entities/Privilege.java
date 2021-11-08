@@ -24,7 +24,6 @@ public class Privilege implements Serializable {
    @Enumerated(EnumType.STRING)
    @Column(length = 32, nullable = false)
    private IPrivilege        name;
-   @JsonBackReference
    @ManyToMany(mappedBy = "privileges")
    private Set<Role>         roles;
    private static final long serialVersionUID = -8894977809912237473L;

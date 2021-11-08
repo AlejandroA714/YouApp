@@ -43,10 +43,8 @@ public class Music {
    @ManyToOne
    @JsonManagedReference
    private YouAppPrincipal      user;
-   @JsonBackReference
    @ManyToMany(mappedBy = "songs")
    private Set<Playlist>        playlist;
-   @JsonManagedReference
    @ManyToMany(mappedBy = "favorities")
    private Set<YouAppPrincipal> user_favorites;
 }

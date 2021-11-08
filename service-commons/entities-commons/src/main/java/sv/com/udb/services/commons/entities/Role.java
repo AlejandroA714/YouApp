@@ -1,7 +1,9 @@
 package sv.com.udb.services.commons.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import sv.com.udb.services.commons.enums.IRole;
 
@@ -27,23 +29,21 @@ import java.util.Set;
 public class Role implements Serializable {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
-   private Integer                     id;
+   private Integer              id;
    @Enumerated(EnumType.STRING)
    @Column(length = 32, nullable = false)
-   private IRole                       name;
-   @JsonBackReference
+   private IRole                name;
    @ManyToMany(mappedBy = "roles")
-   private Collection<YouAppPrincipal> principals;
+   private Set<YouAppPrincipal> principals;
    @Singular
    @ManyToMany
-   @JsonManagedReference
    @JoinTable(name = "roles_privileges",
               joinColumns = @JoinColumn(name = "role_id",
                                         referencedColumnName = "id"),
               inverseJoinColumns = @JoinColumn(name = "privilege_id",
                                                referencedColumnName = "id"))
-   private Set<Privilege>              privileges;
-   private static final long           serialVersionUID = -1076892611352691032L;
+   private Set<Privilege>       privileges;
+   private static final long    serialVersionUID = -1076892611352691032L;
 
    public static Role from(IRole role) {
       return Role.builder().id(role.getPrimaryKey()).name(role).build();

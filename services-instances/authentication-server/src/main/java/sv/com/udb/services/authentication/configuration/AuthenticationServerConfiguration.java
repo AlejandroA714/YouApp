@@ -1,12 +1,10 @@
 package sv.com.udb.services.authentication.configuration;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +22,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
-import org.springframework.security.oauth2.server.authorization.*;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenCustomizer;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository.RegisteredClientParametersMapper;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -37,18 +39,17 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import sv.com.udb.components.mail.sender.services.IEmailService;
 import sv.com.udb.services.authentication.jackson.OAuthProviderSecurityModule;
-import sv.com.udb.services.commons.models.Principal;
 import sv.com.udb.services.authentication.oauth.OAuth2ProviderConfigurer;
 import sv.com.udb.services.authentication.properties.AuthenticationProperties;
-import sv.com.udb.services.commons.repository.IEmailTokenRepository;
-import sv.com.udb.services.commons.repository.IPrincipalRepository;
 import sv.com.udb.services.authentication.services.IAuthenticationService;
 import sv.com.udb.services.authentication.services.IEncryptionPasswordService;
 import sv.com.udb.services.authentication.services.impl.DefaultAuthenticationService;
 import sv.com.udb.services.authentication.services.impl.DefaultEncryptionPasswordService;
+import sv.com.udb.services.commons.models.Principal;
+import sv.com.udb.services.commons.repository.IEmailTokenRepository;
+import sv.com.udb.services.commons.repository.IPrincipalRepository;
 import sv.com.udb.youapp.services.filter.FilterChainExceptionHandler;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -87,12 +88,6 @@ public class AuthenticationServerConfiguration {
             context.getClaims().claim(AUTHORITIES_CLAIM, authorities);
          }
       };
-   }
-
-   @Bean
-   public ObjectMapper objectMapper() {
-      return new ObjectMapper().findAndRegisterModules().configure(
-            DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
    }
 
    @Bean
@@ -165,7 +160,9 @@ public class AuthenticationServerConfiguration {
    @Bean
    public ProviderSettings providerSettings(
          AuthenticationProperties properties) {
-      return ProviderSettings.builder().issuer(String.format("http://%s:8083", properties.getIpAddress())).build();
+      return ProviderSettings.builder()
+            .issuer(String.format("http://%s:8083", properties.getIpAddress()))
+            .build();
    }
 
    public static void applyCustomSecurity(HttpSecurity http) throws Exception {

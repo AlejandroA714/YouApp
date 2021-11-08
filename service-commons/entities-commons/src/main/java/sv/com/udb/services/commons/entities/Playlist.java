@@ -37,10 +37,9 @@ public class Playlist {
    @Column(nullable = false, length = 64)
    private String          title;
    @ManyToOne
-   @JsonBackReference
+   @JsonManagedReference
    private YouAppPrincipal user;
    @ManyToMany
-   @JsonManagedReference
    @JoinTable(name = "playlist_song",
               joinColumns = @JoinColumn(name = "playlist_id",
                                         referencedColumnName = "id"),
