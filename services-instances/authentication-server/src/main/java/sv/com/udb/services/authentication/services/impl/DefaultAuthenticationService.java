@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import sv.com.udb.components.mail.sender.services.IEmailService;
+import sv.com.udb.services.authentication.exceptions.InvalidCredentialsException;
+import sv.com.udb.services.authentication.models.ChangePasswordRequest;
 import sv.com.udb.services.commons.exceptions.PrincipalDoesNotExist;
 import sv.com.udb.services.commons.models.AbstractPrincipal;
 import sv.com.udb.services.commons.entities.EmailToken;
@@ -44,10 +46,11 @@ public class DefaultAuthenticationService implements IAuthenticationService {
    private final IEmailTokenRepository      tokenRepository;
    @NonNull
    private final IEmailService              emailService;
+   @NonNull
+   private final JwtDecoder                 jwtDecoder;
    private static final String              SUCCESS = "success";
 
    @Override
-   @Transactional
    public UserDetails loadUserByUsername(String s)
          throws UsernameNotFoundException {
       Optional<YouAppPrincipal> u = principalRepository
@@ -96,11 +99,44 @@ public class DefaultAuthenticationService implements IAuthenticationService {
    }
 
    @Override
-   public YouAppPrincipal me(String uuid) {
-      Optional<YouAppPrincipal> principal = principalRepository.findById(uuid);
+   public YouAppPrincipal me(String token) {
+      var accessToken = jwtDecoder.decode(token);
+      var userId = accessToken.getClaimAsString("id");
+      Optional<YouAppPrincipal> principal = principalRepository
+            .findById(userId);
       if (!principal.isPresent()) {
-         throw new PrincipalDoesNotExist(uuid + " does not exits");
+         throw new PrincipalDoesNotExist(userId + " does not exits");
       }
       return principal.get();
+   }
+
+   @Override
+   public void changePassword(String token, ChangePasswordRequest request) {
+      try {
+         var accessToken = jwtDecoder.decode(token);
+         var userId = accessToken.getClaimAsString("id");
+         Optional<YouAppPrincipal> p = principalRepository.findById(userId);
+         if (!p.isPresent()) {
+            throw new PrincipalDoesNotExist(userId + " does not exits");
+         }
+         YouAppPrincipal principal = p.get();
+         if (request.getOldPassword().equals(encryptionPasswordService
+               .decryptPassword(principal.getPassword()))) {
+            if (request.getNewPassword().equals(request.getRepeatPassword())) {
+               principal.setPassword(encryptionPasswordService
+                     .encryptPassword(request.getNewPassword()));
+               principalRepository.save(principal);
+            }
+            else {
+               throw new InvalidCredentialsException("Bad credentials");
+            }
+         }
+         else {
+            throw new InvalidCredentialsException("Bad credentials");
+         }
+      }
+      catch (Exception e) {
+         throw new InvalidCredentialsException(e.getMessage(), e);
+      }
    }
 }

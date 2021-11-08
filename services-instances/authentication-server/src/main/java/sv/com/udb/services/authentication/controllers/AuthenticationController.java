@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import sv.com.udb.services.authentication.models.ChangePasswordRequest;
 import sv.com.udb.services.commons.entities.YouAppPrincipal;
 import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
 import sv.com.udb.services.authentication.exceptions.RegistrationException;
@@ -24,19 +25,6 @@ public class AuthenticationController {
    @NonNull
    private final IAuthenticationService authService;
    private static final String          UUID_CLAIM = "id";
-
-   @PostMapping(value = "/me")
-   public YouAppPrincipal me(Authentication authentication) {
-      JwtAuthenticationToken principal;
-      if (authentication instanceof JwtAuthenticationToken) {
-         principal = (JwtAuthenticationToken) authentication;
-         return authService
-               .me(principal.getToken().getClaimAsString(UUID_CLAIM));
-      }
-      else {
-         throw new InvalidTokenException("Auhentication no valid");
-      }
-   }
 
    @GetMapping(value = "/confirm_email", produces = "text/html")
    public String validateToken(@RequestParam String token) {
@@ -59,6 +47,19 @@ public class AuthenticationController {
       catch (Exception e) {
          LOGGER.error("Failed to register, due: {}", e);
          throw new RegistrationException(e.getMessage(), e);
+      }
+   }
+
+   @GetMapping("/me")
+   public YouAppPrincipal change(
+         @RequestHeader(name = "Authorization") String token) {
+      if (null == token || !token.contains("Bearer "))
+         throw new InvalidTokenException("Needs a bearer token");
+      try {
+         return authService.me(token.substring(7));
+      }
+      catch (Exception e) {
+         throw e;
       }
    }
 }

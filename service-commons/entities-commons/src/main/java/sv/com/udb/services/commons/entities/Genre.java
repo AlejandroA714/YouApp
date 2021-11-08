@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import java.util.Set;
 
@@ -26,7 +27,10 @@ import java.util.Set;
 @ToString(exclude = "music")
 @EqualsAndHashCode(exclude = "music")
 @NamedEntityGraph(name = "music_by_genre",
-                  attributeNodes = @NamedAttributeNode("music"))
+                  attributeNodes = @NamedAttributeNode(value = "music",
+                                                       subgraph = "music_by_genre_favorites"),
+                  subgraphs = @NamedSubgraph(name = "music_by_genre_favorites",
+                                             attributeNodes = @NamedAttributeNode("userFavorites")))
 public class Genre {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)

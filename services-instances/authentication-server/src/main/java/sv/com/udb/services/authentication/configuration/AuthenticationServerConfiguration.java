@@ -24,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
@@ -123,9 +124,10 @@ public class AuthenticationServerConfiguration {
          IEncryptionPasswordService encryptionService,
          AuthenticationProperties props, ApplicationContext context,
          ExecutorService executorService, IEmailTokenRepository tokenRepository,
-         IEmailService emailService) {
+         IEmailService emailService, JwtDecoder jwtDecoder) {
       return new DefaultAuthenticationService(userRepository, encryptionService,
-            props, context, executorService, tokenRepository, emailService);
+            props, context, executorService, tokenRepository, emailService,
+            jwtDecoder);
    }
 
    @Bean

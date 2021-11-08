@@ -1,0 +1,29 @@
+server:
+  port: 8081
+
+spring:
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      routes:
+        -
+          id: authentication_server
+          uri: http://localhost:8083/
+          predicates:
+            - Path=/oauth2/**
+            #- Path=/v1/auth/**
+        -
+          id: storage_server
+          uri: http://localhost:8085/
+          predicates:
+            - Path=/v1/storage/**
+logbook:
+  format:
+    style: http
+logging:
+  level:
+    org.springframework: TRACE
+    org.hibernate.SQL: DEBUG
+    sv.com: TRACE
+    org.zalando.logbook: TRACE

@@ -15,6 +15,11 @@ public interface IPrincipalRepository
    List<YouAppPrincipal> findAllWithRoles();
 
    @Query("SELECT u FROM user u WHERE u.id = ?1")
+   @EntityGraph(value = "user_favorities",
+                type = EntityGraph.EntityGraphType.LOAD)
+   Optional<YouAppPrincipal> findByIdWithFavorities(String id);
+
+   @Query("SELECT u FROM user u WHERE u.id = ?1")
    @EntityGraph(value = "user_roles", type = EntityGraph.EntityGraphType.LOAD)
    Optional<YouAppPrincipal> findByIdWithRoles(String id);
 

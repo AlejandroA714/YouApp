@@ -2,6 +2,7 @@ package sv.com.udb.services.commons.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -22,7 +23,8 @@ import java.util.UUID;
 @SuperBuilder
 @MappedSuperclass
 @NoArgsConstructor
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = { "authorities" })
+@EqualsAndHashCode(exclude = { "authorities" })
 public class AbstractPrincipal implements Principal {
    @NotNull
    @Size(min = 3, max = 32, message = "Nombre no valido")

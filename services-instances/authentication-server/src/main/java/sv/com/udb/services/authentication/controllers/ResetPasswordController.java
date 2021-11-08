@@ -4,13 +4,20 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import sv.com.udb.components.mail.sender.model.MailType;
 import sv.com.udb.components.mail.sender.services.IEmailService;
+import sv.com.udb.services.authentication.exceptions.InvalidTokenException;
+import sv.com.udb.services.authentication.models.ChangePasswordRequest;
+import sv.com.udb.services.authentication.services.IAuthenticationService;
 import sv.com.udb.services.commons.entities.YouAppPrincipal;
 import sv.com.udb.services.commons.exceptions.PrincipalDoesNotExist;
 import sv.com.udb.services.commons.repository.IPrincipalRepository;
@@ -30,6 +37,8 @@ public class ResetPasswordController {
    private final IEmailService              emailService;
    @NonNull
    private final IPrincipalRepository       principalRepository;
+   @NonNull
+   private final IAuthenticationService     authenticationService;
    private static final String              NEW_PASS = "newpass";
 
    @GetMapping("/{email}")
@@ -54,15 +63,16 @@ public class ResetPasswordController {
       }
    }
 
-   @GetMapping("/decrypt")
-   public String ff() {
+   @PostMapping("/")
+   public void change(@RequestBody ChangePasswordRequest request,
+         @RequestHeader(name = "Authorization") String token) {
+      if (null == token || !token.contains("Bearer "))
+         throw new InvalidTokenException("Needs a bearer token");
       try {
-         return passwordService.decryptPassword(
-               "F3Y77xuxcSewvtqHH1XCg4ARZxx8HGcVW/+tzMMJ/JURS9rj8qFQUZvdHvqkes/wk/LesaQNYxo1cul9zqVN25E000V2wm1m5qgI1pC4vLUGxN7RNIh7IxIXhnVH8FIvVebHzv48D+pg7B8BrDzpySeDXEBc2G2B7BhXiDgPodBm+dO6F1xe2zE1NgNMPIEkyhlNledPRAVKKyn4naZmPy6+Y79M2lh1X8+XMD8JvEET1/aHnZ/L50F6vXiPmLaCwft0HOV313TmEj9m6pkHx1G3ON1khNmdbwLWggjskicavV14tRpZnHgB0jPIHYP2dzKydRr4Mf+6hj901hsC5g==");
+         authenticationService.changePassword(token.substring(7), request);
       }
       catch (Exception e) {
-         e.printStackTrace();
-         return "";
+         throw e;
       }
    }
 }

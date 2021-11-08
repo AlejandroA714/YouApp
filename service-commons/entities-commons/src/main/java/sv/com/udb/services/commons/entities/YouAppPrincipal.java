@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @NoArgsConstructor
 @Entity(name = "user")
-@ToString(callSuper = true,
-          exclude = { "roles", "emailTokens", "songs", "favorities" })
-@EqualsAndHashCode(callSuper = true,
-                   exclude = { "roles", "emailTokens", "songs", "favorities" })
+@ToString(callSuper = true, exclude = { "roles", "emailTokens", "songs",
+      "favorities", "authorities" })
+@EqualsAndHashCode(callSuper = true, exclude = { "roles", "emailTokens",
+      "songs", "favorities", "authorities" })
 @NamedEntityGraphs(value = {
       @NamedEntityGraph(name = "user_roles",
                         attributeNodes = @NamedAttributeNode(value = "roles",
@@ -38,38 +38,39 @@ import java.util.stream.Collectors;
       @NamedEntityGraph(name = "user_favorities",
                         attributeNodes = @NamedAttributeNode("favorities")) })
 public class YouAppPrincipal extends AbstractPrincipal {
-   private static final long      serialVersionUID = 7389128175350348769L;
+   private static final long     serialVersionUID = 7389128175350348769L;
    @Id
-   private String                 id;
+   private String                id;
    @Column(name = "registration_date")
-   private LocalDate              registration;
+   private LocalDate             registration;
    @Column(name = "email_confirmed")
-   private Boolean                isActive;
+   private Boolean               isActive;
    @ManyToOne
    @JsonManagedReference
-   private OAuthRegistrationType  registrationType;
+   private OAuthRegistrationType registrationType;
    @JsonBackReference
    @OneToMany(mappedBy = "user")
-   private Collection<EmailToken> emailTokens;
+   private Set<EmailToken>       emailTokens;
    @JsonBackReference
    @OneToMany(mappedBy = "user")
-   private Collection<Music>      songs;
+   private Set<Music>            songs;
    @Singular
-   @ManyToMany
+   @ManyToMany(fetch = FetchType.LAZY)
    @JoinTable(name = "users_roles",
               joinColumns = @JoinColumn(name = "user_id",
                                         referencedColumnName = "id"),
               inverseJoinColumns = @JoinColumn(name = "role_id",
                                                referencedColumnName = "id"))
-   private Set<Role>              roles;
+   private Set<Role>             roles;
    @Singular
-   @ManyToMany
+   @JsonBackReference
+   @ManyToMany(cascade = CascadeType.MERGE)
    @JoinTable(name = "favorites",
               joinColumns = @JoinColumn(name = "user_id",
                                         referencedColumnName = "id"),
               inverseJoinColumns = @JoinColumn(name = "music_id",
                                                referencedColumnName = "id"))
-   private Set<Music>             favorities;
+   private Set<Music>            favorities;
 
    @PrePersist
    public void initializeUUID() {

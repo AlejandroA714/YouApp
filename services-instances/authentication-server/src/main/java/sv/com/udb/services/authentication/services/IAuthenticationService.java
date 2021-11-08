@@ -1,6 +1,7 @@
 package sv.com.udb.services.authentication.services;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import sv.com.udb.services.authentication.models.ChangePasswordRequest;
 import sv.com.udb.services.commons.models.AbstractPrincipal;
 import sv.com.udb.services.commons.entities.YouAppPrincipal;
 
@@ -10,4 +11,6 @@ public interface IAuthenticationService extends UserDetailsService {
    String validateToken(String token);
 
    YouAppPrincipal me(String uuid);
+
+   void changePassword(String token, ChangePasswordRequest request);
 }

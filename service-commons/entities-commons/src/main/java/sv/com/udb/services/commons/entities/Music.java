@@ -2,12 +2,14 @@ package sv.com.udb.services.commons.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,13 +19,13 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "music")
-@ToString(exclude = { "user", "playlist", "user_favorites" })
-@EqualsAndHashCode(exclude = { "user", "playlist", "user_favorites" })
+@ToString(exclude = { "user", "playlist", "userFavorites" })
+@EqualsAndHashCode(exclude = { "user", "playlist", "userFavorites" })
 @NamedEntityGraphs(value = {
       @NamedEntityGraph(name = "music_playlist",
                         attributeNodes = @NamedAttributeNode(value = "playlist")),
       @NamedEntityGraph(name = "music_favorites",
-                        attributeNodes = @NamedAttributeNode(value = "user_favorites")) })
+                        attributeNodes = @NamedAttributeNode(value = "userFavorites")) })
 public class Music {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +49,10 @@ public class Music {
    private YouAppPrincipal      user;
    @ManyToMany(mappedBy = "songs")
    private Set<Playlist>        playlist;
+   @JsonBackReference
    @ManyToMany(mappedBy = "favorities")
-   private Set<YouAppPrincipal> user_favorites;
+   private Set<YouAppPrincipal> userFavorites;
+   @Transient
+   @JsonSerialize
+   private boolean              likes = false;
 }

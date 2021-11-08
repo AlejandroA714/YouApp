@@ -84,25 +84,27 @@ public class DefaultTransferService implements ITransferService {
          byte[] byteSong = payload.getOrDefault(
                properties.getFileConfiguration().getPayload().getFileName(),
                EMPTY);
-         try{
+         try {
             JSONObject response = minioService.upload(byteSong,
-                String.valueOf(Instant.now().getEpochSecond()),
-                ContentType.AUDIO_MP3);
+                  String.valueOf(Instant.now().getEpochSecond()),
+                  ContentType.AUDIO_MP3);
             song.setUri(response.get(IMinioService.FILE_NAME).toString());
             song.setStatus(statusRepository.getById(4));
-         }catch (OmittingFileException ex){
+         }
+         catch (OmittingFileException ex) {
             song.setStatus(statusRepository.getById(3));
             LOGGER.warn("Music File has been ommited");
          }
          byte[] artWork = payload.getOrDefault(
                properties.getFileConfiguration().getArtWork().getFileName(),
                EMPTY);
-         try{
+         try {
             JSONObject photo = minioService.upload(artWork,
-                String.valueOf(Instant.now().getEpochSecond()),
-                ContentType.IMAGE_JPEG);
+                  String.valueOf(Instant.now().getEpochSecond()),
+                  ContentType.IMAGE_JPEG);
             song.setPhoto(photo.get(IMinioService.FILE_NAME).toString());
-         }catch (OmittingFileException ex){
+         }
+         catch (OmittingFileException ex) {
             song.setStatus(statusRepository.getById(3));
             LOGGER.warn("Art Work has been ommited");
          }

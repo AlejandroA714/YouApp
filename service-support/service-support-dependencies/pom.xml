@@ -29,6 +29,7 @@
         <authorization-server.version>0.2.0</authorization-server.version>
         <api.gateway-ip>192.168.101.2</api.gateway-ip>
         <mysql-ip>localhost</mysql-ip>
+        <mysql-port>3306</mysql-port>
         <mysql.user>root</mysql.user>
         <mysql.password>Password01</mysql.password>
         <minio-ip>localhost</minio-ip>
@@ -138,6 +139,7 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
+                        <skip>true</skip>
                         <environmentVariables>
                             <YOUAPP_IP>${api.gateway-ip}</YOUAPP_IP>
                         </environmentVariables>
@@ -172,6 +174,7 @@
             <properties>
                 <api.gateway-ip>192.168.101.2</api.gateway-ip>
                 <minio-ip>192.168.101.2</minio-ip>
+                <mysql-ip>192.168.101.2</mysql-ip>
             </properties>
         </profile>
         <profile>
