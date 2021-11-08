@@ -185,6 +185,9 @@
       foreign key (user_id) references user(id)
   );
 
+  insert into favorites (music_id, user_id) values (1,'4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+                                                   (2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f');
+
   create table if not exists playlist(
       id int primary key auto_increment,
       title varchar(64) not null,
@@ -192,6 +195,8 @@
       foreign key (user_id) references user(id)
       ON DELETE CASCADE
   );
+
+  insert into playlist (title, user_id) values ('Playlist 1','4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f');
 
   create table if not exists playlist_song(
       id int primary key auto_increment,

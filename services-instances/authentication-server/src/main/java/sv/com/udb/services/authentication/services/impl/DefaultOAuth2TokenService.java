@@ -92,7 +92,7 @@ public class DefaultOAuth2TokenService implements IOAuth2TokenService {
             .withRegisteredClient(registeredClient).accessToken(accessToken)
             .refreshToken(refreshToken).principalName(auth.getName())
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .attribute("test", "valuetest").build();
+            .attribute(OAuth2Authorization.AUTHORIZED_SCOPE_ATTRIBUTE_NAME,authorizedScopes).build();
       this.authorizationService.save(authorization);
       return new OAuth2AccessTokenAuthenticationToken(registeredClient, auth,
             accessToken, refreshToken, Collections.emptyMap());

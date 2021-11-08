@@ -12,8 +12,8 @@ public class OAuthProviderSecurityModule extends SimpleModule {
 
    @Override
    public void setupModule(SetupContext context) {
-      // SecurityJackson2Modules.enableDefaultTyping(context.getOwner());
       context.setMixInAnnotations(AbstractPrincipal.class,
             AbstractPrincipalMixin.class);
+
    }
 }
