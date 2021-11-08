@@ -15,14 +15,9 @@ public class WebSecurityConfiguration {
    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
          throws Exception {
       http.authorizeRequests(authorizeRequests -> authorizeRequests
-            .antMatchers("/v1/auth/confirm_email").permitAll()
-            .antMatchers("/v1/auth/register").permitAll()
-            .antMatchers("/v1/auth/me").authenticated()
-            .antMatchers(HttpMethod.GET, "/v1/auth/reset-password/{email}")
-            .permitAll()
-            .antMatchers(HttpMethod.POST, "/v1/auth/reset-password/")
-            .authenticated()).csrf().disable()
-            .formLogin(Customizer.withDefaults());
+            .antMatchers("/v1/auth/*").permitAll()
+            .antMatchers("/v1/auth/reset-password/*").permitAll()).csrf()
+            .disable().formLogin(Customizer.withDefaults());
       return http.build();
    }
 }

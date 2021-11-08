@@ -8,11 +8,10 @@
   <name>YouApp: Service Instances</name>
   <packaging>pom</packaging>
   <modules>
+    <module>api-gateway</module>
     <module>server-parent</module>
     <module>server-base</module>
     <module>authentication-server</module>
-    <module>resource-server</module>
     <module>storage-server</module>
-      <module>api-gateway</module>
   </modules>
 </project>
