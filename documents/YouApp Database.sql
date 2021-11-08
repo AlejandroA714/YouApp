@@ -105,8 +105,10 @@
   DELIMITER ;
 
   insert into user(id,given_name,family_name,email,username,password,birthday,registration_date,email_confirmed,registration_type_id) 
-  values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f","Alejandro","Alejo","alejandroalejo714@gmail.com","alejandro","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
-  "2020-07-14",null,true,1);
+  values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f","Alejandro","Alejo","alejandroalejo715@gmail.com","alejandro","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
+  "2020-07-14",null,true,1),
+   ("77503902-813b-42d2-afe2-66e475c9da6b","Matias","Gaitan","matias25@gmail.com","matias","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
+   "2020-11-15",null,true,1);
 
   create table if not exists email_token(
     id int primary key auto_increment,
@@ -126,7 +128,8 @@
     ON UPDATE CASCADE ON DELETE CASCADE
   );
 
-  insert into users_roles values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f" ,1);
+  insert into users_roles values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f" ,1),
+                                ("77503902-813b-42d2-afe2-66e475c9da6b" ,3);
 
   create table if not exists genre(
       id int primary key auto_increment,
@@ -158,7 +161,7 @@
   );
 
   INSERT INTO `music` (`id`, `title`, `duration`, `song_url`, `photo`, `status_id`, `genre_id`, `user_id`) VALUES
-    (1, 'Sweather Weather', 252, 'http://minio:9090/youapp/sweather_weather.mp3', 'http://minio:9090/youapp/sweather_weather_artwork', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (1, 'Sweather Weather', 252, 'http://minio:9090/youapp/sweather_weather.mp3', 'http://minio:9090/youapp/sweather_weather_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
     (2, 'Lets Kill Tonight', 212, 'http://minio:9090/youapp/lets_kill_tonigth.mp3', 'http://minio:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
     (3, 'Good Day', 212, 'http://minio:9090/youapp/good_day.mp3', 'http://minio:9090/youapp/good_day_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
     (4, '21 Guns', 315, 'http://minio:9090/youapp/21_guns.mp3', 'http://minio:9090/youapp/21_guns_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
