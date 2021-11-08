@@ -9,13 +9,13 @@ spring:
       routes:
         -
           id: authentication_server
-          uri: http://localhost:8083/
+          uri: http://@api.gateway-ip@:8083/
           predicates:
             - Path=/oauth2/**
             - Path=/v1/auth/**
         -
           id: storage_server
-          uri: http://localhost:8085/
+          uri: http://@api.gateway-ip@:8085/
           predicates:
             - Path=/v1/storage/**
 logbook:
