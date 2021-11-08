@@ -136,15 +136,19 @@ public class DefaultTransferService implements ITransferService {
             sendToZip(summary, zip,
                   properties.getFileConfiguration().getInformation());
             if (request.getPhoto() != null && request.getPhoto().length() > 0) {
-               byte[] artWorkArray = Base64.decode(request.getPhoto());
-               sendToZip(artWorkArray, zip,
-                     properties.getFileConfiguration().getArtWork());
+               try{
+                  byte[] artWorkArray = Base64.decode(request.getPhoto());
+                  sendToZip(artWorkArray, zip,
+                      properties.getFileConfiguration().getArtWork());
+               }catch (Exception e){
+                  LOGGER.warn("Failed to process iamge, will be omited");
+               }
             }
          }
          catch (Exception e) {
             LOGGER.error("Failed to create zip", e);
          }
-         return musicRepository.findById(m.getId()).get();
+         return m;
       }
       catch (Exception e) {
          LOGGER.error("Failed to save music", e);
@@ -159,7 +163,7 @@ public class DefaultTransferService implements ITransferService {
       Music m = Music.builder().title(request.getTitle())
             .duration(request.getDuration()).uri("").genre(genre).status(status)
             .user(p).photo("").build();
-      musicRepository.save(m);
+      musicRepository.saveAndFlush(m);
       return m;
    }
 
