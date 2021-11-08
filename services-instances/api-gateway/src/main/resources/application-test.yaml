@@ -8,12 +8,12 @@ spring:
       routes:
         -
           id: authentication_server
-          uri: http://localhost:8083/
+          uri: http://@authentication.server-ip@:8083/
           predicates:
-            - Path=/oauth2/**, /v1/auth/**
+            - Path=/oauth2/**, /v1/auth/**, /.well-known/**
         -
           id: storage_server
-          uri: http://localhost:8085/
+          uri: http://@storage.server-ip@:8085/
           predicates:
             - Path=/v1/storage/**
 logbook:

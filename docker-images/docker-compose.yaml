@@ -1,0 +1,84 @@
+version: '3.7'
+
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../documents/YouApp\ Database.sql:/data/application/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: Password01
+    networks:
+      - gateway
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - gateway
+  minio:
+    container_name: minio
+    image: minio/minio
+    ports:
+      - "9090:9000"
+      - "9091:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - gateway
+    command: server /data --console-address ":9001"
+  api-gateway:
+    container_name: api-gateway
+    image: api-gateway:latest
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+    volumes:
+      - api_data:/tmp
+    networks:
+      - gateway
+  authentication-server:
+    container_name: authentication-server
+    image: authentication-server:latest
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+    volumes:
+      - authentication_data:/tmp
+    networks:
+      - gateway
+  storage-server:
+    container_name: storage-server
+    image: storage-server:latest
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+    volumes:
+      - storage_data:/tmp
+    networks:
+      - gateway
+
+networks:
+  gateway:
+    internal: false
+
+volumes:
+  mysql_data:
+    external: false
+  minio_data:
+    external: false
+  api_data:
+    external: false
+  authentication_data:
+    external: false
+  storage_data:
+    external: false

@@ -3,7 +3,7 @@ server:
 
 app:
   mail:
-    remote-address: @api.gateway-ip@
+    remote-address: @authentication.server-ip@
   minio:
     client:
       url: http://@minio-ip@:9090 #https://play.min.io
@@ -39,7 +39,7 @@ app:
             - openid
             - profile
             - email
-    ip-address: @api.gateway-ip@
+    ip-address: @authentication.server-ip@
     role-hierarchy: ROLE_ADMIN > ROLE_MANTAINER > ROLE_USER
     post-creation-tasks:
      - sv.com.udb.services.authentication.task.SendEmailTask

@@ -28,6 +28,8 @@
         <org.json.version>20190722</org.json.version>
         <authorization-server.version>0.2.0</authorization-server.version>
         <api.gateway-ip>192.168.101.2</api.gateway-ip>
+        <authentication.server-ip>192.168.101.2</authentication.server-ip>
+        <storage.server-ip>192.168.101.2</storage.server-ip>
         <mysql-ip>localhost</mysql-ip>
         <mysql-port>3306</mysql-port>
         <mysql.user>root</mysql.user>
@@ -173,6 +175,8 @@
             <id>alejo</id>
             <properties>
                 <api.gateway-ip>192.168.101.2</api.gateway-ip>
+                <authentication.server-ip>192.168.101.2</authentication.server-ip>
+                <storage.server-ip>192.168.101.2</storage.server-ip>
                 <minio-ip>192.168.101.2</minio-ip>
                 <mysql-ip>192.168.101.2</mysql-ip>
             </properties>
@@ -181,6 +185,8 @@
             <id>matias</id>
             <properties>
                 <api.gateway-ip>192.168.0.17</api.gateway-ip>
+                <authentication.server-ip>192.168.0.17</authentication.server-ip>
+                <storage.server-ip>192.168.0.17</storage.server-ip>
                 <mysql.user>root</mysql.user>
                 <mysql.password>123456</mysql.password>
             </properties>
@@ -189,6 +195,8 @@
             <id>marko</id>
             <properties>
                 <api.gateway-ip>192.168.0.9</api.gateway-ip>
+                <authentication.server-ip>192.168.0.9</authentication.server-ip>
+                <storage.server-ip>192.168.0.9</storage.server-ip>
             </properties>
         </profile>
         <profile>
@@ -197,6 +205,8 @@
                 <mysql.user>root</mysql.user>
                 <mysql.password>Password01</mysql.password>
                 <api.gateway-ip>192.168.0.7</api.gateway-ip>
+                <authentication.server-ip>192.168.0.7</authentication.server-ip>
+                <storage.server-ip>192.168.0.7</storage.server-ip>
             </properties>
         </profile>
         <profile>
@@ -205,6 +215,21 @@
                 <mysql.user>root</mysql.user>
                 <mysql.password></mysql.password>
                 <api.gateway-ip>192.168.0.17</api.gateway-ip>
+                <authentication.server-ip>192.168.0.17</authentication.server-ip>
+                <storage.server-ip>192.168.0.17</storage.server-ip>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <api.gateway-ip>192.168.101.2</api.gateway-ip>
+                <authentication.server-ip>192.168.101.2</authentication.server-ip>
+                <storage.server-ip>192.168.101.2</storage.server-ip>
+                <minio-ip>minio</minio-ip>
+                <mysql-ip>mysql</mysql-ip>
+                <mysql-port>3306</mysql-port>
+                <mysql.user>root</mysql.user>
+                <mysql.password>Password01</mysql.password>
             </properties>
         </profile>
     </profiles>

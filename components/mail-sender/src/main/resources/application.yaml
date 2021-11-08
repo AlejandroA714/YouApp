@@ -1,6 +1,6 @@
 app:
   mail:
-    remote-address: @api.gateway-ip@
+    remote-address: @authentication.server-ip@
 spring:
   mail:
     host: smtp.gmail.com

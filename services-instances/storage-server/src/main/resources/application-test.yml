@@ -17,7 +17,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://@api.gateway-ip@:8083
+          issuer-uri: http://@authentication.server-ip@:8083
 logbook:
   format:
     style: http

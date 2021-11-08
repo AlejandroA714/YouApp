@@ -1,13 +1,13 @@
-  create database youapp;
+  create database if not exists youapp;
 
   use youapp;
 
-  create table oauth2_registration_type(
+  create table if not exists oauth2_registration_type(
     id int primary key auto_increment,
     registration_type varchar(64) not null unique
   );
 
-  CREATE TABLE oauth2_registered_client (
+  create table if not exists oauth2_registered_client (
     id varchar(100) NOT NULL,
     client_id varchar(100) NOT NULL,
     client_id_issued_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -23,7 +23,7 @@
     PRIMARY KEY (id)
   );
 
-  CREATE TABLE oauth2_authorization (
+  create table if not exists oauth2_authorization (
     id varchar(100) NOT NULL,
     registered_client_id varchar(100) NOT NULL,
     principal_name varchar(200) NOT NULL,
@@ -53,21 +53,21 @@
 
   insert into oauth2_registration_type values (null,"YOUAPP"),(null,"GOOGLE"), (null,"OTHER");
 
-  create table role(
+  create table if not exists role(
     id int primary key auto_increment,
     name varchar(32) not null unique
   );  
 
   insert into role values (null,"ROLE_ADMIN"),(null,"ROLE_MANTAINER"),(null,"ROLE_USER");
 
-  create table privilege(
+  create table if not exists privilege(
     id int primary key auto_increment,
     name varchar(32) not null unique
   );
 
   insert into privilege values (null,"READ_PRIVILEGE"),(null,"WRITE_PRIVILEGE"),(null,"PERMISSIONS_PRIVILEGE");
 
-  create table roles_privileges(
+  create table if not exists roles_privileges(
     role_id int not null,
     privilege_id int not null,
     foreign key(role_id) references role(id) 
@@ -78,7 +78,7 @@
 
   insert into roles_privileges values (1,1),(1,2),(1,3),(3,1);
   
-  create table user(
+  create table if not exists user(
       id varchar(56) primary key,
       given_name varchar(32) not null,
       family_name varchar(32) not null,
@@ -108,7 +108,7 @@
   values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f","Alejandro","Alejo","alejandroalejo714@gmail.com","alejandro","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
   "2020-07-14",null,true,1);
 
-  create table email_token(
+  create table if not exists email_token(
     id int primary key auto_increment,
     token varchar(48) not null unique,
     expiration_date timestamp not null,
@@ -117,7 +117,7 @@
     ON UPDATE CASCADE ON DELETE CASCADE 
   );
 
-  create table users_roles(
+  create table if not exists users_roles(
     user_id varchar(56) not null,
     role_id int not null,
     foreign key(user_id) references user(id)
@@ -128,7 +128,7 @@
 
   insert into users_roles values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f" ,1);
 
-  create table genre(
+  create table if not exists genre(
       id int primary key auto_increment,
       title varchar(32) not null
   );
@@ -136,14 +136,14 @@
   insert into genre(title) values ("Rock"),("Pop"),("Rap"),("Electronica")
                            ,("Metal"),("Salsa"),("Reggaeton"),("Banda");
 
-  create table status(
+  create table if not exists status(
      id int primary key auto_increment,
      status varchar(32) not null
   );
 
   insert into status(status) values ("PENDING"),("UPLOADING"),("INCOMPLETE"),("READY"),("FAILED");
 
-  create table music(
+  create table if not exists music(
       id int primary key auto_increment,
       title varchar(128) not null,
       duration int,
@@ -157,7 +157,24 @@
       foreign key (user_id) references user(id) ON UPDATE CASCADE
   );
 
-  create table favorites(
+  INSERT INTO `music` (`id`, `title`, `duration`, `song_url`, `photo`, `status_id`, `genre_id`, `user_id`) VALUES
+    (1, 'Sweather Weather', 252, 'http://minio:9090/youapp/sweather_weather.mp3', 'http://minio:9090/youapp/sweather_weather_artwork', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (2, 'Lets Kill Tonight', 212, 'http://minio:9090/youapp/lets_kill_tonigth.mp3', 'http://minio:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (3, 'Good Day', 212, 'http://minio:9090/youapp/good_day.mp3', 'http://minio:9090/youapp/good_day_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (4, '21 Guns', 315, 'http://minio:9090/youapp/21_guns.mp3', 'http://minio:9090/youapp/21_guns_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (5, 'Life Goes On', 144, 'http://minio:9090/youapp/life_goes_on.mp3', 'http://minio:9090/youapp/life_goes_on_artwork.jpg', 4, 3, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (6, 'Thunderstruck', 240, 'http://minio:9090/youapp/thunderstruck.mp3', 'http://minio:9090/youapp/ac_dc.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (7, 'Swae Lee', 161, 'http://minio:9090/youapp/swae_lee.mp3', 'http://minio:9090/youapp/swae_lee_artwork.jpg', 4, 4, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (8, 'De mi de mi', 229, 'http://minio:9090/youapp/de_mi.mp3', 'http://minio:9090/youapp/de_mi.png', 4, 3, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (9, 'Hasta Que Aguante', 273, 'http://minio:9090/youapp/hasta_que_el_cuerpo.mp3', 'http://minio:9090/youapp/hasta_que_el_cuerpo_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (10, 'I Took A Pill In Ibiza', 237, 'http://minio:9090/youapp/i_took_a_pill.mp3', 'http://minio:9090/youapp/i_took_a_pill_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (11, 'Come ang get your love', 206, 'http://minio:9090/youapp/come_and_get.mp3', 'http://minio:9090/youapp/come_and_get_artwork.jpg', 4, 4, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (12, 'Blinding Lights', 203, 'http://minio:9090/youapp/blinding_lights.mp3', 'http://minio:9090/youapp/blinding_lights_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (13, 'She dont give', 230, 'http://minio:9090/youapp/she_dont_give.mp3', 'http://minio:9090/youapp/she_dont_give_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (14, 'Californication', 314, 'http://minio:9090/youapp/californication.mp3', 'http://minio:9090/youapp/californication_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (15, 'Golden Days', 255, 'http://minio:9090/youapp/golden_days.mp3', 'http://minio:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f');
+
+  create table if not exists favorites(
       id int primary key auto_increment,
       music_id int not null ,
       foreign key (music_id) references music(id),
@@ -165,7 +182,7 @@
       foreign key (user_id) references user(id)
   );
 
-  create table playlist(
+  create table if not exists playlist(
       id int primary key auto_increment,
       title varchar(64) not null,
       user_id varchar(56) not null ,
@@ -173,7 +190,7 @@
       ON DELETE CASCADE
   );
 
-  create table playlist_song(
+  create table if not exists playlist_song(
       id int primary key auto_increment,
       music_id int not null ,
       foreign key (music_id) references music(id),
