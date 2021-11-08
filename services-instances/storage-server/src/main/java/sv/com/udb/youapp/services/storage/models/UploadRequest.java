@@ -16,6 +16,5 @@ public class UploadRequest {
    @NotNull
    private int    genreId;
    private int    duration;
-   private String url;
-   private int    userId;
+   private String photo;
 }

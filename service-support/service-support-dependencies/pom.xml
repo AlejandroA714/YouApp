@@ -171,6 +171,7 @@
             <id>alejo</id>
             <properties>
                 <api.gateway-ip>192.168.101.2</api.gateway-ip>
+                <minio-ip>192.168.101.2</minio-ip>
             </properties>
         </profile>
         <profile>

@@ -1,7 +1,9 @@
 package sv.com.udb.services.authentication.configuration;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +66,13 @@ public class AuthenticationServerConfiguration {
    private static final String               UUID_CLAIM        = "id";
    @NonNull
    private final FilterChainExceptionHandler filterChainExceptionHandler;
+
+   @Bean
+   public ObjectMapper objectMapper() {
+      return new ObjectMapper().findAndRegisterModules()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .registerModule(new Hibernate5Module());
+   }
 
    @Bean
    @Order(Ordered.HIGHEST_PRECEDENCE)

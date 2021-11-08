@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum IStatus {
-   PENDING(1), UPLOADING(2), READY(3), FAILED(4);
+   PENDING(1), UPLOADING(2), INCOMPLETE(3), READY(4), FAILED(5);
 
    int primaryKey;
 

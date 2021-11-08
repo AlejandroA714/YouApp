@@ -7,8 +7,10 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import sv.com.udb.components.minio.client.enums.ContentType;
+import sv.com.udb.components.minio.client.exceptions.OmittingFileException;
 import sv.com.udb.components.minio.client.exceptions.TransferException;
 import sv.com.udb.components.minio.client.services.IMinioService;
 import sv.com.udb.services.commons.entities.Genre;
@@ -82,11 +84,28 @@ public class DefaultTransferService implements ITransferService {
          byte[] byteSong = payload.getOrDefault(
                properties.getFileConfiguration().getPayload().getFileName(),
                EMPTY);
-         JSONObject response = minioService.upload(byteSong,
-               String.valueOf(Instant.now().getEpochSecond()),
-               ContentType.AUDIO_MP3);
-         song.setUri(response.get(IMinioService.FILE_NAME).toString());
-         song.setStatus(statusRepository.getById(3));
+         try{
+            JSONObject response = minioService.upload(byteSong,
+                String.valueOf(Instant.now().getEpochSecond()),
+                ContentType.AUDIO_MP3);
+            song.setUri(response.get(IMinioService.FILE_NAME).toString());
+            song.setStatus(statusRepository.getById(4));
+         }catch (OmittingFileException ex){
+            song.setStatus(statusRepository.getById(3));
+            LOGGER.warn("Music File has been ommited");
+         }
+         byte[] artWork = payload.getOrDefault(
+               properties.getFileConfiguration().getArtWork().getFileName(),
+               EMPTY);
+         try{
+            JSONObject photo = minioService.upload(artWork,
+                String.valueOf(Instant.now().getEpochSecond()),
+                ContentType.IMAGE_JPEG);
+            song.setPhoto(photo.get(IMinioService.FILE_NAME).toString());
+         }catch (OmittingFileException ex){
+            song.setStatus(statusRepository.getById(3));
+            LOGGER.warn("Art Work has been ommited");
+         }
          musicRepository.save(song);
       }
       catch (Exception e) {
@@ -114,6 +133,11 @@ public class DefaultTransferService implements ITransferService {
                   properties.getFileConfiguration().getPayload());
             sendToZip(summary, zip,
                   properties.getFileConfiguration().getInformation());
+            if (request.getPhoto() != null && request.getPhoto().length() > 0) {
+               byte[] artWorkArray = Base64.decode(request.getPhoto());
+               sendToZip(artWorkArray, zip,
+                     properties.getFileConfiguration().getArtWork());
+            }
          }
          catch (Exception e) {
             LOGGER.error("Failed to create zip", e);
@@ -132,7 +156,7 @@ public class DefaultTransferService implements ITransferService {
       Genre genre = genreRepository.getById(request.getGenreId());
       Music m = Music.builder().title(request.getTitle())
             .duration(request.getDuration()).uri("").genre(genre).status(status)
-            .user(p).build();
+            .user(p).photo("").build();
       musicRepository.save(m);
       return m;
    }

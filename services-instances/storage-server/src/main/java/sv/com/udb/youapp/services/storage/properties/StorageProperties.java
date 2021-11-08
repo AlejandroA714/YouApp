@@ -28,6 +28,8 @@ public class StorageProperties {
       private String               filterExpresion     = ".*\\.(zip)$";
       private Duration             transportTaskPeriod = Duration.ofSeconds(30);
       private Duration             deleteTaskPeriod    = Duration.ofMinutes(1);
+      private ZipFileConfiguration artWork             = new ZipFileConfiguration(
+            true, "artwork.jpg", "ArtWork from the song");
       private ZipFileConfiguration payload             = new ZipFileConfiguration(
             true, "payload.mp3", "Song to be upload");
       private ZipFileConfiguration information         = new ZipFileConfiguration(

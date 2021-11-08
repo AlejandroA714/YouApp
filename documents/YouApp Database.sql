@@ -141,7 +141,7 @@
      status varchar(32) not null
   );
 
-  insert into status(status) values ("PENDING"),("UPLOADING"),("FAILED"),("READY");
+  insert into status(status) values ("PENDING"),("UPLOADING"),("INCOMPLETE"),("READY"),("FAILED");
 
   create table music(
       id int primary key auto_increment,
@@ -152,9 +152,9 @@
       status_id int,
       genre_id int,
       user_id varchar(56),
-      foreign key (status_id) references status(id),
-      foreign key (genre_id) references genre(id),
-      foreign key (user_id) references user(id)
+      foreign key (status_id) references status(id) ON UPDATE CASCADE,
+      foreign key (genre_id) references genre(id) ON UPDATE CASCADE,
+      foreign key (user_id) references user(id) ON UPDATE CASCADE
   );
 
   create table favorites(
