@@ -159,7 +159,10 @@
       foreign key (genre_id) references genre(id) ON UPDATE CASCADE,
       foreign key (user_id) references user(id) ON UPDATE CASCADE
   );
-
+  
+  -- This table requires having assets already in minio to work properly
+  -- Assets can be found https://drive.google.com/drive/folders/1-eXAO95B4abEIg5hj4B0yGOR0zseSN37?usp=sharing
+  
   INSERT INTO `music` (`id`, `title`, `duration`, `song_url`, `photo`, `status_id`, `genre_id`, `user_id`) VALUES
     (1, 'Sweather Weather', 252, 'http://192.168.101.2:9090/youapp/sweather_weather.mp3', 'http://192.168.101.2:9090/youapp/sweather_weather_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
     (2, 'Lets Kill Tonight', 212, 'http://192.168.101.2:9090/youapp/lets_kill_tonigth.mp3', 'http://192.168.101.2:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
