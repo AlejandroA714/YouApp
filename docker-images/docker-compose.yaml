@@ -33,39 +33,39 @@ services:
     networks:
       - gateway
     command: server /data --console-address ":9001"
-  api-gateway:
-    container_name: api-gateway
-    image: api-gateway:latest
-    ports:
-      - "8082:8082"
-    environment:
-      SPRING_PROFILES_ACTIVE: test
-    volumes:
-      - api_data:/tmp
-    networks:
-      - gateway
-  authentication-server:
-    container_name: authentication-server
-    image: authentication-server:latest
-    ports:
-      - "8083:8083"
-    environment:
-      SPRING_PROFILES_ACTIVE: test
-    volumes:
-      - authentication_data:/tmp
-    networks:
-      - gateway
-  storage-server:
-    container_name: storage-server
-    image: storage-server:latest
-    ports:
-      - "8085:8085"
-    environment:
-      SPRING_PROFILES_ACTIVE: test
-    volumes:
-      - storage_data:/tmp
-    networks:
-      - gateway
+#  api-gateway:
+#    container_name: api-gateway
+#    image: api-gateway:latest
+#    ports:
+#      - "8082:8082"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: test
+#    volumes:
+#      - api_data:/tmp
+#    networks:
+#      - gateway
+#  authentication-server:
+#    container_name: authentication-server
+#    image: authentication-server:latest
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: test
+#    volumes:
+#      - authentication_data:/tmp
+#    networks:
+#      - gateway
+#  storage-server:
+#    container_name: storage-server
+#    image: storage-server:latest
+#    ports:
+#      - "8085:8085"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: test
+#    volumes:
+#      - storage_data:/tmp
+#    networks:
+#      - gateway
 
 networks:
   gateway:
@@ -76,9 +76,9 @@ volumes:
     external: false
   minio_data:
     external: false
-  api_data:
-    external: false
-  authentication_data:
-    external: false
-  storage_data:
-    external: false
+  #api_data:
+  #  external: false
+  #authentication_data:
+  #  external: false
+  #storage_data:
+  #  external: false
