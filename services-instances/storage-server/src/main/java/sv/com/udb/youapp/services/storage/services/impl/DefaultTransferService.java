@@ -136,11 +136,12 @@ public class DefaultTransferService implements ITransferService {
             sendToZip(summary, zip,
                   properties.getFileConfiguration().getInformation());
             if (request.getPhoto() != null && request.getPhoto().length() > 0) {
-               try{
+               try {
                   byte[] artWorkArray = Base64.decode(request.getPhoto());
                   sendToZip(artWorkArray, zip,
-                      properties.getFileConfiguration().getArtWork());
-               }catch (Exception e){
+                        properties.getFileConfiguration().getArtWork());
+               }
+               catch (Exception e) {
                   LOGGER.warn("Failed to process iamge, will be omited");
                }
             }

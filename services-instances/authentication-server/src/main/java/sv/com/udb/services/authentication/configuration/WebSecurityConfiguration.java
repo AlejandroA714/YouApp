@@ -15,10 +15,9 @@ public class WebSecurityConfiguration {
    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
          throws Exception {
       http.authorizeRequests(authorizeRequests -> authorizeRequests
-            .antMatchers("/v1/auth/*").permitAll()
-              .antMatchers("/favicon.ico").permitAll()
-            .antMatchers("/v1/auth/reset-password/*").permitAll()).csrf()
-            .disable().formLogin(Customizer.withDefaults());
+            .antMatchers("/v1/auth/*").permitAll().antMatchers("/favicon.ico")
+            .permitAll().antMatchers("/v1/auth/reset-password/*").permitAll())
+            .csrf().disable().formLogin(Customizer.withDefaults());
       return http.build();
    }
 }
