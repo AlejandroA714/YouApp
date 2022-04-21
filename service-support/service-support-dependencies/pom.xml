@@ -14,7 +14,7 @@
     <name>YouApp: Dependencies</name>
     <packaging>pom</packaging>
     <properties>
-        <java.version>15</java.version>
+        <java.version>17</java.version>
         <slf4j.version>1.7.32</slf4j.version>
         <lombok.version>1.18.22</lombok.version>
         <logbook.version>2.4.2</logbook.version>
@@ -26,7 +26,7 @@
         <javax.version>2.0.1.Final</javax.version>
         <javax.inject.version>1</javax.inject.version>
         <org.json.version>20190722</org.json.version>
-        <authorization-server.version>0.2.0</authorization-server.version>
+        <authorization-server.version>0.2.3</authorization-server.version>
         <api.gateway-ip>192.168.101.2</api.gateway-ip>
         <authentication.server-ip>192.168.101.2</authentication.server-ip>
         <storage.server-ip>192.168.101.2</storage.server-ip>
