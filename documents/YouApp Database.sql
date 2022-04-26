@@ -91,7 +91,8 @@
       registration_date date null,
       email_confirmed boolean default false,
       registration_type_id int not null, 
-      foreign key(registration_type_id) references oauth2_registration_type(id) 
+      foreign key(registration_type_id) references oauth2_registration_type(id)
+      ON UPDATE CASCADE ON DELETE CASCADE
   );
 
   DELIMITER $$
@@ -120,6 +121,7 @@
   );
 
   create table if not exists users_roles(
+    id int primary key auto_increment,
     user_id varchar(56) not null,
     role_id int not null,
     foreign key(user_id) references user(id)
@@ -128,7 +130,7 @@
     ON UPDATE CASCADE ON DELETE CASCADE
   );
 
-  insert into users_roles values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f" ,1),
+  insert into users_roles(user_id,role_id) values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f" ,1),
                                 ("77503902-813b-42d2-afe2-66e475c9da6b" ,3);
 
   create table if not exists genre(

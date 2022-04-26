@@ -39,7 +39,7 @@ app:
             - openid
             - profile
             - email
-    ip-address: http://@authentication.server-ip@:8083
+    ip-address: http://@authentication.server-ip@:8082
     role-hierarchy: ROLE_ADMIN > ROLE_MANTAINER > ROLE_USER
     post-creation-tasks:
      - sv.com.udb.services.authentication.task.SendEmailTask
