@@ -153,7 +153,7 @@ public class MusicController {
       principalRepository.saveAndFlush(pr);
    }
 
-   @GetMapping("/")
+   @GetMapping("")
    public Collection<Music> music(JwtAuthenticationToken principal) {
       try {
          String uuid = principal.getToken().getClaimAsString(UUID_CLAIM);

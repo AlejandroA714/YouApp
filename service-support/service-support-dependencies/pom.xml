@@ -31,11 +31,12 @@
         <api.gateway-ip>192.168.101.17</api.gateway-ip>
         <authentication.server-ip>192.168.101.17</authentication.server-ip>
         <storage.server-ip>192.168.101.17</storage.server-ip>
+        <minio-ip>192.168.101.17</minio-ip>
         <mysql-ip>localhost</mysql-ip>
         <mysql-port>3306</mysql-port>
         <mysql.user>root</mysql.user>
         <mysql.password>Password01</mysql.password>
-        <minio-ip>192.168.101.17</minio-ip>
+
     </properties>
     <dependencyManagement>
         <dependencies>

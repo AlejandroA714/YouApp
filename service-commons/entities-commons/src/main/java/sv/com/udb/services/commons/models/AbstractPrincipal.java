@@ -1,5 +1,6 @@
 package sv.com.udb.services.commons.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,6 +48,7 @@ public class AbstractPrincipal implements Principal {
    @Size(min = 6, max = 512, message = "Contraseña invalida")
    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
    protected String                               password;
+   @JsonFormat(pattern="yyyy-MM-dd")
    protected LocalDate                            birthday;
    @Column(length = 512)
    protected String                               photo;

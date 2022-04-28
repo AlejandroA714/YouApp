@@ -166,21 +166,21 @@
   -- Assets can be found https://drive.google.com/drive/folders/1-eXAO95B4abEIg5hj4B0yGOR0zseSN37?usp=sharing
   
   INSERT INTO `music` (`id`, `title`, `duration`, `song_url`, `photo`, `status_id`, `genre_id`, `user_id`) VALUES
-    (1, 'Sweather Weather', 252, 'http://192.168.101.2:9090/youapp/sweather_weather.mp3', 'http://192.168.101.2:9090/youapp/sweather_weather_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (2, 'Lets Kill Tonight', 212, 'http://192.168.101.2:9090/youapp/lets_kill_tonigth.mp3', 'http://192.168.101.2:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (3, 'Good Day', 212, 'http://192.168.101.2:9090/youapp/good_day.mp3', 'http://192.168.101.2:9090/youapp/good_day_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (4, '21 Guns', 315, 'http://192.168.101.2:9090/youapp/21_guns.mp3', 'http://192.168.101.2:9090/youapp/21_guns_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (5, 'Life Goes On', 144, 'http://192.168.101.2:9090/youapp/life_goes_on.mp3', 'http://192.168.101.2:9090/youapp/life_goes_on_artwork.jpg', 4, 3, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (6, 'Thunderstruck', 240, 'http://192.168.101.2:9090/youapp/thunderstruck.mp3', 'http://192.168.101.2:9090/youapp/ac_dc.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (7, 'Swae Lee', 161, 'http://192.168.101.2:9090/youapp/swae_lee.mp3', 'http://192.168.101.2:9090/youapp/swae_lee_artwork.jpg', 4, 4, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (8, 'De mi de mi', 229, 'http://192.168.101.2:9090/youapp/de_mi.mp3', 'http://192.168.101.2:9090/youapp/de_mi.png', 4, 3, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (9, 'Hasta Que Aguante', 273, 'http://192.168.101.2:9090/youapp/hasta_que_el_cuerpo.mp3', 'http://192.168.101.2:9090/youapp/hasta_que_el_cuerpo_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (10, 'I Took A Pill In Ibiza', 237, 'http://192.168.101.2:9090/youapp/i_took_a_pill.mp3', 'http://192.168.101.2:9090/youapp/i_took_a_pill_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (11, 'Come ang get your love', 206, 'http://192.168.101.2:9090/youapp/come_and_get.mp3', 'http://192.168.101.2:9090/youapp/come_and_get_artwork.jpg', 4, 4, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (12, 'Blinding Lights', 203, 'http://192.168.101.2:9090/youapp/blinding_lights.mp3', 'http://192.168.101.2:9090/youapp/blinding_lights_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (13, 'She dont give', 230, 'http://192.168.101.2:9090/youapp/she_dont_give.mp3', 'http://192.168.101.2:9090/youapp/she_dont_give_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (14, 'Californication', 314, 'http://192.168.101.2:9090/youapp/californication.mp3', 'http://192.168.101.2:9090/youapp/californication_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (15, 'Golden Days', 255, 'http://192.168.101.2:9090/youapp/golden_days.mp3', 'http://192.168.101.2:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f');
+    (1, 'Sweather Weather', 252, 'http://192.168.101.17:9090/youapp/sweather_weather.mp3', 'http://192.168.101.17:9090/youapp/sweather_weather_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (2, 'Lets Kill Tonight', 212, 'http://192.168.101.17:9090/youapp/lets_kill_tonigth.mp3', 'http://192.168.101.17:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (3, 'Good Day', 212, 'http://192.168.101.17:9090/youapp/good_day.mp3', 'http://192.168.101.17:9090/youapp/good_day_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (4, '21 Guns', 315, 'http://192.168.101.17:9090/youapp/21_guns.mp3', 'http://192.168.101.17:9090/youapp/21_guns_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (5, 'Life Goes On', 144, 'http://192.168.101.17:9090/youapp/life_goes_on.mp3', 'http://192.168.101.17:9090/youapp/life_goes_on_artwork.jpg', 4, 3, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (6, 'Thunderstruck', 240, 'http://192.168.101.17:9090/youapp/thunderstruck.mp3', 'http://192.168.101.17:9090/youapp/ac_dc.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (7, 'Swae Lee', 161, 'http://192.168.101.17:9090/youapp/swae_lee.mp3', 'http://192.168.101.17:9090/youapp/swae_lee_artwork.jpg', 4, 4, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (8, 'De mi de mi', 229, 'http://192.168.101.17:9090/youapp/de_mi.mp3', 'http://192.168.101.17:9090/youapp/de_mi.png', 4, 3, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (9, 'Hasta Que Aguante', 273, 'http://192.168.101.17:9090/youapp/hasta_que_el_cuerpo.mp3', 'http://192.168.101.17:9090/youapp/hasta_que_el_cuerpo_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (10, 'I Took A Pill In Ibiza', 237, 'http://192.168.101.17:9090/youapp/i_took_a_pill.mp3', 'http://192.168.101.17:9090/youapp/i_took_a_pill_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (11, 'Come ang get your love', 206, 'http://192.168.101.17:9090/youapp/come_and_get.mp3', 'http://192.168.101.17:9090/youapp/come_and_get_artwork.jpg', 4, 4, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (12, 'Blinding Lights', 203, 'http://192.168.101.17:9090/youapp/blinding_lights.mp3', 'http://192.168.101.17:9090/youapp/blinding_lights_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (13, 'She dont give', 230, 'http://192.168.101.17:9090/youapp/she_dont_give.mp3', 'http://192.168.101.17:9090/youapp/she_dont_give_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (14, 'Californication', 314, 'http://192.168.101.17:9090/youapp/californication.mp3', 'http://192.168.101.17:9090/youapp/californication_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (15, 'Golden Days', 255, 'http://192.168.101.17:9090/youapp/golden_days.mp3', 'http://192.168.101.17:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f');
 
   create table if not exists favorites(
       id int primary key auto_increment,
