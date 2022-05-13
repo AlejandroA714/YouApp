@@ -106,10 +106,15 @@
   DELIMITER ;
 
   insert into user(id,given_name,family_name,email,username,password,birthday,registration_date,email_confirmed,registration_type_id) 
-  values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f","Alejandro","Alejo","alejandroalejo715@gmail.com","alejandro","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
-  "2020-07-14",null,true,1),
-   ("77503902-813b-42d2-afe2-66e475c9da6b","Matias","Gaitan","matias25@gmail.com","matias","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
-   "2020-11-15",null,true,1);
+  values
+      ("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f","Alejandro","Alejo","alejandroalejo715@gmail.com","alejandro","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
+        "2000-07-14",null,true,1),
+      ("77503902-813b-42d2-afe2-66e475c9da6b","Matias","Gaitan","matias25@gmail.com","matias","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
+        "1999-11-15",null,true,1),
+      ("809877e9-ccc6-4a75-a008-11087f8f4c84","Denys","Cruz","denys7u7@gmail.com","denys","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
+        "1999-03-04",null,true,1),
+      ("3feab42f-3092-4357-9ce6-60f17b4c0ffb","Misaki","Kun","alvaromisaki@gmail.com","misaki","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
+       "1999-12-30",null,true,1);
 
   create table if not exists email_token(
     id int primary key auto_increment,
@@ -161,26 +166,33 @@
       foreign key (genre_id) references genre(id) ON UPDATE CASCADE,
       foreign key (user_id) references user(id) ON UPDATE CASCADE
   );
-  
+
+  -- must change ip
+  DELIMITER $$
+    CREATE FUNCTION getURI () RETURNS VARCHAR(32) DETERMINISTIC
+    BEGIN
+      RETURN 'http://192.168.101.17:9090';
+    END $$
+  DELIMITER ;
+
   -- This table requires having assets already in minio to work properly
   -- Assets can be found https://drive.google.com/drive/folders/1-eXAO95B4abEIg5hj4B0yGOR0zseSN37?usp=sharing
-  
   INSERT INTO `music` (`id`, `title`, `duration`, `song_url`, `photo`, `status_id`, `genre_id`, `user_id`) VALUES
-    (1, 'Sweather Weather', 252, 'http://192.168.101.17:9090/youapp/sweather_weather.mp3', 'http://192.168.101.17:9090/youapp/sweather_weather_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (2, 'Lets Kill Tonight', 212, 'http://192.168.101.17:9090/youapp/lets_kill_tonigth.mp3', 'http://192.168.101.17:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (3, 'Good Day', 212, 'http://192.168.101.17:9090/youapp/good_day.mp3', 'http://192.168.101.17:9090/youapp/good_day_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (4, '21 Guns', 315, 'http://192.168.101.17:9090/youapp/21_guns.mp3', 'http://192.168.101.17:9090/youapp/21_guns_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (5, 'Life Goes On', 144, 'http://192.168.101.17:9090/youapp/life_goes_on.mp3', 'http://192.168.101.17:9090/youapp/life_goes_on_artwork.jpg', 4, 3, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (6, 'Thunderstruck', 240, 'http://192.168.101.17:9090/youapp/thunderstruck.mp3', 'http://192.168.101.17:9090/youapp/ac_dc.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (7, 'Swae Lee', 161, 'http://192.168.101.17:9090/youapp/swae_lee.mp3', 'http://192.168.101.17:9090/youapp/swae_lee_artwork.jpg', 4, 4, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (8, 'De mi de mi', 229, 'http://192.168.101.17:9090/youapp/de_mi.mp3', 'http://192.168.101.17:9090/youapp/de_mi.png', 4, 3, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (9, 'Hasta Que Aguante', 273, 'http://192.168.101.17:9090/youapp/hasta_que_el_cuerpo.mp3', 'http://192.168.101.17:9090/youapp/hasta_que_el_cuerpo_artwork.jpg', 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (10, 'I Took A Pill In Ibiza', 237, 'http://192.168.101.17:9090/youapp/i_took_a_pill.mp3', 'http://192.168.101.17:9090/youapp/i_took_a_pill_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (11, 'Come ang get your love', 206, 'http://192.168.101.17:9090/youapp/come_and_get.mp3', 'http://192.168.101.17:9090/youapp/come_and_get_artwork.jpg', 4, 4, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (12, 'Blinding Lights', 203, 'http://192.168.101.17:9090/youapp/blinding_lights.mp3', 'http://192.168.101.17:9090/youapp/blinding_lights_artwork.jpg', 4, 2, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (13, 'She dont give', 230, 'http://192.168.101.17:9090/youapp/she_dont_give.mp3', 'http://192.168.101.17:9090/youapp/she_dont_give_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (14, 'Californication', 314, 'http://192.168.101.17:9090/youapp/californication.mp3', 'http://192.168.101.17:9090/youapp/californication_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
-    (15, 'Golden Days', 255, 'http://192.168.101.17:9090/youapp/golden_days.mp3', 'http://192.168.101.17:9090/youapp/lets_kill_tonigth_artwork.jpg', 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f');
+    (1, 'Sweather Weather', 252, CONCAT(getUri(),'/youapp/sweather_weather.mp3'), CONCAT(getUri(),'/youapp/sweather_weather_artwork.jpg'), 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (2, 'Lets Kill Tonight', 212, CONCAT(getUri(),'/youapp/lets_kill_tonigth.mp3'), CONCAT(getUri(),'/youapp/lets_kill_tonigth_artwork.jpg'), 4, 1, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f'),
+    (3, 'Good Day', 212, CONCAT(getUri(),'/youapp/good_day.mp3'), CONCAT(getUri(),'/youapp/good_day_artwork.jpg'), 4, 2, '77503902-813b-42d2-afe2-66e475c9da6b'),
+    (4, '21 Guns', 315, CONCAT(getUri(),'/youapp/21_guns.mp3'), CONCAT(getUri(),'/youapp/21_guns_artwork.jpg'), 4, 1, '3feab42f-3092-4357-9ce6-60f17b4c0ffb'),
+    (5, 'Life Goes On', 144, CONCAT(getUri(),'/youapp/life_goes_on.mp3'), CONCAT(getUri(),'/youapp/life_goes_on_artwork.jpg'), 4, 3, '77503902-813b-42d2-afe2-66e475c9da6b'),
+    (6, 'Thunderstruck', 240, CONCAT(getUri(),'/youapp/thunderstruck.mp3'), CONCAT(getUri(),'/youapp/ac_dc.jpg'), 4, 1, '3feab42f-3092-4357-9ce6-60f17b4c0ffb'),
+    (7, 'Swae Lee', 161, CONCAT(getUri(),'/youapp/swae_lee.mp3'), CONCAT(getUri(),'/youapp/swae_lee_artwork.jpg'), 4, 4, '77503902-813b-42d2-afe2-66e475c9da6b'),
+    (8, 'De mi de mi', 229, CONCAT(getUri(),'/youapp/de_mi.mp3'), CONCAT(getUri(),'/youapp/de_mi.png'), 4, 3, '809877e9-ccc6-4a75-a008-11087f8f4c84'),
+    (9, 'Hasta Que Aguante', 273, CONCAT(getUri(),'/youapp/hasta_que_el_cuerpo.mp3'), CONCAT(getUri(),'/youapp/hasta_que_el_cuerpo_artwork.jpg'), 4, 1, '3feab42f-3092-4357-9ce6-60f17b4c0ffb'),
+    (10, 'I Took A Pill In Ibiza', 237, CONCAT(getUri(),'/youapp/i_took_a_pill.mp3'), CONCAT(getUri(),'/youapp/i_took_a_pill_artwork.jpg'), 4, 5, '77503902-813b-42d2-afe2-66e475c9da6b'),
+    (11, 'Come ang get your love', 206, CONCAT(getUri(),'/youapp/come_and_get.mp3'), CONCAT(getUri(),'/youapp/come_and_get_artwork.jpg'), 4, 4, '3feab42f-3092-4357-9ce6-60f17b4c0ffb'),
+    (12, 'Blinding Lights', 203, CONCAT(getUri(),'/youapp/blinding_lights.mp3'), CONCAT(getUri(),'/youapp/blinding_lights_artwork.jpg'), 4, 2, '77503902-813b-42d2-afe2-66e475c9da6b'),
+    (13, 'She dont give', 230, CONCAT(getUri(),'/youapp/she_dont_give.mp3'), CONCAT(getUri(),'/youapp/she_dont_give_artwork.jpg'), 4, 5, '809877e9-ccc6-4a75-a008-11087f8f4c84'),
+    (14, 'Californication', 314, CONCAT(getUri(),'/youapp/californication.mp3'), CONCAT(getUri(),'/youapp/californication_artwork.jpg'), 4, 5, '3feab42f-3092-4357-9ce6-60f17b4c0ffb'),
+    (15, 'Golden Days', 255, CONCAT(getUri(),'/youapp/golden_days.mp3'), CONCAT(getUri(),'/youapp/lets_kill_tonigth_artwork.jpg'), 4, 5, '4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f');
 
   create table if not exists favorites(
       id int primary key auto_increment,
