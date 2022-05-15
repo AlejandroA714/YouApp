@@ -1,12 +1,29 @@
 server:
   port: 8085
-
+app:
+  minio:
+    client:
+      url: http://@minio-ip@:9090 #https://play.min.io
+      accessKey: minioadmin #Q3AM3UQ867SPQQA43P2F
+      secretKey: minioadmin #zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG
+      bucket: youapp
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://@authentication.server-ip@:8083
 logbook:
   format:
     style: http
-
 logging:
   level:
-    org.springframework: info
-    sv.com: DEBUG
+    org.springframework: TRACE
+    org.hibernate.SQL: DEBUG
+    sv.com: TRACE
     org.zalando.logbook: TRACE

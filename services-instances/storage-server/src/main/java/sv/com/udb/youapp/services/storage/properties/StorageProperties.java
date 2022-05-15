@@ -24,7 +24,7 @@ public class StorageProperties {
    @AllArgsConstructor
    public static class FileConfiguration {
       private Resource             musicRepository     = new FileSystemResource(
-            "/tmp/music/");
+              System.getProperty("java.io.tmpdir") + "/music/");
       private String               filterExpresion     = ".*\\.(zip)$";
       private Duration             transportTaskPeriod = Duration.ofSeconds(30);
       private Duration             deleteTaskPeriod    = Duration.ofMinutes(1);
