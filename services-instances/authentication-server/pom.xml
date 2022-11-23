@@ -10,6 +10,7 @@
     <relativePath>../server-base</relativePath>
   </parent>
   <artifactId>authentication-server</artifactId>
+  <name>YouApp: Authorization Server</name>
   <dependencies>
     <dependency>
       <groupId>org.springframework.security</groupId>

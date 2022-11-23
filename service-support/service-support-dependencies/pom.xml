@@ -139,58 +139,6 @@
     </pluginManagement>
   </build>
   <profiles>
-    <profile>
-      <id>alejo</id>
-      <properties>
-        <api.gateway-ip>192.168.101.2</api.gateway-ip>
-        <authentication.server-ip>192.168.101.2</authentication.server-ip>
-        <storage.server-ip>192.168.101.2</storage.server-ip>
-        <minio-ip>192.168.101.2</minio-ip>
-        <mysql-ip>192.168.101.2</mysql-ip>
-      </properties>
-    </profile>
-    <profile>
-      <id>matias</id>
-      <properties>
-        <api.gateway-ip>192.168.0.17</api.gateway-ip>
-        <mysql.user>root</mysql.user>
-        <mysql.password>123456</mysql.password>
-      </properties>
-    </profile>
-    <profile>
-      <id>marko</id>
-      <properties>
-        <api.gateway-ip>192.168.0.9</api.gateway-ip>
-      </properties>
-    </profile>
-    <profile>
-      <id>denys</id>
-      <properties>
-        <api.gateway-ip>192.168.0.7</api.gateway-ip>
-        <mysql.user>root</mysql.user>
-        <mysql.password>Password01</mysql.password>
-      </properties>
-    </profile>
-    <profile>
-      <id>alvaro</id>
-      <properties>
-        <api.gateway-ip>192.168.0.17</api.gateway-ip>
-        <authentication.server-ip>192.168.0.17</authentication.server-ip>
-        <storage.server-ip>192.168.0.17</storage.server-ip>
-        <mysql.user>root</mysql.user>
-        <mysql.password></mysql.password>
-      </properties>
-    </profile>
-    <profile>
-      <id>docker</id>
-      <properties>
-        <api.gateway-ip>192.168.101.2</api.gateway-ip>
-        <minio-ip>minio</minio-ip>
-        <mysql-ip>mysql</mysql-ip>
-        <mysql-port>3306</mysql-port>
-        <mysql.user>root</mysql.user>
-        <mysql.password>Password01</mysql.password>
-      </properties>
-    </profile>
+    <!-- PROFILES -->
   </profiles>
 </project>
