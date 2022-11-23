@@ -46,10 +46,10 @@ public class DefaultExceptionHandler {
       String message = "";
       if (e.getCause() instanceof DataIntegrityViolationException) {
          var cause = (DataIntegrityViolationException) e.getCause();
-         if (cause.getCause() instanceof ConstraintViolationException) {
-            var constraint = (ConstraintViolationException) cause.getCause();
-            message = constraint.getSQLException().getMessage();
-         }
+         // if (cause.getCause() instanceof ConstraintViolationException) {
+         // var constraint = (ConstraintViolationException) cause.getCause();
+         // message = constraint.getSQLException().getMessage();
+         // }
       }
       else
          message = e.getReason();

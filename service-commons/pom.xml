@@ -9,6 +9,5 @@
   <name>YouApp: Service Commons</name>
   <packaging>pom</packaging>
   <modules>
-    <module>entities-commons</module>
   </modules>
 </project>

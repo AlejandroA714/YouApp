@@ -58,7 +58,7 @@
     name varchar(32) not null unique
   );  
 
-  insert into role values (null,"ROLE_ADMIN"),(null,"ROLE_MANTAINER"),(null,"ROLE_USER");
+  insert into role values (null,"ROLE_ADMIN"),(null,"ROLE_MAINTAINER"),(null,"ROLE_USER");
 
   create table if not exists privilege(
     id int primary key auto_increment,
@@ -68,6 +68,7 @@
   insert into privilege values (null,"READ_PRIVILEGE"),(null,"WRITE_PRIVILEGE"),(null,"PERMISSIONS_PRIVILEGE");
 
   create table if not exists roles_privileges(
+    id int not null auto_increment,
     role_id int not null,
     privilege_id int not null,
     foreign key(role_id) references role(id) 
@@ -86,13 +87,15 @@
       username varchar(32) not null unique,
       password varchar(512) null,
       birthday date null,
-      description varchar(256) default '',
+  --  description varchar(256) default '',
       photo varchar(512) null,
       registration_date date null,
       email_confirmed boolean default false,
-      registration_type_id int not null, 
+      registration_type_id int not null,
+      role_id int not null,
       foreign key(registration_type_id) references oauth2_registration_type(id)
-      ON UPDATE CASCADE ON DELETE CASCADE
+      ON UPDATE CASCADE ON DELETE CASCADE,
+      foreign key(role_id) references role(id) ON UPDATE CASCADE ON DELETE CASCADE
   );
 
   DELIMITER $$
@@ -105,16 +108,16 @@
   END $$
   DELIMITER ;
 
-  insert into user(id,given_name,family_name,email,username,password,birthday,registration_date,email_confirmed,registration_type_id) 
+  insert into user(id,given_name,family_name,email,username,password,birthday,registration_date,email_confirmed,registration_type_id,role_id)
   values
       ("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f","Alejandro","Alejo","alejandroalejo715@gmail.com","alejandro","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
-        "2000-07-14",null,true,1),
+        "2000-07-14",null,true,1,1),
       ("77503902-813b-42d2-afe2-66e475c9da6b","Matias","Gaitan","matias25@gmail.com","matias","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
-        "1999-11-15",null,true,1),
+        "1999-11-15",null,true,1,2),
       ("809877e9-ccc6-4a75-a008-11087f8f4c84","Denys","Cruz","denys7u7@gmail.com","denys","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
-        "1999-03-04",null,true,1),
+        "1999-03-04",null,true,1,3),
       ("3feab42f-3092-4357-9ce6-60f17b4c0ffb","Misaki","Kun","alvaromisaki@gmail.com","misaki","KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==",
-       "1999-12-30",null,true,1);
+       "1999-12-30",null,true,1,3);
 
   create table if not exists email_token(
     id int primary key auto_increment,
@@ -125,18 +128,18 @@
     ON UPDATE CASCADE ON DELETE CASCADE 
   );
 
-  create table if not exists users_roles(
-    id int primary key auto_increment,
-    user_id varchar(56) not null,
-    role_id int not null,
-    foreign key(user_id) references user(id)
-    ON UPDATE CASCADE ON DELETE CASCADE,
-    foreign key(role_id) references role(id)
-    ON UPDATE CASCADE ON DELETE CASCADE
-  );
+--   create table if not exists users_roles(
+--     id int primary key auto_increment,
+--     user_id varchar(56) not null,
+--     role_id int not null,
+--     foreign key(user_id) references user(id)
+--     ON UPDATE CASCADE ON DELETE CASCADE,
+--     foreign key(role_id) references role(id)
+--     ON UPDATE CASCADE ON DELETE CASCADE
+--   );
 
-  insert into users_roles(user_id,role_id) values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f" ,1),
-                                ("77503902-813b-42d2-afe2-66e475c9da6b" ,3);
+--   insert into users_roles(user_id,role_id) values("4fafcfa3-bf1c-4c5f-b5b8-51a10b389f5f" ,1),
+--                                 ("77503902-813b-42d2-afe2-66e475c9da6b" ,3);
 
   create table if not exists genre(
       id int primary key auto_increment,
