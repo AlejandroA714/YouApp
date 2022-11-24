@@ -1,5 +1,6 @@
 package sv.com.udb.components.mail.sender.services.impl;
 
+import jakarta.mail.MessagingException;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -7,13 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import sv.com.udb.components.mail.sender.model.Mail;
 import sv.com.udb.components.mail.sender.model.MailType;
 import sv.com.udb.components.mail.sender.properties.MailProperties;
 import sv.com.udb.components.mail.sender.services.IEmailService;
 
-import javax.mail.MessagingException;
 import java.util.Map;
 
 @Slf4j

@@ -12,6 +12,5 @@
     <module>server-parent</module>
     <module>server-base</module>
     <module>authentication-server</module>
-    <module>storage-server</module>
   </modules>
 </project>

@@ -1,39 +1,38 @@
 package sv.com.udb.youapp.services.authentication.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sv.com.udb.youapp.services.authentication.enums.OAuth2Registration;
 import sv.com.udb.youapp.services.authentication.enums.OAuth2Role;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 public class User {
-   private String    id;
+   private String             id;
    @NotBlank
    @Size(max = 32)
-   private String    nombres;
+   private String             nombres;
    @NotBlank
    @Size(max = 32)
-   private String    apellidos;
+   private String             apellidos;
    @NotBlank
    @Size(max = 32)
-   private String    username;
+   private String             username;
    @Email
    @NotBlank
    @Size(max = 48)
-   private String    email;
+   private String             email;
    @NotNull
    @PastOrPresent
-   private LocalDate birthday;
-   private LocalDate registrationDate;
-   private boolean   isActive;
+   private LocalDate          birthday;
+   private LocalDate          registrationDate;
+   private boolean            isActive;
    private OAuth2Registration registrationType;
-   private OAuth2Role role;
+   private OAuth2Role         role;
 }

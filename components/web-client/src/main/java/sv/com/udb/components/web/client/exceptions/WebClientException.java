@@ -33,7 +33,7 @@ public class WebClientException extends WebClientResponseException {
       super(message, HttpStatus.BAD_REQUEST.value(),
             HttpStatus.BAD_REQUEST.getReasonPhrase(), ex.getHeaders(),
             ex.getResponseBodyAsByteArray(), null, ex.getRequest());
-      this.internalCode = ex.getStatusCode();
+      this.internalCode = (HttpStatus) ex.getStatusCode();
       this.rawInternalCode = ex.getStatusText();
       this.rawBody = bodyToStr(body);
       this.responseBody = new JSONObject(ex.getResponseBodyAsString());

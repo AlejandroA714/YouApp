@@ -1,13 +1,13 @@
 package sv.com.udb.components.mail.sender.services;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import sv.com.udb.components.mail.sender.model.Mail;
 import sv.com.udb.components.mail.sender.model.MailType;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 

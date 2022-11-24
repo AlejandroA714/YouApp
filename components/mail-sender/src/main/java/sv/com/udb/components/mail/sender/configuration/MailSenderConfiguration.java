@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import sv.com.udb.components.mail.sender.model.Mail;
 import sv.com.udb.components.mail.sender.properties.MailProperties;
 import sv.com.udb.components.mail.sender.services.IEmailService;
