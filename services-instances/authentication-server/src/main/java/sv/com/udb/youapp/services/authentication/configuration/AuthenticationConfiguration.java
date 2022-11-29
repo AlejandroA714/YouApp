@@ -7,11 +7,9 @@ import sv.com.udb.youapp.services.authentication.properties.AuthenticationProper
 
 @Configuration
 public class AuthenticationConfiguration {
-
-  @Bean
-  @ConfigurationProperties("app.auth")
-  public AuthenticationProperties authenticationProperties(){
-    return new AuthenticationProperties();
-  }
-
+   @Bean
+   @ConfigurationProperties("app.auth")
+   public AuthenticationProperties authenticationProperties() {
+      return new AuthenticationProperties();
+   }
 }

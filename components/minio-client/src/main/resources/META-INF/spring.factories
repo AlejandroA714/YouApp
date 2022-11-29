@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  sv.com.udb.components.minio.client.configuration.MinioClientConfiguration
+  sv.com.udb.components.minio.registeredClientEntity.configuration.MinioClientConfiguration

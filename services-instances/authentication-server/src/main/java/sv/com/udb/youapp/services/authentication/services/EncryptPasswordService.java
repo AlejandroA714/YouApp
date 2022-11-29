@@ -10,14 +10,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 public interface EncryptPasswordService extends PasswordEncoder {
+   String encryptPassword(String payload) throws NoSuchPaddingException,
+         NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException,
+         IllegalBlockSizeException, BadPaddingException;
 
-  String encryptPassword(String payload) throws NoSuchPaddingException,
-      NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException,
-      IllegalBlockSizeException, BadPaddingException;
+   String decryptPassword(String payload) throws NoSuchPaddingException,
+         NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException,
+         IllegalBlockSizeException, BadPaddingException;
 
-  String decryptPassword(String payload) throws NoSuchPaddingException,
-      NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException,
-      IllegalBlockSizeException, BadPaddingException;
-
-  String generateRandomPassword(int length);
+   String generateRandomPassword(int length);
 }

@@ -15,20 +15,18 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultPrincipalService implements PrincipalService {
+   @NonNull
+   private final PrincipalRepository principalRepository;
 
-  @NonNull
-  private final PrincipalRepository principalRepository;
+   @Override
+   public List<User> findAll() {
+      return principalRepository.findAll().stream().map(User::map).toList();
+   }
 
-  @Override
-  public List<User> findAll() {
-    return principalRepository.findAll().stream().map(User::map).toList();
-  }
-
-  @Override
-  public User findByUsername(String username) {
-    return principalRepository.findByUsername(username)
-        .flatMap((PrincipalEntity entity) -> Optional.of(User.map(entity)))
-        .orElseThrow(UserNotFoundException::new);
-
-  }
+   @Override
+   public User findByUsername(String username) {
+      return principalRepository.findByUsername(username)
+            .flatMap((PrincipalEntity entity) -> Optional.of(User.map(entity)))
+            .orElseThrow(UserNotFoundException::new);
+   }
 }

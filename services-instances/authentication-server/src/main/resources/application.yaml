@@ -13,7 +13,7 @@ logbook:
 
 logging:
   level:
-    org.springframework: DEBUG
-    org.hibernate.SQL: INFO
+    org.springframework: TRACE
+    org.hibernate.SQL: TRACE
     sv.com: TRACE
     org.zalando.logbook: TRACE

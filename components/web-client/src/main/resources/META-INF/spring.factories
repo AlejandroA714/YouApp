@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  sv.com.udb.components.web.client.configuration.WebClientAutoConfiguration
+  sv.com.udb.components.web.registeredClientEntity.configuration.WebClientAutoConfiguration

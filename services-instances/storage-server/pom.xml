@@ -30,7 +30,7 @@
     </dependency>
     <dependency>
       <groupId>sv.com.udb.youapp.infrastructure</groupId>
-      <artifactId>minio-client</artifactId>
+      <artifactId>minio-registeredClientEntity</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
 

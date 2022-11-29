@@ -16,10 +16,10 @@ import java.util.Set;
 public class RoleEntity {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int             id;
+   private int                  id;
    @Enumerated(EnumType.STRING)
    @Column(name = "name", nullable = false)
-   private OAuth2Role role;
+   private OAuth2Role           role;
    @OneToMany(mappedBy = "role")
    private Set<PrincipalEntity> user;
 }

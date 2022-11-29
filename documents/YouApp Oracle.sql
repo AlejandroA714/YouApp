@@ -94,3 +94,64 @@ INSERT INTO principal(
   'KdNiQ6GAvFdPEaPaerJ9f9l/kLPXkybvLSQOX+rXInEQFNBA+x0aj07C/yhfxbAhlv1EFS+MooI0O6YZlkHLkbFB0sjGf2Rocr5zY92dhGZdLmTEldvi92qfR40DZqWPkBFwVMdPD2GcZIJSEhFNcKrlj7DeCF3iG8VGF55ogW7qTZvrBJCjFZlMqoQSgnwZiyxwcNQfnPAO4NR+IhKXy28BBRd6dNy/31esyurdCwk22AipxLskoex/Yg7rXuzHEA6M9xuvub8nUfoSigL6SwRjsJ4w9x1kgzeR6W2iVWqCNeVctZObIIRk2A6ayURXcAhfYjHtceSdCf70VI65KQ==',
   TO_DATE('1999-11-15','yyyy/MM/dd'),1,1,3
 );
+
+--- OAuth2 Tables
+
+CREATE TABLE registered_client (
+    id VARCHAR2(255) PRIMARY KEY,
+    client_id VARCHAR2(255) NOT NULL,
+    client_issued_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    client_secret VARCHAR2(512) DEFAULT NULL,
+    client_secret_expires_at timestamp DEFAULT NULL,
+    client_name VARCHAR2(255) NOT NULL,
+    client_authentication_methods VARCHAR2(1000) NOT NULL,
+    authorization_grant_types VARCHAR2(1000) NOT NULL,
+    redirect_uris VARCHAR2(1000) DEFAULT NULL,
+    scopes VARCHAR2(1000) NOT NULL,
+    client_settings VARCHAR2(2000) NOT NULL,
+    token_settings VARCHAR2(2000) NOT NULL
+);
+
+INSERT INTO registered_client(id, client_id, client_secret, client_name,
+                              client_authentication_methods, authorization_grant_types,
+                              redirect_uris, scopes,client_settings,token_settings)
+VALUES ('d7bee65f-6f08-4991-a63c-c5c605d9c584', 'youapp',
+        'MkiIbZDAX4Uye7q+/Wp9BBlbU4bvEQlNYDRCVeWhdWSgnaelp4rpjKWu0zICSWxEQ5k/RxEcOCxboqZUQIIDijU+xy6AhRsriZZKneGymfn2W1Kom1MYwxGRoCwXr10AcWMu5k3zrLeh436osqi/bbu5YZVF3ggBP3jOESJ4b2htXDsQ+olv9YDt41U7y7om94bb/xbOV4odv2Tb6j8UscvniD/NHNRIdm4m53Bs0Oh9qBh6i2vI238svYbdcKdjCmr8ZpsSo/rROBNQwn+aeU5XzRZz6h0Yr19E1nj1PJVlcQPzxKI2h2Trek1TbQyjQNHl2vDiEBlAxQuOw3GuQQ==',
+        'youapp_frontend', 'client_secret_post', 'authorization_code', 'https://oidcdebugger.com/debug', 'openid',' ',' ');
+
+
+CREATE TABLE authorization (
+   id VARCHAR2(255) NOT NULL,
+   registeredClientId VARCHAR2(255) NOT NULL,
+   principalName VARCHAR2(255) NOT NULL,
+   authorizationGrantType VARCHAR2(255) NOT NULL,
+   attributes VARCHAR2(4000) DEFAULT NULL,
+   state VARCHAR2(500) DEFAULT NULL,
+   authorizationCodeValue VARCHAR2(4000) DEFAULT NULL,
+   authorizationCodeIssuedAt timestamp DEFAULT NULL,
+   authorizationCodeExpiresAt timestamp DEFAULT NULL,
+   authorizationCodeMetadata VARCHAR2(2000) DEFAULT NULL,
+   accessTokenValue VARCHAR2(4000) DEFAULT NULL,
+   accessTokenIssuedAt timestamp DEFAULT NULL,
+   accessTokenExpiresAt timestamp DEFAULT NULL,
+   accessTokenMetadata VARCHAR2(2000) DEFAULT NULL,
+   accessTokenType VARCHAR2(255) DEFAULT NULL,
+   accessTokenScopes VARCHAR2(1000) DEFAULT NULL,
+   refreshTokenValue VARCHAR2(4000) DEFAULT NULL,
+   refreshTokenIssuedAt timestamp DEFAULT NULL,
+   refreshTokenExpiresAt timestamp DEFAULT NULL,
+   refreshTokenMetadata VARCHAR2(2000) DEFAULT NULL,
+   oidcIdTokenValue VARCHAR2(4000) DEFAULT NULL,
+   oidcIdTokenIssuedAt timestamp DEFAULT NULL,
+   oidcIdTokenExpiresAt timestamp DEFAULT NULL,
+   oidcIdTokenMetadata VARCHAR2(2000) DEFAULT NULL,
+   oidcIdTokenClaims VARCHAR2(2000) DEFAULT NULL,
+   PRIMARY KEY (id)
+);
+
+CREATE TABLE authorizationConsent (
+  registeredClientId VARCHAR2(255) NOT NULL,
+  principalName VARCHAR2(255) NOT NULL,
+  authorities VARCHAR2(1000) NOT NULL,
+  PRIMARY KEY (registeredClientId, principalName)
+);

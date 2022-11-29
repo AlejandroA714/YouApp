@@ -11,12 +11,12 @@ import sv.com.udb.youapp.services.authentication.services.AuthenticationService;
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultAuthenticationService implements AuthenticationService {
+   @NonNull
+   private final PrincipalService principalService;
 
-  @NonNull
-  private final PrincipalService principalService;
-
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return principalService.findByUsername(username);
-  }
+   @Override
+   public UserDetails loadUserByUsername(String username)
+         throws UsernameNotFoundException {
+      return principalService.findByUsername(username);
+   }
 }

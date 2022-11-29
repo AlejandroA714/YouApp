@@ -9,10 +9,7 @@ import sv.com.udb.youapp.commons.jpa.repositories.PrincipalRepository;
 import java.util.List;
 
 public interface PrincipalService {
+   List<User> findAll();
 
-  List<User> findAll();
-
-  User findByUsername(String username);
-
-
+   User findByUsername(String username);
 }

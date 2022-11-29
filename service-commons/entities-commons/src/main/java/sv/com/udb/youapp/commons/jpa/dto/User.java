@@ -51,16 +51,16 @@ public class User implements UserDetails {
    private LocalDate          registrationDate;
    private boolean            isActive;
    private OAuth2Registration registrationType;
-   private OAuth2Role role;
+   private OAuth2Role         role;
 
-   public static User map(PrincipalEntity e){
+   public static User map(PrincipalEntity e) {
       return User.builder().id(e.getId()).nombres(e.getNombres())
-          .apellidos(e.getApellidos()).username(e.getUsername())
-          .password(e.getPassword())
-          .email(e.getEmail()).birthday(e.getBirthday())
-          .registrationDate(e.getRegistrationDate())
-          .isActive(e.isActive()).registrationType(e.getRegistrationType().getRegistrationType())
-          .role(e.getRole().getRole()).build();
+            .apellidos(e.getApellidos()).username(e.getUsername())
+            .password(e.getPassword()).email(e.getEmail())
+            .birthday(e.getBirthday()).registrationDate(e.getRegistrationDate())
+            .isActive(e.isActive())
+            .registrationType(e.getRegistrationType().getRegistrationType())
+            .role(e.getRole().getRole()).build();
    }
 
    @Override

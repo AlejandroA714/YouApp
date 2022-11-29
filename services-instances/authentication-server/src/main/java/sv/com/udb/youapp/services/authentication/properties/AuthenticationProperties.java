@@ -10,18 +10,16 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @NoArgsConstructor
 public class AuthenticationProperties {
+   @NotNull
+   private AuthKeys keys;
 
-  @NotNull
-  private AuthKeys                                  keys;
-
-  @Data
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class AuthKeys {
-    @NotNull
-    private String privateKey;
-    @NotNull
-    private String publicKey;
-  }
-
+   @Data
+   @NoArgsConstructor
+   @AllArgsConstructor
+   public static class AuthKeys {
+      @NotNull
+      private String privateKey;
+      @NotNull
+      private String publicKey;
+   }
 }

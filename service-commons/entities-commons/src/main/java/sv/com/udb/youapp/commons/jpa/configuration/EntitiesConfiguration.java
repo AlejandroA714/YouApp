@@ -8,10 +8,8 @@ import sv.com.udb.youapp.commons.jpa.services.impl.DefaultPrincipalService;
 
 @Configuration
 public class EntitiesConfiguration {
-
-  @Bean
-  public PrincipalService principalService(PrincipalRepository repository){
-    return new DefaultPrincipalService(repository);
-  }
-
+   @Bean
+   public PrincipalService principalService(PrincipalRepository repository) {
+      return new DefaultPrincipalService(repository);
+   }
 }
