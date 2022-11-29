@@ -1,9 +1,9 @@
-package sv.com.udb.youapp.services.authentication.repositories;
+package sv.com.udb.youapp.commons.jpa.repositories;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import sv.com.udb.youapp.services.authentication.entities.RoleEntity;
+import sv.com.udb.youapp.commons.jpa.entities.RoleEntity;
 
 import java.util.List;
 

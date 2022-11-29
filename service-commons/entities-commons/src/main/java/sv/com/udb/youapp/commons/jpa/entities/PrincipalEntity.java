@@ -1,4 +1,4 @@
-package sv.com.udb.youapp.services.authentication.entities;
+package sv.com.udb.youapp.commons.jpa.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Entity(name = "principal")
 @ToString(of = { "id", "username", "email" })
 @EqualsAndHashCode(of = { "id", "username", "email" })
-public class UserEntity {
+public class PrincipalEntity {
    @Id
    private String                   id;
    @Column(name = "given_name", length = 32, nullable = false)

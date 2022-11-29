@@ -1,10 +1,10 @@
-package sv.com.udb.youapp.services.authentication.entities;
+package sv.com.udb.youapp.commons.jpa.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import sv.com.udb.youapp.services.authentication.enums.OAuth2Role;
+import sv.com.udb.youapp.commons.jpa.enums.OAuth2Role;
 import java.util.Set;
 
 @Data
@@ -19,7 +19,7 @@ public class RoleEntity {
    private int             id;
    @Enumerated(EnumType.STRING)
    @Column(name = "name", nullable = false)
-   private OAuth2Role      role;
+   private OAuth2Role role;
    @OneToMany(mappedBy = "role")
-   private Set<UserEntity> user;
+   private Set<PrincipalEntity> user;
 }

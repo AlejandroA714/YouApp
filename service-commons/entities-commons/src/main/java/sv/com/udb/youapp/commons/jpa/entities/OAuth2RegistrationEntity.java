@@ -1,4 +1,4 @@
-package sv.com.udb.youapp.services.authentication.entities;
+package sv.com.udb.youapp.commons.jpa.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import sv.com.udb.youapp.services.authentication.enums.OAuth2Registration;
+import sv.com.udb.youapp.commons.jpa.enums.OAuth2Registration;
 
 @Data
 @Entity(name = "oauth2_registration_type")

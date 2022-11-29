@@ -29,6 +29,12 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import sv.com.udb.youapp.commons.jpa.services.PrincipalService;
+import sv.com.udb.youapp.services.authentication.properties.AuthenticationProperties;
+import sv.com.udb.youapp.services.authentication.services.AuthenticationService;
+import sv.com.udb.youapp.services.authentication.services.EncryptPasswordService;
+import sv.com.udb.youapp.services.authentication.services.impl.DefaultAuthenticationService;
+import sv.com.udb.youapp.services.authentication.services.impl.DefaultEncryptPasswordService;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -37,7 +43,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
 @Configuration
-//@EnableWebSecurity
 public class WebSecurityConfiguration {
   @Bean
   @Order(1)
@@ -52,7 +57,7 @@ public class WebSecurityConfiguration {
         // authorization endpoint
         .exceptionHandling((exceptions) -> exceptions
             .authenticationEntryPoint(
-                new LoginUrlAuthenticationEntryPoint("/authddd"))
+                new LoginUrlAuthenticationEntryPoint("/login"))
         )
         // Accept access tokens for User Info and/or Client Registration
         .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
@@ -76,26 +81,24 @@ public class WebSecurityConfiguration {
   }
 
   @Bean
-  public UserDetailsService userDetailsService() {
-    UserDetails userDetails = User.withDefaultPasswordEncoder()
-        .username("user")
-        .password("password")
-        .roles("USER")
-        .build();
+  public EncryptPasswordService passwordEncoder(AuthenticationProperties properties){
+    return new DefaultEncryptPasswordService(properties);
+  }
 
-    return new InMemoryUserDetailsManager(userDetails);
+  @Bean
+  public AuthenticationService userDetailsService(PrincipalService principalService) {
+    return new DefaultAuthenticationService(principalService);
   }
 
   @Bean
   public RegisteredClientRepository registeredClientRepository() {
     RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-        .clientId("messaging-client")
-        .clientSecret("{noop}secret")
-        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+        .clientId("youapp")
+        .clientSecret("rtIFH4Zudtv8JjqLMu5QfjQ9gJXDd3yoVa+tjY9z6esVSFGzm6PrgwZL6VdS92iQpzKyKPj+7jUWyYXxtgVt343zNIiJr20/+FSgKDOlZPWaaiZaqOeF/TK2f8slgMAYtyHf2Aczl8I3o/3BH7KANan9bMBvi/2FCVGbzLIX6mz4gzs92xaIPAIRWoxuZipBRjOnasRSIrw9kTnCKx/QZjcZPvpuTL8vOGzDwO8FOyPdXJT3maaH9OGnBFuKOefK/xQwfBkY7wNvnzZSfkyAx6lFTwbv9vhrpf8cVNPOfeB9FOF0MvfrAxNxr2pOcgDYY1EZLlWUeuu58GU3kQGYtg==")
+        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-        .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-        .redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
+        .redirectUri("https://oidcdebugger.com/debug")
         .redirectUri("http://127.0.0.1:8080/authorized")
         .scope(OidcScopes.OPENID)
         .scope(OidcScopes.PROFILE)
