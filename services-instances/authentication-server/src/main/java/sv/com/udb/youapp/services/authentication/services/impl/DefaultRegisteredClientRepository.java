@@ -1,6 +1,5 @@
 package sv.com.udb.youapp.services.authentication.services.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
@@ -11,14 +10,11 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import sv.com.udb.youapp.services.authentication.entities.RegisteredClientEntity;
 import sv.com.udb.youapp.services.authentication.repositories.JpaClientRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Slf4j
 public class DefaultRegisteredClientRepository implements
@@ -56,44 +52,27 @@ public class DefaultRegisteredClientRepository implements
    @Override
    public RegisteredClient findByClientId(String clientId) {
       Assert.hasText(clientId, "clientId cannot be empty");
-      return jpaClientRepository.findByClientId(clientId).map(this::toObject).orElse(null);
+      return jpaClientRepository.findByClientId(clientId).map(this::toObject)
+            .orElse(null);
    }
 
-   private RegisteredClient toObject(
-         RegisteredClientEntity registeredClientEntity) {
-      Set<String> clientAuthenticationMethods = StringUtils
-            .commaDelimitedListToSet(
-                  registeredClientEntity.getClientAuthenticationMethods());
-      Set<String> authorizationGrantTypes = StringUtils.commaDelimitedListToSet(
-            registeredClientEntity.getAuthorizationGrantTypes());
-      Set<String> redirectUris = StringUtils
-            .commaDelimitedListToSet(registeredClientEntity.getRedirectUris());
-      Set<String> clientScopes = StringUtils
-            .commaDelimitedListToSet(registeredClientEntity.getScopes());
-      RegisteredClient.Builder builder = RegisteredClient
-            .withId(registeredClientEntity.getId())
-            .clientId(registeredClientEntity.getClientId())
-            .clientIdIssuedAt(registeredClientEntity.getClientIssuedAt())
-            .clientSecret(registeredClientEntity.getClientSecret())
-            .clientSecretExpiresAt(
-                  registeredClientEntity.getClientSecretExpiresAt())
-            .clientName(registeredClientEntity.getClientName())
-            .clientAuthenticationMethods(
-                  authenticationMethods -> clientAuthenticationMethods
-                        .forEach(authenticationMethod -> authenticationMethods
-                              .add(resolveClientAuthenticationMethod(
-                                    authenticationMethod))))
-            .authorizationGrantTypes((grantTypes) -> authorizationGrantTypes
-                  .forEach(grantType -> grantTypes
-                        .add(resolveAuthorizationGrantType(grantType))))
-            .redirectUris((uris) -> uris.addAll(redirectUris))
-            .scopes((scopes) -> scopes.addAll(clientScopes));
+   private RegisteredClient toObject(RegisteredClientEntity entity) {
+      LOGGER.info("mapping ....");
+      RegisteredClient.Builder builder = RegisteredClient.withId(entity.getId())
+            .clientId(entity.getClientId())
+            .clientIdIssuedAt(entity.getClientIssuedAt())
+            .clientSecret(entity.getClientSecret())
+            .clientSecretExpiresAt(entity.getClientSecretExpiresAt())
+            .clientName(entity.getClientName())
+            .clientAuthenticationMethods(entity::clientMethods)
+            .authorizationGrantTypes(entity::grantTypes)
+            .redirectUris(entity::redirectUris).scopes(entity::scopes);
       // Map<String, Object> clientSettingsMap = parseMap(
-      // registeredClientEntity.getClientSettings());
+      // entity.getClientSettings());
       // builder.clientSettings(
       // ClientSettings.withSettings(clientSettingsMap).build());
       // Map<String, Object> tokenSettingsMap = parseMap(
-      // registeredClientEntity.getTokenSettings());
+      // entity.getTokenSettings());
       // builder.tokenSettings(
       // TokenSettings.withSettings(tokenSettingsMap).build());
       return builder.build();
@@ -118,39 +97,19 @@ public class DefaultRegisteredClientRepository implements
       entity.setClientSecretExpiresAt(
             registeredClient.getClientSecretExpiresAt());
       entity.setClientName(registeredClient.getClientName());
-      entity.setClientAuthenticationMethods(StringUtils
-            .collectionToCommaDelimitedString(clientAuthenticationMethods));
-      entity.setAuthorizationGrantTypes(StringUtils
-            .collectionToCommaDelimitedString(authorizationGrantTypes));
-      entity.setRedirectUris(StringUtils.collectionToCommaDelimitedString(
-            registeredClient.getRedirectUris()));
-      entity.setScopes(StringUtils
-            .collectionToCommaDelimitedString(registeredClient.getScopes()));
+      // entity.setClientAuthenticationMethods(StringUtils
+      // .collectionToCommaDelimitedString(clientAuthenticationMethods));
+      // entity.setAuthorizationGrantTypes(StringUtils
+      // .collectionToCommaDelimitedString(authorizationGrantTypes));
+      // entity.setRedirectUris(StringUtils.collectionToCommaDelimitedString(
+      // registeredClient.getRedirectUris()));
+      // entity.setScopes(StringUtils
+      // .collectionToCommaDelimitedString(registeredClient.getScopes()));
       // entity.setClientSettings(
       // writeMap(registeredClient.getClientSettings().getSettings()));
       // entity.setTokenSettings(
       // writeMap(registeredClient.getTokenSettings().getSettings()));
       return entity;
-   }
-
-   private Map<String, Object> parseMap(String data) {
-      try {
-         return this.objectMapper.readValue(data,
-               new TypeReference<Map<String, Object>>() {
-               });
-      }
-      catch (Exception ex) {
-         throw new IllegalArgumentException(ex.getMessage(), ex);
-      }
-   }
-
-   private String writeMap(Map<String, Object> data) {
-      try {
-         return this.objectMapper.writeValueAsString(data);
-      }
-      catch (Exception ex) {
-         throw new IllegalArgumentException(ex.getMessage(), ex);
-      }
    }
 
    private static AuthorizationGrantType resolveAuthorizationGrantType(
@@ -167,10 +126,7 @@ public class DefaultRegisteredClientRepository implements
             .equals(authorizationGrantType)) {
          return AuthorizationGrantType.REFRESH_TOKEN;
       }
-      return new AuthorizationGrantType(authorizationGrantType);              // Custom
-                                                                              // authorization
-                                                                              // grant
-                                                                              // type
+      return new AuthorizationGrantType(authorizationGrantType);
    }
 
    private static ClientAuthenticationMethod resolveClientAuthenticationMethod(

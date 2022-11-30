@@ -2,116 +2,65 @@ package sv.com.udb.youapp.services.authentication.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import java.time.Instant;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @Entity(name = "registered_client")
 public class RegisteredClientEntity {
    @Id
-   private String  id;
+   private String                          id;
    @Column(nullable = false)
-   private String  clientId;
+   private String                          clientId;
    @Column(nullable = false)
-   private Instant clientIssuedAt;
+   private Instant                         clientIssuedAt;
    @Column
-   private String  clientSecret;
+   private String                          clientSecret;
    @Column
-   private Instant clientSecretExpiresAt;
+   private Instant                         clientSecretExpiresAt;
    @Column
-   private String  clientName;
-   @Column(length = 1000)
-   private String  clientAuthenticationMethods;
-   @Column(length = 1000)
-   private String  authorizationGrantTypes;
-   @Column(length = 1000)
-   private String  redirectUris;
-   @Column(length = 1000)
-   private String  scopes;
+   private String                          clientName;
+   @ManyToMany(fetch = FetchType.EAGER)
+   @JoinTable(name = "registered_client_authentication_methods")
+   private Set<AuthenticationMethodEntity> authenticationMethods;
+   @ManyToMany(fetch = FetchType.EAGER)
+   @JoinTable(name = "registered_client_grant_type")
+   private Set<GrantTypeEntity>            grantTypes;
+   @ManyToMany(fetch = FetchType.EAGER)
+   @JoinTable(name = "registered_client_redirect_uri")
+   private Set<RedirectUriEntity>          redirectUris;
+   @ManyToMany(fetch = FetchType.EAGER)
+   @JoinTable(name = "registered_client_scope")
+   private Set<ScopeEntity>                scopes;
 
-   public String getId() {
-      return id;
+   public void clientMethods(Set<ClientAuthenticationMethod> clientMethods) {
+      clientMethods.addAll(authenticationMethods.stream()
+            .map(AuthenticationMethodEntity::getMethod)
+            .map(ClientAuthenticationMethod::new).toList());
    }
 
-   public void setId(String id) {
-      this.id = id;
+   public void grantTypes(Set<AuthorizationGrantType> grants) {
+      grants.addAll(grantTypes.stream().map(GrantTypeEntity::getGrantType)
+            .map(AuthorizationGrantType::new).toList());
    }
 
-   public String getClientId() {
-      return clientId;
+   public void redirectUris(Set<String> uris) {
+      uris.addAll(
+            redirectUris.stream().map(RedirectUriEntity::getUri).toList());
    }
 
-   public void setClientId(String clientId) {
-      this.clientId = clientId;
-   }
-
-   public Instant getClientIssuedAt() {
-      return clientIssuedAt;
-   }
-
-   public void setClientIssuedAt(Instant clientIssuedAt) {
-      this.clientIssuedAt = clientIssuedAt;
-   }
-
-   public String getClientSecret() {
-      return clientSecret;
-   }
-
-   public void setClientSecret(String clientSecret) {
-      this.clientSecret = clientSecret;
-   }
-
-   public Instant getClientSecretExpiresAt() {
-      return clientSecretExpiresAt;
-   }
-
-   public void setClientSecretExpiresAt(Instant clientSecretExpiresAt) {
-      this.clientSecretExpiresAt = clientSecretExpiresAt;
-   }
-
-   public String getClientName() {
-      return clientName;
-   }
-
-   public void setClientName(String clientName) {
-      this.clientName = clientName;
-   }
-
-   public String getClientAuthenticationMethods() {
-      return clientAuthenticationMethods;
-   }
-
-   public void setClientAuthenticationMethods(
-         String clientAuthenticationMethods) {
-      this.clientAuthenticationMethods = clientAuthenticationMethods;
-   }
-
-   public String getAuthorizationGrantTypes() {
-      return authorizationGrantTypes;
-   }
-
-   public void setAuthorizationGrantTypes(String authorizationGrantTypes) {
-      this.authorizationGrantTypes = authorizationGrantTypes;
-   }
-
-   public String getRedirectUris() {
-      return redirectUris;
-   }
-
-   public void setRedirectUris(String redirectUris) {
-      this.redirectUris = redirectUris;
-   }
-
-   public String getScopes() {
-      return scopes;
-   }
-
-   public void setScopes(String scopes) {
-      this.scopes = scopes;
+   public void scopes(Set<String> s) {
+      s.addAll(scopes.stream().map(ScopeEntity::getScope).toList());
    }
    // @Column(length = 2000)
    // private String clientSettings;
