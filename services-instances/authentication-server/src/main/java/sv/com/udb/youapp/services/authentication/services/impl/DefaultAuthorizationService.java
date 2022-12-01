@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -25,20 +26,19 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import sv.com.udb.youapp.services.authentication.configuration.OAuthProviderSecurityModule;
 import sv.com.udb.youapp.services.authentication.entities.AuthorizationEntity;
 import sv.com.udb.youapp.services.authentication.repositories.AuthorizationRepository;
 
-@Component
-public class JpaOAuth2AuthorizationService
-      implements OAuth2AuthorizationService {
+@Slf4j
+public class DefaultAuthorizationService implements OAuth2AuthorizationService {
    private final AuthorizationRepository    authorizationRepository;
    private final RegisteredClientRepository registeredClientRepository;
    private final ObjectMapper               objectMapper = new ObjectMapper();
 
-   public JpaOAuth2AuthorizationService(
+   public DefaultAuthorizationService(
          AuthorizationRepository authorizationRepository,
          RegisteredClientRepository registeredClientRepository) {
       Assert.notNull(authorizationRepository,
@@ -47,10 +47,11 @@ public class JpaOAuth2AuthorizationService
             "registeredClientRepository cannot be null");
       this.authorizationRepository = authorizationRepository;
       this.registeredClientRepository = registeredClientRepository;
-      ClassLoader classLoader = JpaOAuth2AuthorizationService.class
+      ClassLoader classLoader = DefaultAuthorizationService.class
             .getClassLoader();
       List<Module> securityModules = SecurityJackson2Modules
             .getModules(classLoader);
+      this.objectMapper.registerModule(new OAuthProviderSecurityModule());
       this.objectMapper.registerModules(securityModules);
       this.objectMapper
             .registerModule(new OAuth2AuthorizationServerJackson2Module());
@@ -250,9 +251,6 @@ public class JpaOAuth2AuthorizationService
             .equals(authorizationGrantType)) {
          return AuthorizationGrantType.REFRESH_TOKEN;
       }
-      return new AuthorizationGrantType(authorizationGrantType);              // Custom
-                                                                              // authorization
-                                                                              // grant
-                                                                              // type
+      return new AuthorizationGrantType(authorizationGrantType);
    }
 }

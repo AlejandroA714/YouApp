@@ -21,6 +21,7 @@ public class AuthenticationMethodEntity {
    @Enumerated(EnumType.STRING)
    @Column(nullable = false, unique = true)
    private AuthenticationMethodEnum method;
+
    public String getMethod() {
       return method.val();
    }

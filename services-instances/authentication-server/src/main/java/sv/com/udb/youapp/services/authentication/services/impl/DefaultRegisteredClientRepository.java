@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.util.Assert;
@@ -58,7 +56,7 @@ public class DefaultRegisteredClientRepository implements
 
    private RegisteredClient toObject(RegisteredClientEntity entity) {
       LOGGER.info("mapping ....");
-      RegisteredClient.Builder builder = RegisteredClient.withId(entity.getId())
+      return RegisteredClient.withId(entity.getId())
             .clientId(entity.getClientId())
             .clientIdIssuedAt(entity.getClientIssuedAt())
             .clientSecret(entity.getClientSecret())
@@ -66,7 +64,10 @@ public class DefaultRegisteredClientRepository implements
             .clientName(entity.getClientName())
             .clientAuthenticationMethods(entity::clientMethods)
             .authorizationGrantTypes(entity::grantTypes)
-            .redirectUris(entity::redirectUris).scopes(entity::scopes);
+            .redirectUris(entity::redirectUris).scopes(entity::scopes).build();
+      // TODO
+      // Dynamic ClientSettings with TokenSettings using mapper or separete
+      // tables
       // Map<String, Object> clientSettingsMap = parseMap(
       // entity.getClientSettings());
       // builder.clientSettings(
@@ -75,9 +76,9 @@ public class DefaultRegisteredClientRepository implements
       // entity.getTokenSettings());
       // builder.tokenSettings(
       // TokenSettings.withSettings(tokenSettingsMap).build());
-      return builder.build();
    }
 
+   // TODO
    private RegisteredClientEntity toEntity(RegisteredClient registeredClient) {
       List<String> clientAuthenticationMethods = new ArrayList<>(
             registeredClient.getClientAuthenticationMethods().size());
@@ -97,6 +98,7 @@ public class DefaultRegisteredClientRepository implements
       entity.setClientSecretExpiresAt(
             registeredClient.getClientSecretExpiresAt());
       entity.setClientName(registeredClient.getClientName());
+      // entity.setAuthenticationMethods(registeredClient.getClientAuthenticationMethods());
       // entity.setClientAuthenticationMethods(StringUtils
       // .collectionToCommaDelimitedString(clientAuthenticationMethods));
       // entity.setAuthorizationGrantTypes(StringUtils
@@ -110,39 +112,5 @@ public class DefaultRegisteredClientRepository implements
       // entity.setTokenSettings(
       // writeMap(registeredClient.getTokenSettings().getSettings()));
       return entity;
-   }
-
-   private static AuthorizationGrantType resolveAuthorizationGrantType(
-         String authorizationGrantType) {
-      if (AuthorizationGrantType.AUTHORIZATION_CODE.getValue()
-            .equals(authorizationGrantType)) {
-         return AuthorizationGrantType.AUTHORIZATION_CODE;
-      }
-      else if (AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()
-            .equals(authorizationGrantType)) {
-         return AuthorizationGrantType.CLIENT_CREDENTIALS;
-      }
-      else if (AuthorizationGrantType.REFRESH_TOKEN.getValue()
-            .equals(authorizationGrantType)) {
-         return AuthorizationGrantType.REFRESH_TOKEN;
-      }
-      return new AuthorizationGrantType(authorizationGrantType);
-   }
-
-   private static ClientAuthenticationMethod resolveClientAuthenticationMethod(
-         String clientAuthenticationMethod) {
-      if (ClientAuthenticationMethod.CLIENT_SECRET_BASIC.getValue()
-            .equals(clientAuthenticationMethod)) {
-         return ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
-      }
-      else if (ClientAuthenticationMethod.CLIENT_SECRET_POST.getValue()
-            .equals(clientAuthenticationMethod)) {
-         return ClientAuthenticationMethod.CLIENT_SECRET_POST;
-      }
-      else if (ClientAuthenticationMethod.NONE.getValue()
-            .equals(clientAuthenticationMethod)) {
-         return ClientAuthenticationMethod.NONE;
-      }
-      return new ClientAuthenticationMethod(clientAuthenticationMethod);
    }
 }

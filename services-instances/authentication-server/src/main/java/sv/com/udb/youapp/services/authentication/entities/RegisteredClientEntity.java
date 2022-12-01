@@ -31,7 +31,7 @@ public class RegisteredClientEntity {
    @Column
    private String                          clientName;
    @ManyToMany(fetch = FetchType.EAGER)
-   @JoinTable(name = "registered_client_authentication_methods")
+   @JoinTable(name = "registered_client_authentication_method")
    private Set<AuthenticationMethodEntity> authenticationMethods;
    @ManyToMany(fetch = FetchType.EAGER)
    @JoinTable(name = "registered_client_grant_type")
@@ -62,8 +62,4 @@ public class RegisteredClientEntity {
    public void scopes(Set<String> s) {
       s.addAll(scopes.stream().map(ScopeEntity::getScope).toList());
    }
-   // @Column(length = 2000)
-   // private String clientSettings;
-   // @Column(length = 2000)
-   // private String tokenSettings;
 }

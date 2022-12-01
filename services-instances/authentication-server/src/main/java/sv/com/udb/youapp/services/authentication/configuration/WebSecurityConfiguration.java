@@ -12,6 +12,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
@@ -20,10 +21,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import sv.com.udb.youapp.commons.jpa.services.PrincipalService;
 import sv.com.udb.youapp.services.authentication.properties.AuthenticationProperties;
+import sv.com.udb.youapp.services.authentication.repositories.AuthorizationRepository;
 import sv.com.udb.youapp.services.authentication.repositories.JpaClientRepository;
 import sv.com.udb.youapp.services.authentication.services.AuthenticationService;
 import sv.com.udb.youapp.services.authentication.services.EncryptPasswordService;
 import sv.com.udb.youapp.services.authentication.services.impl.DefaultAuthenticationService;
+import sv.com.udb.youapp.services.authentication.services.impl.DefaultAuthorizationService;
 import sv.com.udb.youapp.services.authentication.services.impl.DefaultEncryptPasswordService;
 import sv.com.udb.youapp.services.authentication.services.impl.DefaultRegisteredClientRepository;
 
@@ -76,27 +79,14 @@ public class WebSecurityConfiguration {
          JpaClientRepository jpaClientRepository) {
       return new DefaultRegisteredClientRepository(jpaClientRepository);
    }
-   // @Bean
-   // public RegisteredClientRepository registeredClientRepository() {
-   // RegisteredClient registeredClient =
-   // RegisteredClient.withId(UUID.randomUUID().toString())
-   // .clientId("youapp")
-   // .clientSecret("MkiIbZDAX4Uye7q+/Wp9BBlbU4bvEQlNYDRCVeWhdWSgnaelp4rpjKWu0zICSWxEQ5k/RxEcOCxboqZUQIIDijU+xy6AhRsriZZKneGymfn2W1Kom1MYwxGRoCwXr10AcWMu5k3zrLeh436osqi/bbu5YZVF3ggBP3jOESJ4b2htXDsQ+olv9YDt41U7y7om94bb/xbOV4odv2Tb6j8UscvniD/NHNRIdm4m53Bs0Oh9qBh6i2vI238svYbdcKdjCmr8ZpsSo/rROBNQwn+aeU5XzRZz6h0Yr19E1nj1PJVlcQPzxKI2h2Trek1TbQyjQNHl2vDiEBlAxQuOw3GuQQ==")
-   // .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-   // .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-   // .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-   // .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-   // .redirectUri("https://oidcdebugger.com/debug")
-   // .redirectUri("http://127.0.0.1:8080/authorized")
-   // .scope(OidcScopes.OPENID)
-   // .scope(OidcScopes.PROFILE)
-   // .scope("message.read")
-   // .scope("message.write")
-   // .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-   // .build();
-   //
-   // return new InMemoryRegisteredClientRepository(registeredClient);
-   // }
+
+   @Bean
+   public OAuth2AuthorizationService oAuth2AuthorizationService(
+         AuthorizationRepository authorizationRepository,
+         RegisteredClientRepository registeredClientRepository) {
+      return new DefaultAuthorizationService(authorizationRepository,
+            registeredClientRepository);
+   }
 
    @Bean
    public JWKSource<SecurityContext> jwkSource() {

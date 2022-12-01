@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@Entity(name = "client_scopes")
+@Entity(name = "client_scope")
 public class ScopeEntity {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)

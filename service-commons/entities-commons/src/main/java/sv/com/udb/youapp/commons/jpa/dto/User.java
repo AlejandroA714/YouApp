@@ -49,6 +49,7 @@ public class User implements UserDetails {
    @PastOrPresent
    private LocalDate          birthday;
    private LocalDate          registrationDate;
+   private String             photo;
    private boolean            isActive;
    private OAuth2Registration registrationType;
    private OAuth2Role         role;
@@ -66,6 +67,13 @@ public class User implements UserDetails {
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
       return Arrays.asList(new SimpleGrantedAuthority(role.name()));
+   }
+
+   public void setAuthorities(
+         Collection<? extends GrantedAuthority> authorities) {
+      this.role = authorities.stream().findFirst()
+            .map(GrantedAuthority::getAuthority).map(OAuth2Role::valueOf)
+            .orElse(OAuth2Role.ROLE_USER);
    }
 
    @Override

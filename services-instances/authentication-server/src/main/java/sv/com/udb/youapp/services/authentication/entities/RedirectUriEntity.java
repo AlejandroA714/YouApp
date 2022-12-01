@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@Entity(name = "client_redirect_uris")
+@Entity(name = "client_redirect_uri")
 public class RedirectUriEntity {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
