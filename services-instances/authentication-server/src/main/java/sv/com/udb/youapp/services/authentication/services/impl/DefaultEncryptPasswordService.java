@@ -83,13 +83,11 @@ public class DefaultEncryptPasswordService implements EncryptPasswordService {
          cipherDecrypt = null;
       }
    }
-
    @Override
    public String generateRandomPassword(int length) {
       return RandomStringUtils.random(length, 0, characters.length - 1, true,
             true, characters, new SecureRandom());
    }
-
    private Key getPublicKey(String publicKey)
          throws NoSuchAlgorithmException, InvalidKeySpecException {
       X509EncodedKeySpec keySpec = new X509EncodedKeySpec(

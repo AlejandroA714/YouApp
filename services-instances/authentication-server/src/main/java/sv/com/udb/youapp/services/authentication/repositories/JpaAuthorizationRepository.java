@@ -7,7 +7,7 @@ import sv.com.udb.youapp.services.authentication.entities.AuthorizationEntity;
 
 import java.util.Optional;
 
-public interface AuthorizationRepository
+public interface JpaAuthorizationRepository
       extends JpaRepository<AuthorizationEntity, String> {
    Optional<AuthorizationEntity> findByState(String state);
 

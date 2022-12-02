@@ -8,7 +8,7 @@
         <artifactId>components</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>minio-registeredClientEntity</artifactId>
+    <artifactId>minio-client</artifactId>
     <name>YouApp: Minio Client</name>
     <properties>
         <okhttp.version>4.8.1</okhttp.version>

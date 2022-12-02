@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,8 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import sv.com.udb.youapp.commons.jpa.services.PrincipalService;
 import sv.com.udb.youapp.services.authentication.properties.AuthenticationProperties;
-import sv.com.udb.youapp.services.authentication.repositories.AuthorizationRepository;
+import sv.com.udb.youapp.services.authentication.repositories.JpaAuthorizationRepository;
 import sv.com.udb.youapp.services.authentication.repositories.JpaClientRepository;
+import sv.com.udb.youapp.services.authentication.repositories.ScopeRepository;
 import sv.com.udb.youapp.services.authentication.services.AuthenticationService;
 import sv.com.udb.youapp.services.authentication.services.EncryptPasswordService;
 import sv.com.udb.youapp.services.authentication.services.impl.DefaultAuthenticationService;
@@ -82,10 +84,11 @@ public class WebSecurityConfiguration {
 
    @Bean
    public OAuth2AuthorizationService oAuth2AuthorizationService(
-         AuthorizationRepository authorizationRepository,
-         RegisteredClientRepository registeredClientRepository) {
-      return new DefaultAuthorizationService(authorizationRepository,
-            registeredClientRepository);
+         JpaAuthorizationRepository jpaAuthorizationRepository,
+         RegisteredClientRepository registeredClientRepository,
+         ScopeRepository scopeRepository) {
+      return new DefaultAuthorizationService(jpaAuthorizationRepository,
+            registeredClientRepository, scopeRepository);
    }
 
    @Bean

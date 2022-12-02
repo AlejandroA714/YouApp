@@ -1,12 +1,10 @@
 package sv.com.udb.youapp.services.authentication.services.impl;
 
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.util.Assert;
 import sv.com.udb.youapp.services.authentication.entities.RegisteredClientEntity;
 import sv.com.udb.youapp.services.authentication.repositories.JpaClientRepository;
@@ -15,24 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 public class DefaultRegisteredClientRepository implements
-      org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository {
+    RegisteredClientRepository {
    @NonNull
    private final JpaClientRepository jpaClientRepository;
-   @NonNull
-   private final ObjectMapper        objectMapper = new ObjectMapper();
-
-   public DefaultRegisteredClientRepository(
-         JpaClientRepository jpaClientRepository) {
-      this.jpaClientRepository = jpaClientRepository;
-      ClassLoader classLoader = DefaultRegisteredClientRepository.class
-            .getClassLoader();
-      List<Module> securityModules = SecurityJackson2Modules
-            .getModules(classLoader);
-      this.objectMapper.registerModules(securityModules);
-      this.objectMapper
-            .registerModule(new OAuth2AuthorizationServerJackson2Module());
-   }
 
    @Override
    public void save(RegisteredClient registeredClient) {

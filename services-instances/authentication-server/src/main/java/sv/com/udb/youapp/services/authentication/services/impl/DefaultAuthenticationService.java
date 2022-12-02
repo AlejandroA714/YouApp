@@ -13,7 +13,6 @@ import sv.com.udb.youapp.services.authentication.services.AuthenticationService;
 public class DefaultAuthenticationService implements AuthenticationService {
    @NonNull
    private final PrincipalService principalService;
-
    @Override
    public UserDetails loadUserByUsername(String username)
          throws UsernameNotFoundException {
