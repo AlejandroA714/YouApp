@@ -42,7 +42,7 @@ public class AccessTokenMetadataEntity {
    @Column
    private Instant iat;
    @Column
-   private boolean ena;
+   private boolean inv;
 
    public Map<String, Object> toPOJO() {
       return Map.of("asd", "");
@@ -51,7 +51,7 @@ public class AccessTokenMetadataEntity {
    public static AccessTokenMetadataEntity create(Map<String, Object> payload) {
       var claims = (Map<String, Object>) payload.get(CLAIMS_METADATA_NAME);
       return AccessTokenMetadataEntity.builder().sub(getSettings(claims, SUB))
-            .ena(getSettings(payload, TOKEN_INVALIDATED))
+            .inv(getSettings(payload, TOKEN_INVALIDATED))
             .nbf(getSettings(claims, NBF)).iss(getSettings(claims, ISS))
             .exp(getSettings(claims, EXP)).iat(getSettings(claims, IAT))
             .aud(StringUtils
